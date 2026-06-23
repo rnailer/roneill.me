@@ -1,0 +1,111 @@
+/* ============================================================
+   cv.css — Curriculum vitae layout (roneill.me)
+   Loaded after styles.css + case.css. Reuses the case-study
+   shell (.bar/.topnav/.avail/.wrap/.contact) and adds the
+   CV-specific hero, capabilities, experience spine and toolkit.
+   ============================================================ */
+
+/* ---- kicker accent ---- */
+.kicker .ix { color: var(--orange); }
+
+/* ---- hero ---- */
+.cv-hero { padding: clamp(2.5rem,5vw,4.5rem) 0 clamp(1.5rem,3vw,2.5rem); }
+.cv-name { font-family: var(--font-display); font-weight: var(--w-extrabold); font-size: clamp(2.6rem,6.4vw,5rem);
+  line-height: 0.95; letter-spacing: -0.04em; margin: 0.3em 0 0; }
+.cv-role { font-size: var(--fs-body-lg); line-height: var(--lh-body); color: var(--paper); font-weight: var(--w-medium);
+  margin: clamp(1.2rem,2.5vw,1.8rem) 0 0; }
+.cv-intro { font-size: var(--fs-body-lg); line-height: 1.6; color: var(--text-muted); max-width: 62ch;
+  margin: 0.8em 0 0; text-wrap: pretty; }
+.cv-intro strong { color: var(--paper); font-weight: var(--w-semibold); }
+
+/* ---- hero meta ---- */
+.cv-meta { display: flex; flex-wrap: wrap; align-items: flex-start; gap: clamp(1.5rem,4vw,3rem);
+  margin: clamp(1.8rem,4vw,2.6rem) 0 0; }
+.cv-meta .item { display: flex; flex-direction: column; gap: 6px; }
+.cv-meta dt { font: var(--type-label); text-transform: uppercase; letter-spacing: var(--track-label); color: var(--text-faint); }
+.cv-meta dd { margin: 0; font-family: var(--font-display); font-weight: var(--w-semibold); font-size: var(--fs-body);
+  letter-spacing: -0.01em; color: var(--paper); }
+.cv-meta .avail-line { display: inline-flex; align-items: center; gap: 9px; }
+.cv-meta .avail-line .dot { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--orange); flex: none; }
+.cv-meta .avail-line .dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--orange);
+  animation: ron-badge-pulse 1.9s var(--ease-out) infinite; }
+@media (prefers-reduced-motion: reduce){ .cv-meta .avail-line .dot::after { animation: none; } }
+.cv-meta .links { display: flex; flex-wrap: wrap; gap: 14px; margin-left: auto; align-self: flex-end; }
+.cv-meta .links a { font-family: var(--font-display); font-weight: var(--w-bold); font-size: 13px; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--paper); text-decoration: none; border-bottom: 2px solid var(--border-strong);
+  padding-bottom: 2px; transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out); }
+.cv-meta .links a:hover { color: var(--orange); border-color: var(--orange); }
+.cv-meta .links a.primary { color: var(--orange); border-color: var(--orange); }
+
+/* ---- sections ---- */
+.sect { padding: clamp(2.5rem,5vw,4rem) 0; border-top: 1px solid var(--border); }
+.sect-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: var(--space-5); }
+.sect-head .n { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; color: var(--orange); }
+.sect-head .l { font: var(--type-label); text-transform: uppercase; letter-spacing: var(--track-label); color: var(--text-muted); }
+.sect-head .r { flex: 1; height: 1px; background: var(--border); align-self: center; }
+
+/* ---- 01 · capabilities ---- */
+.caps { display: grid; grid-template-columns: repeat(3,1fr); gap: clamp(1.5rem,4vw,3rem); }
+.cap-col .ch { font-family: var(--font-display); font-weight: var(--w-semibold); font-size: var(--fs-body-lg);
+  letter-spacing: -0.01em; color: var(--paper); margin-bottom: 1rem; padding-bottom: 0.8rem; border-bottom: 2px solid var(--paper); }
+.cap-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.cap-col li { font-size: var(--fs-body-sm); line-height: 1.5; color: var(--text-muted); padding: 0.55rem 0 0.55rem 1.1rem;
+  position: relative; border-top: 1px solid var(--border-faint); }
+.cap-col li:first-child { border-top: 0; }
+.cap-col li::before { content: ""; position: absolute; left: 0; top: 0.95em; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--orange); }
+
+/* ---- 02 · experience spine ---- */
+.xp { display: flex; flex-direction: column; }
+.role { display: grid; grid-template-columns: 220px minmax(0,1fr); gap: clamp(1.2rem,4vw,4rem);
+  padding: clamp(1.6rem,3.5vw,2.6rem) 0; border-top: 1px solid var(--border); }
+.role:first-child { border-top: 0; padding-top: 0; }
+.role .meta { display: flex; flex-direction: column; gap: 4px; }
+.role .meta .yr { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; letter-spacing: 0.02em;
+  color: var(--text-muted); }
+.role .meta .yr .now { color: var(--orange); }
+.role .meta .org { font-family: var(--font-display); font-weight: var(--w-semibold); font-size: var(--fs-body);
+  letter-spacing: -0.01em; color: var(--paper); margin-top: 0.4em; }
+.role .meta .loc { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; color: var(--text-faint); }
+.role .body h3 { font-family: var(--font-display); font-weight: var(--w-bold); font-size: var(--fs-h3);
+  letter-spacing: -0.02em; line-height: 1.1; color: var(--paper); margin: 0; }
+.role .body .sum { font-size: var(--fs-body); line-height: 1.6; color: var(--text-muted); max-width: 66ch;
+  margin: 0.7em 0 0; text-wrap: pretty; }
+.role .body .sum strong { color: var(--paper); font-weight: var(--w-semibold); }
+.role .body .points { list-style: none; margin: 1em 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.6em; }
+.role .body .points li { position: relative; font-size: var(--fs-body-sm); line-height: 1.55; color: var(--text-muted);
+  padding-left: 1.3rem; max-width: 66ch; text-wrap: pretty; }
+.role .body .points li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 8px; height: 1px; background: var(--orange); }
+.role .body .points li strong { color: var(--paper); font-weight: var(--w-semibold); }
+.role .body .rtags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.2em; }
+.role .body .rtags span { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11px; letter-spacing: 0.02em;
+  color: var(--text-muted); border: 1px solid var(--border); border-radius: var(--radius-pill); padding: 4px 11px; }
+
+/* ---- 03 · toolkit ---- */
+.toolkit { display: flex; flex-wrap: wrap; gap: 9px; }
+.toolkit .tool { font-family: var(--font-display); font-weight: var(--w-medium); font-size: var(--fs-body-sm);
+  letter-spacing: -0.005em; color: var(--paper); border: 1px solid var(--border-strong); border-radius: var(--radius-pill);
+  padding: 8px 15px; transition: border-color var(--dur) var(--ease-out), color var(--dur) var(--ease-out); }
+.toolkit .tool:hover { border-color: var(--orange); color: var(--orange); }
+
+/* ---- responsive ---- */
+@media (max-width: 820px){
+  .caps { grid-template-columns: 1fr; gap: clamp(1.5rem,5vw,2.5rem); }
+  .role { grid-template-columns: 1fr; gap: 0.9rem; }
+  .cv-meta .links { margin-left: 0; align-self: flex-start; width: 100%; }
+}
+
+/* ---- print: clean, paper-on-white CV ---- */
+@media print {
+  @page { margin: 16mm; }
+  .bar, .contact, .cv-meta .links, .toolkit .tool:hover { display: revert; }
+  .bar, .contact { display: none !important; }
+  html, body { background: #fff !important; color: #111 !important; }
+  .cv-name, .cv-role, .cv-intro strong, .cv-meta dd, .cap-col .ch, .role .body h3, .role .meta .org, .toolkit .tool {
+    color: #111 !important; }
+  .cv-intro, .cv-meta dt, .role .body .sum, .role .body .points li, .role .meta .yr, .role .meta .loc { color: #333 !important; }
+  .sect, .role { border-color: #ccc !important; page-break-inside: avoid; }
+  .sect-head .n, .sect-head .l, .cap-col li::before, .role .meta .yr .now, .role .body .points li::before { color: #111 !important; }
+  .toolkit .tool, .role .body .rtags span { border-color: #999 !important; }
+  .cap-col .ch { border-color: #111 !important; }
+}
