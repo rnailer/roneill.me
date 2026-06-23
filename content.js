@@ -8,7 +8,7 @@ window.RON_CONTENT = {
   positioning: "Product designer bridging design, code and AI.",
   location: "Dublin, Ireland",
   coords: "53.3638° N · 6.2631° W",
-  email: "hi@roneill.me",
+  email: "hello@roneill.me",
   linkedin: "linkedin.com/in/roneill",
 
   skills: [
