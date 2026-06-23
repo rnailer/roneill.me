@@ -1,0 +1,82 @@
+/* ============================================================
+   BASE — resets, document defaults, shared utilities.
+   Consumers get sensible paper/espresso defaults for free.
+   ============================================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: var(--type-body);
+  font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--orange); color: var(--paper); }
+
+a { color: var(--link); text-decoration: none; }
+
+/* Display elements default to the display family + tight tracking */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: var(--track-display);
+  line-height: var(--lh-tight);
+  margin: 0;
+}
+
+img { max-width: 100%; display: block; }
+
+:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
+
+/* ---- Technical-label helper ---- */
+.tech-label {
+  font: var(--type-tech);
+  letter-spacing: var(--track-tech);
+  color: var(--text-muted);
+  text-transform: none;
+}
+.eyebrow {
+  font: var(--type-label);
+  text-transform: uppercase;
+  letter-spacing: var(--track-label);
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   MOTIF UTILITY — recolour any line-geometry SVG via mask.
+   Usage: <span class="motif" style="--m:url(.../globe.svg);
+            width:120px;height:120px;color:var(--accent)"></span>
+   The mask uses the shape's alpha; `color` (currentColor) fills it,
+   so motifs can be espresso, orange, grey — anything.
+   ============================================================ */
+.motif {
+  display: inline-block;
+  background: currentColor;
+  color: var(--motif);
+  -webkit-mask-image: var(--m);
+  mask-image: var(--m);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+/* Numerals: tabular for data alignment */
+.tnum { font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

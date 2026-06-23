@@ -1,0 +1,54 @@
+/* ============================================================
+   FONTS — roneill.me
+   Display: "TBJ Ultra Centric" (ultra-expanded mechanical sans).
+   Text/UI: "Inter".
+
+   The six TBJ Ultra Centric weights are self-hosted from
+   assets/fonts/ and normalised into ONE family, "TBJ Ultra Centric",
+   mapped to weights: Light 300 · Regular 400 · Medium 500 ·
+   SemiBold 600 · Bold 700 · ExtraBold 800. woff2 only.
+
+   ── TBJ Ultra Centric webfont license (must remain visible) ──
+   Font:     TBJ Ultra Centric
+   Foundry:  Taboja Studio — https://youworkforthem.com/designer/2050/taboja-studio
+   URL:      https://youworkforthem.com/font/T33744/tbj-ultra-centric
+   License:  https://www.youworkforthem.com/font-license
+             The WebFont(s) must follow the YouWorkForThem WebFont license
+             rules. All other parties are strictly restricted from using the
+             WebFont(s) without a purchased license.
+   ============================================================ */
+
+/* Inter — text / UI (self-served from Google) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* TBJ Ultra Centric — display, self-hosted, one family / six weights */
+@font-face {
+  font-family: 'TBJ Ultra Centric';
+  src: url('../assets/fonts/tbj-ultra-centric-light.woff2') format('woff2');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'TBJ Ultra Centric';
+  src: url('../assets/fonts/tbj-ultra-centric-regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'TBJ Ultra Centric';
+  src: url('../assets/fonts/tbj-ultra-centric-medium.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'TBJ Ultra Centric';
+  src: url('../assets/fonts/tbj-ultra-centric-semibold.woff2') format('woff2');
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'TBJ Ultra Centric';
+  src: url('../assets/fonts/tbj-ultra-centric-bold.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'TBJ Ultra Centric';
+  src: url('../assets/fonts/tbj-ultra-centric-extrabold.woff2') format('woff2');
+  font-weight: 800; font-style: normal; font-display: swap;
+}

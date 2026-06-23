@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="blackout">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fidelity · Exercise-flow redesign, roneill.me</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="case.css">
+<style>
+  /* page-local: research-finding list, prototype screen sequence, stat line (on-system) */
+  .findings { list-style: none; margin: 1.6rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 1px;
+    border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--border); max-width: 70ch; }
+  .findings li { background: var(--bg); display: flex; gap: 16px; align-items: baseline;
+    padding: 1.1rem clamp(1rem,2.4vw,1.4rem); }
+  .findings .fn { font-family: ui-monospace, monospace; font-size: 12px; color: var(--orange); flex: none; padding-top: 3px; }
+  .findings h4 { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body); letter-spacing: -0.01em;
+    margin: 0; color: var(--paper); }
+  .findings p { font-size: var(--fs-body-sm); line-height: 1.55; color: var(--text-muted); margin: 0.4em 0 0; text-wrap: pretty; }
+  .findings em { color: var(--paper); font-style: italic; }
+
+  /* prototype screen sequence, light artboards matted on dark */
+  .screens { display: grid; gap: clamp(1.6rem,3.5vw,2.8rem); margin: clamp(1.8rem,4vw,2.6rem) 0 0; }
+  .screen { margin: 0; }
+  .screen .frame { border: 1px solid var(--border-strong); border-radius: 14px; overflow: hidden;
+    background: var(--bg-sunken); padding: clamp(0.9rem,2.2vw,1.6rem); box-shadow: 0 16px 44px rgba(0,0,0,.5); }
+  .screen .frame img { display: block; width: 100%; height: auto; border-radius: 8px; }
+  .screen figcaption { display: flex; gap: 13px; align-items: baseline; margin-top: 0.95em;
+    font-size: var(--fs-body-sm); color: var(--text-muted); line-height: 1.5; text-wrap: pretty; }
+  .screen figcaption .sn { font-family: ui-monospace, monospace; font-size: 12px; color: var(--orange); flex: none; padding-top: 2px; }
+  .screen figcaption b { color: var(--paper); font-weight: 600; }
+  .illus-note { font-style: italic; font-size: var(--fs-caption); color: var(--text-faint);
+    margin: clamp(1.2rem,2.6vw,1.6rem) 0 0; line-height: 1.5; }
+
+  .statline { font: var(--type-label); text-transform: uppercase; letter-spacing: var(--track-label);
+    color: var(--text-faint); margin: clamp(2rem,4vw,3rem) 0 1.4rem; }
+</style>
+</head>
+<body>
+  <div class="bar"><div class="wrap bar-in">
+    <a href="../../index.html" class="mark">ron</a>
+    <nav class="topnav">
+      <a href="../../index.html#work" class="nav-link">Work</a>
+      <a href="../../index.html#about" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact</a>
+      <a href="../../cv.html" class="nav-link">CV</a>
+      <span class="avail"><span class="dot"></span>Available</span>
+    </nav>
+  </div></div>
+
+  <header class="hero"><div class="wrap">
+    <div class="kicker">Case study <b>[ 02 ]</b> · the full story</div>
+    <div class="num-big">02</div>
+    <h1>Helping people exercise stock options with <span class="o">clarity and confidence</span></h1>
+    <p class="summary">Exercising vested stock options is one of the highest-stakes things a person does in a financial product, real money, real tax, and a real fear of getting it wrong. Fidelity's existing flow was accurate but cold: a wall of figures, jargon, and a calculator buried three clicks from the transaction it was meant to inform. I led the redesign, <strong>co-facilitating a four-week design sprint, then owning the flow through to an FDS-ready prototype</strong>, built on a deep research base and one goal: let people exercise with clarity and confidence.</p>
+    <dl class="meta">
+      <div><dt>Company</dt><dd>Fidelity Investments</dd></div>
+      <div><dt>Year</dt><dd>2025 · research base from 2024</dd></div>
+      <div><dt>Type</dt><dd>Design sprint · Equity-comp UX · Flow redesign</dd></div>
+      <div><dt>Role</dt><dd>Lead designer, sprint co-facilitator → owned design through FDS build</dd></div>
+      <div><dt>Confidential</dt><dd>Sanitised · dummy data</dd></div>
+    </dl>
+  </div></header>
+
+  <div class="wrap"><div class="doc">
+    <aside class="rail"><nav>
+      <div class="rh">Sections</div>
+      <ol>
+        <li><a href="#c1"><span class="mono">01</span> The problem</a></li>
+        <li><a href="#c2"><span class="mono">02</span> The research</a></li>
+        <li><a href="#c3"><span class="mono">03</span> The sprint</a></li>
+        <li><a href="#c4"><span class="mono">04</span> The redesign</a></li>
+        <li><a href="#c5"><span class="mono">05</span> A non-obvious call</a></li>
+        <li><a href="#c6"><span class="mono">06</span> FDS rebuild &amp; outcome</a></li>
+      </ol>
+    </nav></aside>
+
+    <main>
+      <section class="chapter" id="c1">
+        <div class="chx"><span class="n">01</span><span class="l">The problem</span><span class="r"></span></div>
+        <h2>Being “factual” wasn't enough</h2>
+        <div class="prose">
+          <p>SOP/SAR participants split into two camps. Novices, the majority, were frightened: they'd avoid exercising entirely for fear of an irreversible mistake, and the screens did nothing to reassure them. Experienced participants wanted to model tax outcomes and time the market, but the tools to do it were buried or disconnected.</p>
+          <p>Both hit the same walls: a calculator divorced from the transaction, tax shown as raw percentages with no <em>“here's what you actually keep,”</em> and language like <em>Fair Market Value at Exercise Per Share</em> where plain words would do.</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="c2">
+        <div class="chx"><span class="n">02</span><span class="l">The research</span><span class="r"></span></div>
+        <h2>What the research showed</h2>
+        <div class="prose">
+          <p>I designed from a deep evidence base: a discovery study and two rounds of evaluative testing, <strong>25 participants in all</strong>, that put the existing experience in front of real option-holders. The findings were unusually clear, and they pointed straight at the design.</p>
+        </div>
+        <ul class="findings">
+          <li><span class="fn">01</span><div><h4>Most people are novices who “learn by doing”</h4><p>The experience had to guide them to an outcome, not assume fluency.</p></div></li>
+          <li><span class="fn">02</span><div><h4>Tax was the number-one fear</h4><p>A real deterrent to transacting at all. Every interviewee was unsure <em>when</em> tax applied; people wanted the impact on <em>them</em>, in net not gross, as early as possible. As one put it: “I don't want the technical detail; I just want an explanation of what it means to me.”</p></div></li>
+          <li><span class="fn">03</span><div><h4>The calculator was the single most-valued feature</h4><p>Named the best part of the experience by nearly every participant, because it let them “work in reverse”: enter the cash they wanted and see what it would take. Yet it sat buried mid-flow and was routinely skipped.</p></div></li>
+          <li><span class="fn">04</span><div><h4>At the final step, people wouldn't press submit</h4><p>Not because the flow was broken, but because they still couldn't answer the only question that mattered: how much do I actually walk away with?</p></div></li>
+        </ul>
+        <div class="pull">
+          <span class="k">At the last screen, before confirming</span>
+          <p>“I'm still not sure how much cash I'm going to come away with.”</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="c3">
+        <div class="chx"><span class="n">03</span><span class="l">The sprint</span><span class="r"></span></div>
+        <h2>Understand before solving</h2>
+        <div class="prose">
+          <p>With that base, we ran the classic four-week sprint: <strong>understand, explore, refine, prototype.</strong> Lightning talks from phone reps and analytics, a review of six competitor platforms, a “temperature check” against Fidelity's design principles, affinity mapping into How-Might-We statements, journey mapping, Crazy 8s, and solution sketches the team voted on.</p>
+          <p>I came in as co-facilitator and, when our facilitator rolled off, took it over as the lead designer who carried the chosen direction into detailed design and the FDS build.</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="c4">
+        <div class="chx"><span class="n">04</span><span class="l">The redesign</span><span class="r"></span></div>
+        <h2>Answer each failure directly</h2>
+        <div class="prose">
+          <p>Almost every move maps to a documented finding. The flow now opens with a plain-language choice, <em>cash or shares?</em>, instead of <em>Exercise &amp; Sell</em> vs <em>Exercise &amp; Hold</em>, because research showed people arrive already knowing the outcome they want, and that “sell” is understood where “exercise” isn't.</p>
+          <p>The most-valued calculator was pulled to the front and wired <em>into</em> the transaction, so modelling an outcome carries its numbers straight through instead of forcing a re-entry. The review step makes proceeds legible, every tax line broken out, then a single highlighted <em>you'll receive</em> figure, so the question that stopped people from submitting is answered before they're asked to submit. And a clear <strong>three-step progress indicator</strong> replaced the “am I done?” ambiguity the research flagged on the old pending and confirmation screens.</p>
+        </div>
+
+        <div class="screens">
+          <figure class="screen">
+            <div class="frame">
+              <img src="assets/shots/exercise-flow-01-cash-or-shares.svg" loading="lazy"
+                alt="Step 1 of the redesigned flow, a plain-language first question asking whether the user wants cash or shares, replacing the Exercise &amp; Sell versus Exercise &amp; Hold jargon.">
+            </div>
+            <figcaption><span class="sn">01</span><div><b>Step 1, Lead with the goal:</b> cash or shares, in plain language.</div></figcaption>
+          </figure>
+          <figure class="screen">
+            <div class="frame">
+              <img src="assets/shots/exercise-flow-02-enter-details.svg" loading="lazy"
+                alt="Step 2 of the redesigned flow, the calculator pulled into the transaction, letting the user enter details and see the numbers update live.">
+            </div>
+            <figcaption><span class="sn">02</span><div><b>Step 2, The calculator,</b> pulled into the flow and updating live.</div></figcaption>
+          </figure>
+          <figure class="screen">
+            <div class="frame">
+              <img src="assets/shots/exercise-flow-03-review.svg" loading="lazy"
+                alt="Step 3 of the redesigned flow, the review screen breaking out every tax line and highlighting a single you'll-receive figure: what the user will actually walk away with.">
+            </div>
+            <figcaption><span class="sn">03</span><div><b>Step 3, The one number people came for:</b> what you'll receive.</div></figcaption>
+          </figure>
+        </div>
+        <p class="illus-note">Illustrative, sanitised, with dummy data.</p>
+
+        <div class="pull" style="margin-top:clamp(1.8rem,4vw,2.6rem)">
+          <span class="k">The shift the research demanded</span>
+          <p>From “here are the figures, good luck” to “here's what you'll receive, and here's what to do next.”</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="c5">
+        <div class="chx"><span class="n">05</span><span class="l">A non-obvious call</span><span class="r"></span></div>
+        <h2>Lead with the user's goal, not the product's vocabulary</h2>
+        <div class="prose">
+          <p>The strongest decision looked the smallest: making the very first question about the user's <em>goal</em>, not the product's vocabulary. Research showed most people already know whether they want cash or shares, so leading with that stripped the up-front cognitive load and let everything downstream tailor to the path they'd chosen.</p>
+          <p>The exercise types still exist; they just stopped being the price of entry.</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="c6">
+        <div class="chx"><span class="n">06</span><span class="l">FDS rebuild &amp; outcome</span><span class="r"></span></div>
+        <h2>Years of research, turned into a guided experience</h2>
+        <div class="prose">
+          <p>I rebuilt the concept in <strong>FDS, Fidelity's current design system</strong>, so it shipped as real components ready for engineering rather than a one-off mockup, and handed off layouts and tooltip content to development.</p>
+          <p>Because every move answered a specific, documented failure, the redesign became the reference the wider SOP/SAR initiative built against, turning years of research into a guided experience a nervous first-timer could actually finish.</p>
+        </div>
+
+        <div class="statline">The work at a glance</div>
+        <div class="metrics">
+          <div class="metric"><div class="v">3</div><div class="c">Research studies, discovery + two evaluative rounds</div></div>
+          <div class="metric"><div class="v">25</div><div class="c">Participants, real option-holders tested</div></div>
+          <div class="metric"><div class="v">4<span class="u">wk</span></div><div class="c">Design sprint → FDS-ready 3-step flow</div></div>
+        </div>
+      </section>
+
+      <div class="next">
+        <a href="../333-games/333 Games Studio - Case Study.html">
+          <div><div class="eyebrow">Next project</div><div class="t">333 Games Studio</div></div>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </main>
+  </div></div>
+
+  <footer id="contact" class="contact">
+    <span class="creg" style="top:18px;left:18px"></span><span class="creg" style="top:18px;right:18px"></span>
+    <div class="wrap contact-in">
+      <div class="top">
+        <span class="cap">// Let's build</span>
+        <img src="assets/motifs/arrows-double.svg" alt="">
+      </div>
+      <a href="mailto:hi@roneill.me" class="email">hi@roneill.me</a>
+      <div class="clinks">
+        <a href="https://linkedin.com/in/roneillme">LinkedIn →</a>
+        <a href="../../cv.html">Download CV →</a>
+      </div>
+      <div class="crow">
+        <span class="cmark">ron</span>
+        <span>// Dublin // 2026</span>
+        <span>53.3498° N · 6.2603° W</span>
+        <span class="plus">+ + +</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="case.js"></script>
+</body>
+</html>

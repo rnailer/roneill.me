@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="blackout">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fidelity · VM Utilisation Dashboard, roneill.me</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="case.css">
+<style>
+  /* page-local: prototype embed, traffic-light list, stat line (on-system) */
+  .proto { margin: clamp(1.8rem,4vw,3rem) 0 0; }
+  .proto-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 10px 18px;
+    margin-bottom: clamp(0.9rem,2vw,1.2rem); }
+  .proto-head .cap { font: var(--type-label); text-transform: uppercase; letter-spacing: var(--track-label); color: var(--text-faint);
+    display: inline-flex; align-items: center; gap: 9px; }
+  .proto-head .cap::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--orange); }
+  .proto-head a { font-family: var(--font-display); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--text-muted); text-decoration: none; border-bottom: 1px solid var(--border-strong); padding-bottom: 2px;
+    transition: color var(--dur) var(--ease-out), border-color var(--dur) var(--ease-out); }
+  .proto-head a:hover { color: var(--orange); border-color: var(--orange); }
+  .proto-frame { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-strong);
+    background: var(--bg-sunken); box-shadow: 0 16px 44px rgba(0,0,0,.5); }
+  .proto-frame iframe { width: 100%; height: 760px; border: 0; display: block; }
+  @media (max-width: 700px){ .proto-frame iframe { height: 560px; } }
+
+  /* traffic-light status model */
+  .traffic { list-style: none; margin: 1.6rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 1px;
+    border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--border); max-width: 62ch; }
+  .traffic li { background: var(--bg); display: flex; gap: 14px; align-items: baseline;
+    padding: 0.95rem clamp(1rem,2.4vw,1.4rem); font-size: var(--fs-body-sm); line-height: 1.5; color: var(--text-muted); text-wrap: pretty; }
+  .traffic li b { color: var(--paper); font-weight: 700; font-family: ui-monospace, monospace; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.04em; }
+  .traffic .tl { width: 11px; height: 11px; border-radius: 50%; flex: none; margin-top: 5px; }
+  .tl.green { background: #57B97A; }
+  .tl.orange { background: var(--orange); }
+  .tl.red { background: #D6402F; }
+  .tl.grey { background: var(--grey-600); }
+  .tl.flag { background: transparent; border: 2px solid var(--orange); box-shadow: 0 0 0 2px color-mix(in srgb, var(--orange) 22%, transparent); }
+
+  .statline { font: var(--type-label); text-transform: uppercase; letter-spacing: var(--track-label);
+    color: var(--text-faint); margin: clamp(2rem,4vw,3rem) 0 1.4rem; }
+  @media (max-width: 640px){ .traffic li { align-items: flex-start; } }
+</style>
+</head>
+<body>
+  <div class="bar"><div class="wrap bar-in">
+    <a href="../../index.html" class="mark">ron</a>
+    <nav class="topnav">
+      <a href="../../index.html#work" class="nav-link">Work</a>
+      <a href="../../index.html#about" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact</a>
+      <a href="../../cv.html" class="nav-link">CV</a>
+      <span class="avail"><span class="dot"></span>Available</span>
+    </nav>
+  </div></div>
+
+  <header class="hero"><div class="wrap">
+    <div class="kicker">Case study <b>[ 01 ]</b> · the full story</div>
+    <div class="num-big">01</div>
+    <h1>Turning VM utilisation data into <span class="o">clear next steps</span></h1>
+    <p class="summary">The AI/ML FinOps chatbot let engineering teams ask questions about their cloud estate, which machines were underused, where money was leaking, what looked anomalous. It worked, but only if you knew what to ask. I shaped the chatbot's front-end UX, then independently designed and built a <strong>VM Utilisation Dashboard</strong>, a visual layer inside the same product that surfaces what needs attention <em>before</em> anyone types a question.</p>
+    <dl class="meta">
+      <div><dt>Company</dt><dd>Fidelity Investments</dd></div>
+      <div><dt>Year</dt><dd>2026</dd></div>
+      <div><dt>Type</dt><dd>AI product · Data viz · Internal tooling</dd></div>
+      <div><dt>Role</dt><dd>Product designer, chatbot UX + dashboard design &amp; prototype</dd></div>
+    </dl>
+
+    <section class="proto">
+      <div class="proto-head">
+        <span class="cap">Interactive prototype, try it live</span>
+        <a href="https://factor-feast-34821257.figma.site" target="_blank" rel="noopener">Open in new tab ↗</a>
+      </div>
+      <div class="proto-frame">
+        <iframe
+          src="https://factor-feast-34821257.figma.site"
+          title="VM Utilisation Dashboard, interactive prototype"
+          loading="lazy"
+          allowfullscreen></iframe>
+      </div>
+    </section>
+  </div></header>
+
+  <div class="wrap"><div class="doc">
+    <aside class="rail"><nav>
+      <div class="rh">Sections</div>
+      <ol>
+        <li><a href="#c1"><span class="mono">01</span> Overview</a></li>
+        <li><a href="#c2"><span class="mono">02</span> The problem</a></li>
+        <li><a href="#c3"><span class="mono">03</span> Research</a></li>
+        <li><a href="#c4"><span class="mono">04</span> The design</a></li>
+        <li><a href="#c5"><span class="mono">05</span> Insight → action</a></li>
+        <li><a href="#c6"><span class="mono">06</span> A decision</a></li>
+        <li><a href="#c7"><span class="mono">07</span> Outcome</a></li>
+      </ol>
+    </nav></aside>
+
+    <main>
+      <section class="chapter" id="c1">
+        <div class="chx"><span class="n">01</span><span class="l">Overview</span><span class="r"></span></div>
+        <h2>A conversational product with a visual layer alongside it</h2>
+        <div class="prose">
+          <p>Behind the chatbot, a daily pipeline pulled utilisation metrics, <strong>CPU and network in/out</strong>, from virtual machines and databases across the cloud estate, and served them to a conversational interface.</p>
+          <p>The front-end work covered the usual chatbot questions: how many prompts to show, how to move people from guided prompts into freeform questions, how to gather context, how feedback should work. I owned that UX direction, then went a step further and designed a dashboard to sit alongside it.</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="c2">
+        <div class="chx"><span class="n">02</span><span class="l">The problem</span><span class="r"></span></div>
+        <h2>A chat-only product makes users do the hard part</h2>
+        <div class="prose">
+          <p>The chatbot could answer detailed FinOps questions, but the value was locked behind knowing the right question. To find underused machines or the biggest savings, you already had to <em>suspect</em> they were there.</p>
+          <p>That's a lot to ask of a busy engineer who just wants to know whether their estate is healthy.</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="c3">
+        <div class="chx"><span class="n">03</span><span class="l">Research</span><span class="r"></span></div>
+        <h2>“Show me, don't make me ask”</h2>
+        <div class="prose">
+          <p>I ran the chatbot through moderated usability sessions, affinity-mapped the results, and prioritised with MoSCoW. One theme surfaced again and again: people wanted to <em>see</em> the data, not interrogate it. <strong>“Would love a graph to visualise this.” “Add labels and structure so I can scan it.” “Just show me what needs attention.”</strong></p>
+          <p>Answers that were accurate but dense made users work to interpret them. The research pointed clearly past a better chatbot, toward a visual layer.</p>
+        </div>
+        <div class="pull">
+          <span class="k">The signal</span>
+          <p>It wasn't “make the chatbot smarter.” It was “let me scan before I ask.”</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="c4">
+        <div class="chx"><span class="n">04</span><span class="l">The design</span><span class="r"></span></div>
+        <h2>A dashboard that answers one question first</h2>
+        <div class="prose">
+          <p>I designed the dashboard around a single question: <em>what needs attention, and what should I do next?</em> You enter an <strong>Application, Product, or Product Line ID</strong>; the dashboard resolves the right level of data and shows a colour-coded summary.</p>
+          <p>For an application, every VM appears as a card grouped by environment, <strong>DEV, QA, PROD</strong>, showing its name, average CPU, a traffic-light status, and a review flag where relevant. The traffic-light model does the interpreting so the user doesn't have to:</p>
+        </div>
+        <ul class="traffic">
+          <li><span class="tl green"></span><div><b>Green</b>, correctly utilised</div></li>
+          <li><span class="tl orange"></span><div><b>Orange</b>, underutilised</div></li>
+          <li><span class="tl red"></span><div><b>Red</b>, severely underutilised</div></li>
+          <li><span class="tl grey"></span><div><b>Grey</b>, not enough data to score yet</div></li>
+          <li><span class="tl flag"></span><div><b>Flagged</b>, Max CPU spiked, so it may need a closer look rather than simple downsizing</div></li>
+        </ul>
+        <div class="prose" style="margin-top:clamp(1.8rem,4vw,2.6rem)">
+          <p>A simple score, the ratio of green machines, rolls the same logic up the hierarchy: <strong>Product Line → Product → Application → VM</strong>. Whatever level you enter at, status reads the same way.</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="c5">
+        <div class="chx"><span class="n">05</span><span class="l">Insight → action</span><span class="r"></span></div>
+        <h2>Connecting insight to action</h2>
+        <div class="prose">
+          <p>The dashboard wasn't built to report; it was built to move people to the next step. For an underutilised machine, the design put the actions right there: <strong>right-sizing guidance</strong>, a button to open the chatbot <em>pre-scoped to that VM</em>, and a button to <strong>raise a resizing ticket</strong>.</p>
+          <p>That join is the point, scan visually first, drop into chat for the follow-up, escalate without leaving the page.</p>
+        </div>
+        <div class="pull">
+          <span class="k">The shift</span>
+          <p>From “here is the data” to “here is what needs attention, and here is what you can do about it.”</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="c6">
+        <div class="chx"><span class="n">06</span><span class="l">A decision</span><span class="r"></span></div>
+        <h2>A decision from the research</h2>
+        <div class="prose">
+          <p>After the usability round, VM cards gained <strong>Max CPU</strong> alongside Average CPU. Average alone could make a machine look idle when it was actually spiking periodically; Max CPU let reviewers tell <em>“genuinely underused”</em> from <em>“quiet most of the time, critical occasionally.”</em></p>
+          <p>A small addition that changed how trustworthy the call felt.</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="c7">
+        <div class="chx"><span class="n">07</span><span class="l">Outcome</span><span class="r"></span></div>
+        <h2>From question-led to discovery-led</h2>
+        <div class="prose">
+          <p>The work gave the team a clear, reviewable direction for extending the chatbot into a visual, self-service experience, and moved the product from question-led to discovery-led.</p>
+          <p>Instead of asking users to start with the perfect prompt, it surfaces the issues first and lets the chatbot handle the depth. I built the prototype independently from the brief; it's the interactive piece at the top of this page.</p>
+        </div>
+
+        <div class="statline">The dashboard at a glance</div>
+        <div class="metrics">
+          <div class="metric"><div class="v">3</div><div class="c">Entry points, App, Product, Product Line ID</div></div>
+          <div class="metric"><div class="v">4</div><div class="c">Levels of hierarchy, Product Line → Product → App → VM</div></div>
+          <div class="metric"><div class="v">5</div><div class="c">At-a-glance utilisation states</div></div>
+        </div>
+      </section>
+
+      <div class="next">
+        <a href="../fidelity-exercise-flow/index.html">
+          <div><div class="eyebrow">Next project</div><div class="t">Fidelity · Exercise flow</div></div>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </main>
+  </div></div>
+
+  <footer id="contact" class="contact">
+    <span class="creg" style="top:18px;left:18px"></span><span class="creg" style="top:18px;right:18px"></span>
+    <div class="wrap contact-in">
+      <div class="top">
+        <span class="cap">// Let's build</span>
+        <img src="assets/motifs/arrows-double.svg" alt="">
+      </div>
+      <a href="mailto:hi@roneill.me" class="email">hi@roneill.me</a>
+      <div class="clinks">
+        <a href="https://linkedin.com/in/roneillme">LinkedIn →</a>
+        <a href="../../cv.html">Download CV →</a>
+      </div>
+      <div class="crow">
+        <span class="cmark">ron</span>
+        <span>// Dublin // 2026</span>
+        <span>53.3498° N · 6.2603° W</span>
+        <span class="plus">+ + +</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="case.js"></script>
+</body>
+</html>

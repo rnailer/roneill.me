@@ -1,0 +1,68 @@
+/* ============================================================
+   TYPOGRAPHY TOKENS — roneill.me
+   Pairing: TBJ Ultra Centric (display) + Inter (text/UI).
+   The pairing IS the pitch — display performs, text disappears.
+   ============================================================ */
+
+:root {
+  /* ---- Families ---- */
+  /* TBJ Ultra Centric is now self-hosted (see fonts.css). */
+  --font-display: 'TBJ Ultra Centric', system-ui, sans-serif;
+  --font-text:    'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* ---- Weights (TBJ mapping) ---- */
+  --w-light:     300;  /* @kind font */
+  --w-regular:   400;  /* @kind font */
+  --w-medium:    500;  /* @kind font */
+  --w-semibold:  600;  /* @kind font */
+  --w-bold:      700;  /* @kind font */
+  --w-extrabold: 800;  /* @kind font */
+
+  /* ---- Tracking ---- */
+  --track-hero:    -0.04em;  /* huge display, tight @kind font */
+  --track-display: -0.025em; /* @kind font */
+  --track-tight:   -0.015em; /* @kind font */
+  --track-normal:   0;       /* @kind font */
+  --track-wide:     0.08em;  /* @kind font */
+  --track-label:    0.16em;  /* uppercase Inter labels @kind font */
+  --track-tech:     0.04em;  /* technical labels / coords @kind font */
+
+  /* ---- Line heights ---- */
+  --lh-solid:  0.92;   /* @kind font */
+  --lh-tight:  1.04;   /* @kind font */
+  --lh-snug:   1.18;   /* @kind font */
+  --lh-body:   1.6;    /* @kind font */
+  --lh-label:  1.1;    /* @kind font */
+
+  /* ---- Raw display sizes (fluid, clamp) ---- */
+  --fs-hero:    clamp(3.5rem, 11.5vw, 11rem);    /* @kind font */
+  --fs-display: clamp(2.75rem, 7vw, 6rem);       /* @kind font */
+  --fs-h1:      clamp(2.25rem, 4.6vw, 4rem);     /* @kind font */
+  --fs-h2:      clamp(1.75rem, 3vw, 2.75rem);    /* @kind font */
+  --fs-h3:      clamp(1.375rem, 2vw, 1.875rem);  /* @kind font */
+  --fs-metric:  clamp(3rem, 6.5vw, 5.75rem);     /* @kind font */
+
+  /* ---- Raw text sizes ---- */
+  --fs-body-lg: 1.1875rem;   /* 19 */
+  --fs-body:    1.0625rem;   /* 17 */
+  --fs-body-sm: 0.9375rem;   /* 15 */
+  --fs-label:   0.75rem;     /* 12 uppercase tracked */
+  --fs-tech:    0.8125rem;   /* 13 technical labels */
+  --fs-caption: 0.8125rem;   /* 13 metric captions */
+
+  /* ============================================================
+     SEMANTIC TYPE ROLES (shorthand: weight size/line family)
+     ============================================================ */
+  --type-hero:    var(--w-extrabold) var(--fs-hero)/var(--lh-solid) var(--font-display);
+  --type-display: var(--w-bold)      var(--fs-display)/var(--lh-tight) var(--font-display);
+  --type-h1:      var(--w-bold)      var(--fs-h1)/var(--lh-tight) var(--font-display);
+  --type-h2:      var(--w-semibold)  var(--fs-h2)/var(--lh-snug) var(--font-display);
+  --type-h3:      var(--w-semibold)  var(--fs-h3)/var(--lh-snug) var(--font-display);
+  --type-metric:  var(--w-bold)      var(--fs-metric)/var(--lh-solid) var(--font-display);
+
+  --type-body-lg: var(--w-regular)   var(--fs-body-lg)/var(--lh-body) var(--font-text);
+  --type-body:    var(--w-regular)   var(--fs-body)/var(--lh-body) var(--font-text);
+  --type-body-sm: var(--w-regular)   var(--fs-body-sm)/var(--lh-body) var(--font-text);
+  --type-label:   var(--w-semibold)  var(--fs-label)/var(--lh-label) var(--font-text);
+  --type-tech:    var(--w-medium)    var(--fs-tech)/var(--lh-label) var(--font-text);
+}

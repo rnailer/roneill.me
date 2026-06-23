@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>333 Games Studio, Case Study</title>
+<!-- roneill.me Portfolio Design System, inlined so this deliverable is self-contained
+     and does not pollute the host project's design-system compile.
+     TBJ Ultra Centric webfont © Taboja Studio / YouWorkForThem, license must remain visible:
+     https://www.youworkforthem.com/font-license -->
+<style>
+  /* Inter, text/UI */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
+  /* TBJ Ultra Centric, display, self-hosted */
+  @font-face { font-family:'TBJ Ultra Centric'; src:url('ds/assets/fonts/tbj-ultra-centric-light.woff2') format('woff2'); font-weight:300; font-style:normal; font-display:swap; }
+  @font-face { font-family:'TBJ Ultra Centric'; src:url('ds/assets/fonts/tbj-ultra-centric-regular.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:'TBJ Ultra Centric'; src:url('ds/assets/fonts/tbj-ultra-centric-medium.woff2') format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
+  @font-face { font-family:'TBJ Ultra Centric'; src:url('ds/assets/fonts/tbj-ultra-centric-semibold.woff2') format('woff2'); font-weight:600; font-style:normal; font-display:swap; }
+  @font-face { font-family:'TBJ Ultra Centric'; src:url('ds/assets/fonts/tbj-ultra-centric-bold.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
+  @font-face { font-family:'TBJ Ultra Centric'; src:url('ds/assets/fonts/tbj-ultra-centric-extrabold.woff2') format('woff2'); font-weight:800; font-style:normal; font-display:swap; }
+  /* Reizar, 333 Games studio display face */
+  @font-face { font-family:'Reizar'; src:url('ds/assets/fonts/reisar-regular.woff2') format('woff2'), url('ds/assets/fonts/reisar-regular.woff') format('woff'); font-weight:400; font-style:normal; font-display:swap; }
+
+  :root {
+    --paper:#ECEAE4; --espresso:#1A1310; --orange:#EE5622;
+    --grey-600:#6B675F; --grey-400:#A8A39A; --grey-300:#CFCBC2;
+    --paper-bright:#F4F2EC; --paper-sunken:#E2DFD7;
+    --espresso-soft:#241A16; --espresso-deep:#120D0B;
+    --orange-press:#D6431A; --orange-tint:#F6C9B6;
+    --line-faint:rgba(26,19,16,0.10); --line:rgba(26,19,16,0.16); --line-strong:rgba(26,19,16,0.30);
+    --line-on-dark:rgba(236,234,228,0.14); --line-on-dark-strong:rgba(236,234,228,0.30);
+    --bg:var(--paper); --bg-elevated:var(--paper-bright); --bg-sunken:var(--paper-sunken); --bg-invert:var(--espresso);
+    --text:var(--espresso); --text-muted:var(--grey-600); --text-faint:var(--grey-400); --text-invert:var(--paper);
+    --accent:var(--orange); --accent-press:var(--orange-press); --link:var(--orange); --on-accent:var(--espresso);
+    --border:var(--line); --border-faint:var(--line-faint); --border-strong:var(--line-strong);
+    --field:var(--paper-bright); --field-border:var(--line-strong); --focus-ring:var(--orange);
+    --motif:var(--grey-400);
+    --font-display:'TBJ Ultra Centric', system-ui, sans-serif;
+    --font-text:'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+  [data-theme="blackout"] {
+    --bg:var(--espresso); --bg-elevated:var(--espresso-soft); --bg-sunken:var(--espresso-deep); --bg-invert:var(--paper);
+    --text:var(--paper); --text-muted:var(--grey-400); --text-faint:var(--grey-600); --text-invert:var(--espresso);
+    --accent:var(--orange); --accent-press:var(--orange-press); --link:var(--orange); --on-accent:var(--espresso);
+    --border:var(--line-on-dark); --border-faint:rgba(236,234,228,0.08); --border-strong:var(--line-on-dark-strong);
+    --field:var(--espresso-soft); --field-border:var(--line-on-dark-strong); --motif:rgba(236,234,228,0.22);
+  }
+  [data-theme="highvis"] {
+    --bg:var(--orange); --bg-elevated:#F2693A; --bg-sunken:var(--orange-press); --bg-invert:var(--espresso);
+    --text:var(--espresso); --text-muted:rgba(26,19,16,0.66); --text-faint:rgba(26,19,16,0.46); --text-invert:var(--paper);
+    --accent:var(--espresso); --accent-press:#000; --link:var(--espresso); --on-accent:var(--orange);
+    --border:rgba(26,19,16,0.26); --border-faint:rgba(26,19,16,0.14); --border-strong:rgba(26,19,16,0.5);
+    --field:var(--paper); --field-border:var(--espresso); --motif:rgba(26,19,16,0.3);
+  }
+  *, *::before, *::after { box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:var(--font-text);
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; text-rendering:optimizeLegibility; }
+  ::selection { background:var(--orange); color:var(--paper); }
+  a { color:var(--link); text-decoration:none; }
+  h1,h2,h3,h4 { font-family:var(--font-display); margin:0; }
+  img { max-width:100%; display:block; }
+  :focus-visible { outline:2px solid var(--focus-ring); outline-offset:3px; }
+  .motif { display:inline-block; background:currentColor; color:var(--motif);
+    -webkit-mask-image:var(--m); mask-image:var(--m);
+    -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+    -webkit-mask-position:center; mask-position:center;
+    -webkit-mask-size:contain; mask-size:contain; }
+</style>
+<style>
+  body { margin: 0; }
+  @keyframes cs-pulse { 0% { transform: scale(1); opacity: .55 } 70% { transform: scale(2.6); opacity: 0 } 100% { opacity: 0 } }
+  @media (prefers-reduced-motion: reduce){ .cs-dot span { animation: none !important } }
+  .logo-mark { filter: invert(1); }
+  /* responsive collapses */
+  @media (max-width: 880px){
+    .cs-doc { grid-template-columns: 1fr !important; }
+    .cs-rail { display: none !important; }
+    .cs-three, .cs-two, .cs-stats { grid-template-columns: 1fr !important; }
+    .cs-work { grid-template-columns: 1fr !important; }
+  }
+  html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+<div data-theme="blackout" data-screen-label="333 Games case study" style="background:var(--bg);color:var(--text);font-family:var(--font-text);-webkit-font-smoothing:antialiased;min-height:100vh">
+
+  <!-- header -->
+  <div style="position:sticky;top:0;z-index:40;background:color-mix(in srgb, var(--espresso) 82%, transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--border)">
+    <div style="max-width:1600px;margin:0 auto;padding:0 clamp(1.5rem,4vw,4rem);height:72px;display:flex;align-items:center;justify-content:space-between">
+      <a href="../../index.html" style="font-family:var(--font-display);font-weight:800;font-size:24px;letter-spacing:-0.05em;text-decoration:none;color:var(--paper)">ron</a>
+      <nav style="display:flex;align-items:center;gap:clamp(1rem,2.5vw,2rem)">
+        <a href="../../index.html#work" style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--paper);text-decoration:none">Work</a>
+        <a href="../../index.html#about" style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--paper);text-decoration:none">About</a>
+        <a href="#contact" style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--paper);text-decoration:none">Contact</a>
+        <a href="../../cv.html" style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--paper);text-decoration:none">CV</a>
+        <span class="cs-dot" style="display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:var(--paper);border:1px solid var(--border-strong);border-radius:999px;padding:6px 13px 6px 11px">
+          <span style="position:relative;width:8px;height:8px;border-radius:50%;background:var(--orange)"><span style="position:absolute;inset:0;border-radius:50%;background:var(--orange);animation:cs-pulse 1.9s cubic-bezier(0.22,1,0.36,1) infinite"></span></span>Available
+        </span>
+      </nav>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <header style="max-width:1600px;margin:0 auto;padding:clamp(2.5rem,5vw,4.5rem) clamp(1.5rem,4vw,4rem) clamp(1.5rem,3vw,2.5rem)">
+    <div style="font-family:ui-monospace,Menlo,monospace;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted)">Case study <b style="color:var(--orange);font-weight:600">[ 03 ]</b></div>
+    <div style="font-family:var(--font-display);font-weight:800;font-size:clamp(1.1rem,2vw,1.4rem);color:var(--orange);letter-spacing:0.04em;margin-top:0.4em">03</div>
+    <h1 style="font-family:var(--font-display);font-weight:800;font-size:clamp(2.6rem,6.4vw,5.5rem);line-height:0.98;letter-spacing:-0.03em;margin:0.35em 0 0;max-width:15ch;text-wrap:balance">An R&amp;D lab that ships games</h1>
+    <p style="font-size:1.1875rem;line-height:1.6;color:var(--text-muted);max-width:62ch;margin:clamp(1.4rem,3vw,2rem) 0 0;text-wrap:pretty">333 Games is an independent studio that exists for one reason: to keep my hands on the tools. It's where I build <strong style="color:var(--paper);font-weight:600">AI-made games and apps end to end</strong>, and test the newest AI workflows and stacks. The games are real and shipped. They're also the excuse.</p>
+    <dl style="display:flex;flex-wrap:wrap;gap:clamp(1.5rem,4vw,3.5rem);margin:clamp(1.8rem,4vw,2.6rem) 0 0">
+      <div><dt style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-faint)">Studio</dt><dd style="margin:6px 0 0;font-family:var(--font-display);font-weight:600;font-size:1.0625rem;letter-spacing:-0.01em;color:var(--paper)">333 Games · Treble Games Ltd</dd></div>
+      <div><dt style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-faint)">Founded</dt><dd style="margin:6px 0 0;font-family:var(--font-display);font-weight:600;font-size:1.0625rem;letter-spacing:-0.01em;color:var(--paper)">2026</dd></div>
+      <div><dt style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-faint)">Type</dt><dd style="margin:6px 0 0;font-family:var(--font-display);font-weight:600;font-size:1.0625rem;letter-spacing:-0.01em;color:var(--paper)">Independent studio · AI-built games &amp; apps</dd></div>
+      <div><dt style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-faint)">Role</dt><dd style="margin:6px 0 0;font-family:var(--font-display);font-weight:600;font-size:1.0625rem;letter-spacing:-0.01em;color:var(--paper)">Founder · Designer · Developer</dd></div>
+    </dl>
+
+    <!-- studio brand cover -->
+    <div style="position:relative;overflow:hidden;width:100%;height:clamp(340px,48vw,600px);margin-top:clamp(1.6rem,3.5vw,3rem);border:1px solid var(--border);border-radius:4px;background:var(--espresso-soft);display:flex;flex-direction:column;align-items:center;justify-content:center">
+      <img class="logo-mark" src="img/333Logo.svg" alt="333 Games studio mark" style="width:clamp(170px,22vw,300px);height:auto;position:relative">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0.35rem;margin-top:clamp(1.3rem,2.8vw,2rem)">
+        <span style="font-family:'Reizar',cursive;font-size:clamp(2.2rem,4.6vw,3.6rem);letter-spacing:0;line-height:1;color:var(--paper)">Games &amp; Apps</span>
+        <span style="font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-weight:500;font-size:clamp(1rem,1.7vw,1.35rem);letter-spacing:0.12em;text-transform:uppercase;line-height:1;color:#fff">AI built</span>
+      </div>
+      <span style="position:absolute;left:clamp(1.2rem,3vw,2rem);bottom:clamp(1rem,2.5vw,1.6rem);font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-faint)">// 333 Games, Treble Games Ltd</span>
+      <span style="position:absolute;right:clamp(1.2rem,3vw,2rem);bottom:clamp(1rem,2.5vw,1.6rem);font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:0.08em;text-transform:uppercase;color:var(--orange)">Est. 2026</span>
+    </div>
+  </header>
+
+  <!-- doc: rail + body -->
+  <div style="max-width:1600px;margin:0 auto;padding:0 clamp(1.5rem,4vw,4rem)">
+    <div class="cs-doc" style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:clamp(2rem,5vw,5rem);padding:clamp(2rem,4vw,3.5rem) 0 0">
+      <aside class="cs-rail" style="position:sticky;top:100px;align-self:start;height:max-content">
+        <div style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-faint);margin-bottom:0.8rem">Sections</div>
+        <ol style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px">
+          <li><a href="#c-why" style="display:block;padding:9px 0;font-size:0.9375rem;color:var(--text-faint);text-decoration:none;border-top:1px solid var(--border-faint)">Why</a></li>
+          <li><a href="#c-model" style="display:block;padding:9px 0;font-size:0.9375rem;color:var(--text-faint);text-decoration:none;border-top:1px solid var(--border-faint)">Operating model</a></li>
+          <li><a href="#c-work" style="display:block;padding:9px 0;font-size:0.9375rem;color:var(--text-faint);text-decoration:none;border-top:1px solid var(--border-faint)">The work</a></li>
+          <li><a href="#c-returns" style="display:block;padding:9px 0;font-size:0.9375rem;color:var(--text-faint);text-decoration:none;border-top:1px solid var(--border-faint)">What it returns</a></li>
+          <li><a href="#c-principles" style="display:block;padding:9px 0;font-size:0.9375rem;color:var(--text-faint);text-decoration:none;border-top:1px solid var(--border-faint)">Principles</a></li>
+          <li><a href="#c-reflection" style="display:block;padding:9px 0;font-size:0.9375rem;color:var(--text-faint);text-decoration:none;border-top:1px solid var(--border-faint)">Reflection</a></li>
+        </ol>
+      </aside>
+
+      <main>
+        <!-- WHY -->
+        <section id="c-why" style="padding:0 0 clamp(2.5rem,5vw,4.5rem)">
+          <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-muted)">01, Why</span><span style="flex:1;height:1px;background:var(--border)"></span></div>
+          <h2 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.7rem);line-height:1.05;letter-spacing:-0.025em;margin:0 0 0.8em;max-width:20ch;text-wrap:balance">I design for a living. I rarely get to build.</h2>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:0 0 1.1em;text-wrap:pretty">By day I'm a Principal Product Designer, good work, enormous surface, but a fixed shape: I own a slice of a large product, the cycles are long, and the newest tooling sits with other teams. I influence what gets built more than I build it.</p>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:0 0 1.1em;text-wrap:pretty">333 Games is the inverse, one person owning the whole pipeline: <strong style="color:var(--paper);font-weight:600">idea, design, code, ship</strong>. The constraint that makes it work is the same one that makes it interesting: there's no one else to hand the hard part to.</p>
+          <div style="border-left:2px solid var(--orange);padding:0.4rem 0 0.4rem 1.4rem;margin:1.8rem 0 0;max-width:62ch">
+            <span style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--orange)">The premise</span>
+            <p style="font-family:var(--font-display);font-weight:500;font-size:clamp(1.375rem,2vw,1.875rem);line-height:1.25;letter-spacing:-0.01em;color:var(--paper);margin:0.6em 0 0">If the newest AI tools really collapse the distance between designing a thing and shipping it, the fastest way to find out is to ship things.</p>
+          </div>
+        </section>
+
+        <!-- OPERATING MODEL -->
+        <section id="c-model" style="padding:clamp(2.5rem,5vw,4.5rem) 0;border-top:1px solid var(--border)">
+          <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-muted)">02, Operating model</span><span style="flex:1;height:1px;background:var(--border)"></span></div>
+          <h2 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.7rem);line-height:1.05;letter-spacing:-0.025em;margin:0 0 0.8em;max-width:24ch;text-wrap:balance">One person, an AI-paired pipeline, real products at the end</h2>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:0 0 1.1em;text-wrap:pretty">The studio runs on an AI-paired workflow, but not one undifferentiated "ask the AI" blob. Each surface does a distinct job:</p>
+          <div class="cs-two" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(0.9rem,2vw,1.4rem);margin-top:clamp(1.2rem,2.5vw,1.8rem)">
+            <div style="border:1px solid var(--border);border-radius:4px;padding:clamp(1.2rem,2.5vw,1.7rem)"><span style="font-family:ui-monospace,monospace;font-size:11px;color:var(--orange)">01 · PLAN</span><h3 style="font-family:var(--font-display);font-weight:600;font-size:1.1875rem;letter-spacing:-0.01em;margin:0.4em 0 0;color:var(--paper)">The thinking partner</h3><p style="font-size:0.9375rem;line-height:1.55;color:var(--text-muted);margin:0.5em 0 0">Claude.ai for data models, auth strategy, scoping, and the specs that decide what gets built before anything does.</p></div>
+            <div style="border:1px solid var(--border);border-radius:4px;padding:clamp(1.2rem,2.5vw,1.7rem)"><span style="font-family:ui-monospace,monospace;font-size:11px;color:var(--orange)">02 · BUILD</span><h3 style="font-family:var(--font-display);font-weight:600;font-size:1.1875rem;letter-spacing:-0.01em;margin:0.4em 0 0;color:var(--paper)">The build engine</h3><p style="font-size:0.9375rem;line-height:1.55;color:var(--text-muted);margin:0.5em 0 0">Claude Code in the terminal, writing and editing the codebase directly, running migrations, wiring the backend in long single sessions.</p></div>
+            <div style="border:1px solid var(--border);border-radius:4px;padding:clamp(1.2rem,2.5vw,1.7rem)"><span style="font-family:ui-monospace,monospace;font-size:11px;color:var(--orange)">03 · DESIGN</span><h3 style="font-family:var(--font-display);font-weight:600;font-size:1.1875rem;letter-spacing:-0.01em;margin:0.4em 0 0;color:var(--paper)">The canvas</h3><p style="font-size:0.9375rem;line-height:1.55;color:var(--text-muted);margin:0.5em 0 0">Claude Design for interface ideas tried and thrown away before they cost anything in code.</p></div>
+            <div style="border:1px solid var(--border);border-radius:4px;padding:clamp(1.2rem,2.5vw,1.7rem)"><span style="font-family:ui-monospace,monospace;font-size:11px;color:var(--orange)">04 · MEMORY</span><h3 style="font-family:var(--font-display);font-weight:600;font-size:1.1875rem;letter-spacing:-0.01em;margin:0.4em 0 0;color:var(--paper)">The project's memory</h3><p style="font-size:0.9375rem;line-height:1.55;color:var(--text-muted);margin:0.5em 0 0">Handover documents carry context between days and double as a reusable playbook across projects.</p></div>
+          </div>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:clamp(1.4rem,3vw,2rem) 0 0;text-wrap:pretty">The other half is discipline borrowed from real product work: spec before code, migrations verified before they ship, and a standing rule, <strong style="color:var(--paper);font-weight:600">products, not prototypes</strong>.</p>
+          <div style="border:1px solid var(--border);border-radius:4px;padding:clamp(1.4rem,3vw,2rem);margin:1.8rem 0 0;background:var(--bg-elevated)">
+            <div style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--orange);margin-bottom:0.9rem">The bet</div>
+            <p style="font-family:var(--font-display);font-weight:500;font-size:clamp(1.25rem,1.8vw,1.625rem);line-height:1.3;letter-spacing:-0.01em;color:var(--paper);margin:0;max-width:54ch">The bottleneck for a solo builder stops being capacity and becomes taste. AI handles the volume; the job left is deciding what's worth making and what to cut.</p>
+          </div>
+        </section>
+
+        <!-- THE WORK -->
+        <section id="c-work" style="padding:clamp(2.5rem,5vw,4.5rem) 0;border-top:1px solid var(--border)">
+          <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-muted)">03, The work</span><span style="flex:1;height:1px;background:var(--border)"></span></div>
+          <h2 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.7rem);line-height:1.05;letter-spacing:-0.025em;margin:0 0 0.8em;max-width:22ch;text-wrap:balance">Two products. Both real. Both shipped solo.</h2>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:0 0 clamp(1.8rem,4vw,2.6rem);text-wrap:pretty">The studio is judged on what comes out of it, not what it intends. Two products carry the thesis so far.</p>
+
+          <!-- 3 Letter Daily -->
+          <article class="cs-work" style="display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem);align-items:center;margin-bottom:clamp(2rem,4vw,3.2rem)">
+            <figure style="margin:0;order:0"><img src="img/og-3ld.png" alt="3 Letter Daily, small words, big stakes" style="width:100%;height:auto;border:1px solid var(--border);border-radius:4px"></figure>
+            <div>
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:0.7rem"><span style="font-family:ui-monospace,monospace;font-size:12px;color:var(--orange)">PRODUCT 01</span><span style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-faint);border:1px solid var(--border);border-radius:999px;padding:3px 10px">Live</span></div>
+              <h3 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.5rem,2.6vw,2.1rem);letter-spacing:-0.02em;margin:0 0 0.5em;color:var(--paper)">3 Letter Daily</h3>
+              <p style="font-size:1.0625rem;line-height:1.65;color:var(--text-muted);margin:0 0 1em;text-wrap:pretty">A daily three-letter word puzzle, designed, built and shipped solo over a single weekend. Live at 3letterdaily.com, soft-launched to friends and family.</p>
+              <p style="font-size:0.9375rem;line-height:1.6;color:var(--text-muted);margin:0;text-wrap:pretty">Server-side evaluation, anonymous-first auth, a curated word pipeline, a small game that exercised a full production stack and proved the weekend-to-live loop was real.</p>
+            </div>
+          </article>
+
+          <!-- Sonarchy -->
+          <article class="cs-work" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(1.5rem,4vw,3rem);align-items:center">
+            <div style="order:0">
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:0.7rem"><span style="font-family:ui-monospace,monospace;font-size:12px;color:var(--orange)">PRODUCT 02 · FLAGSHIP</span><span style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-faint);border:1px solid var(--border);border-radius:999px;padding:3px 10px">v2 in build</span></div>
+              <h3 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.5rem,2.6vw,2.1rem);letter-spacing:-0.02em;margin:0 0 0.5em;color:var(--paper)">Sonarchy</h3>
+              <p style="font-size:1.0625rem;line-height:1.65;color:var(--text-muted);margin:0 0 1em;text-wrap:pretty">A multiplayer music party game for the room: one phone plays through a speaker, everyone else picks and rates from their own. v1 is live; v2 is rebuilt spec-first, <strong style="color:var(--paper);font-weight:600">three weeks of zero code</strong> before the build, a direct correction to v1's discovery-debt.</p>
+              <p style="font-size:0.9375rem;line-height:1.6;color:var(--text-muted);margin:0;text-wrap:pretty">It's where the studio tests realtime multiplayer, the YouTube API, mobile-native wrapping and a design system from scratch. The customer is me and people like me, mid-forties hosts of small get-togethers. Not a venture-scale market, and that's deliberate.</p>
+            </div>
+            <figure style="margin:0;order:1"><img src="img/og-sonarchy.png" alt="Sonarchy, the music category game" style="width:100%;height:auto;border:1px solid var(--border);border-radius:4px"></figure>
+          </article>
+
+          <!-- stats -->
+          <div class="cs-stats" style="display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.5rem,4vw,3rem);margin-top:clamp(2.2rem,5vw,3.5rem);padding-top:clamp(1.8rem,4vw,2.6rem);border-top:1px solid var(--border)">
+            <div><div style="font-family:var(--font-display);font-weight:800;font-size:clamp(2.6rem,5.5vw,4.5rem);line-height:0.9;letter-spacing:-0.04em">2</div><div style="font-size:0.8125rem;line-height:1.45;color:var(--text-muted);margin-top:0.9em;max-width:24ch">Products shipped under the studio</div></div>
+            <div><div style="font-family:var(--font-display);font-weight:800;font-size:clamp(2.6rem,5.5vw,4.5rem);line-height:0.9;letter-spacing:-0.04em">1</div><div style="font-size:0.8125rem;line-height:1.45;color:var(--text-muted);margin-top:0.9em;max-width:24ch">Person, design, build and ship</div></div>
+            <div><div style="font-family:var(--font-display);font-weight:800;font-size:clamp(2.6rem,5.5vw,4.5rem);line-height:0.9;letter-spacing:-0.04em">100<span style="color:var(--orange)">%</span></div><div style="font-size:0.8125rem;line-height:1.45;color:var(--text-muted);margin-top:0.9em;max-width:24ch">Solo-built, end to end</div></div>
+          </div>
+        </section>
+
+        <!-- WHAT IT RETURNS -->
+        <section id="c-returns" style="padding:clamp(2.5rem,5vw,4.5rem) 0;border-top:1px solid var(--border)">
+          <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-muted)">04, What it returns</span><span style="flex:1;height:1px;background:var(--border)"></span></div>
+          <h2 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.7rem);line-height:1.05;letter-spacing:-0.025em;margin:0 0 0.8em;max-width:20ch;text-wrap:balance">The product is the capability</h2>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:0 0 1.1em;text-wrap:pretty">The games pay for themselves at best. The real return is the stack and the workflow I now have hands on.</p>
+          <div class="cs-two" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.4rem,3vw,2.5rem) clamp(2rem,4vw,4rem);margin:clamp(1.4rem,3vw,2rem) 0">
+            <div style="border-top:2px solid var(--paper);padding-top:1.1rem">
+              <h3 style="font-family:var(--font-display);font-weight:600;font-size:1.1875rem;letter-spacing:-0.01em;margin:0 0 0.6em;color:var(--paper)">The technical stack</h3>
+              <p style="font-size:0.9375rem;line-height:1.6;color:var(--text-muted);margin:0">A modern full-stack pipeline, Next.js, TypeScript, Supabase realtime and Postgres, server-side evaluation and auth owned end to end, third-party integration, mobile-native wrapping, and an AI-paired build process I can run at speed.</p>
+            </div>
+            <div style="border-top:2px solid var(--paper);padding-top:1.1rem">
+              <h3 style="font-family:var(--font-display);font-weight:600;font-size:1.1875rem;letter-spacing:-0.01em;margin:0 0 0.6em;color:var(--paper)">The product muscle</h3>
+              <p style="font-size:0.9375rem;line-height:1.6;color:var(--text-muted);margin:0">The less visible side: scoping a thing down to what ships, killing features that don't earn their place, holding a spec before writing code.</p>
+            </div>
+          </div>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:0;text-wrap:pretty">That loops back into the design work, a designer who has shipped the whole pipeline argues differently about what's feasible, what's cheap and what's worth the fight, <strong style="color:var(--paper);font-weight:600">because the ground under the opinion is real.</strong></p>
+        </section>
+
+        <!-- PRINCIPLES -->
+        <section id="c-principles" style="padding:clamp(2.5rem,5vw,4.5rem) 0;border-top:1px solid var(--border)">
+          <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-muted)">05, Principles</span><span style="flex:1;height:1px;background:var(--border)"></span></div>
+          <h2 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.7rem);line-height:1.05;letter-spacing:-0.025em;margin:0 0 0.8em;max-width:22ch;text-wrap:balance">The rules it runs on</h2>
+          <div class="cs-two" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.4rem,3vw,2.5rem) clamp(2rem,4vw,4rem);margin-top:0.4rem">
+            <div style="border-top:2px solid var(--paper);padding-top:1.1rem"><span style="font-family:ui-monospace,monospace;font-size:12px;color:var(--orange)">01</span><h3 style="font-family:var(--font-display);font-weight:600;font-size:1.1875rem;letter-spacing:-0.01em;margin:0.5em 0 0;color:var(--paper)">Ship real, not prototypes</h3><p style="font-size:0.9375rem;line-height:1.6;color:var(--text-muted);margin:0.6em 0 0">If it can't go live, it doesn't count.</p></div>
+            <div style="border-top:2px solid var(--paper);padding-top:1.1rem"><span style="font-family:ui-monospace,monospace;font-size:12px;color:var(--orange)">02</span><h3 style="font-family:var(--font-display);font-weight:600;font-size:1.1875rem;letter-spacing:-0.01em;margin:0.5em 0 0;color:var(--paper)">Spec before code</h3><p style="font-size:0.9375rem;line-height:1.6;color:var(--text-muted);margin:0.6em 0 0">Three weeks of no code on Sonarchy v2 is a feature.</p></div>
+            <div style="border-top:2px solid var(--paper);padding-top:1.1rem"><span style="font-family:ui-monospace,monospace;font-size:12px;color:var(--orange)">03</span><h3 style="font-family:var(--font-display);font-weight:600;font-size:1.1875rem;letter-spacing:-0.01em;margin:0.5em 0 0;color:var(--paper)">Honest scale</h3><p style="font-size:0.9375rem;line-height:1.6;color:var(--text-muted);margin:0.6em 0 0">A modest, well-understood audience beats an imaginary large one.</p></div>
+            <div style="border-top:2px solid var(--paper);padding-top:1.1rem"><span style="font-family:ui-monospace,monospace;font-size:12px;color:var(--orange)">04</span><h3 style="font-family:var(--font-display);font-weight:600;font-size:1.1875rem;letter-spacing:-0.01em;margin:0.5em 0 0;color:var(--paper)">Slow burn by design</h3><p style="font-size:0.9375rem;line-height:1.6;color:var(--text-muted);margin:0.6em 0 0">Funded by the day job, on no investor's clock, that pace is the point.</p></div>
+          </div>
+        </section>
+
+        <!-- REFLECTION -->
+        <section id="c-reflection" style="padding:clamp(2.5rem,5vw,4.5rem) 0;border-top:1px solid var(--border)">
+          <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-muted)">06, Reflection</span><span style="flex:1;height:1px;background:var(--border)"></span></div>
+          <h2 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.7rem);line-height:1.05;letter-spacing:-0.025em;margin:0 0 0.8em;max-width:24ch;text-wrap:balance">The output that matters isn't the games</h2>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:0 0 1.1em;text-wrap:pretty">333 Games started as a place to build what work doesn't let me build. It's become the thing that keeps my design practice honest, a standing reason to stay current with the tools instead of reading about them.</p>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:0 0 1.1em;text-wrap:pretty">Sonarchy v2 is the next real test: the first product specced under the studio's own discipline rather than discovered mid-build. Whether it finds an audience beyond my living room is open. Whether the studio is doing its job, keeping me building with current tools, on stacks I'd otherwise never touch, <strong style="color:var(--paper);font-weight:600">is already answered.</strong></p>
+          <div style="border-top:1px solid var(--border);margin-top:clamp(1.5rem,3vw,2.2rem);padding-top:clamp(1.4rem,3vw,2rem)">
+            <span style="font-family:ui-monospace,monospace;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--orange)">// Next</span>
+            <p style="font-family:var(--font-display);font-weight:600;font-size:clamp(1.5rem,2.6vw,2.1rem);letter-spacing:-0.02em;line-height:1.15;color:var(--paper);margin:0.5em 0 0;max-width:24ch">Whatever I can't build at work yet.</p>
+          </div>
+        </section>
+
+        <!-- next project -->
+        <div style="border-top:1px solid var(--border);margin-top:clamp(2rem,4vw,3rem)">
+          <a href="../sonarchy/Sonarchy Case Study.html" style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;text-decoration:none;padding:clamp(2rem,5vw,3.5rem) 0;flex-wrap:wrap">
+            <div><div style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-muted)">Next project</div><div style="font-family:var(--font-display);font-weight:700;font-size:clamp(2.25rem,4.6vw,4rem);letter-spacing:-0.025em;color:var(--paper);margin-top:0.3em">Sonarchy</div></div>
+            <span style="font-family:var(--font-display);font-size:clamp(1.75rem,3vw,2.75rem);color:var(--orange)">→</span>
+          </a>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- footer = contact band -->
+  <footer id="contact" data-theme="highvis" style="background:var(--orange);color:var(--espresso);padding:clamp(3rem,7vw,6rem) 0;position:relative;overflow:hidden">
+    <div style="max-width:1600px;margin:0 auto;padding:0 clamp(1.5rem,4vw,4rem)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:clamp(1.5rem,4vw,2.5rem)">
+        <span style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">// Let's build</span>
+      </div>
+      <a href="mailto:hi@roneill.me" style="display:block;text-decoration:none;font-family:var(--font-display);font-weight:800;font-size:clamp(2rem,9vw,8rem);line-height:0.9;letter-spacing:-0.05em;color:var(--espresso);text-transform:lowercase;text-wrap:balance">hi@roneill.me</a>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:clamp(1.5rem,3vw,2rem)">
+        <a href="https://linkedin.com/in/roneillme" style="font-family:var(--font-display);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:0.06em;color:var(--espresso);text-decoration:none;border-bottom:2px solid var(--espresso);padding-bottom:2px">LinkedIn →</a>
+        <a href="../../cv.html" style="font-family:var(--font-display);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:0.06em;color:var(--espresso);text-decoration:none;border-bottom:2px solid var(--espresso);padding-bottom:2px">Download CV →</a>
+      </div>
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:clamp(2.5rem,6vw,4rem);padding-top:2rem;border-top:2px solid var(--espresso)">
+        <span style="font-family:var(--font-display);font-weight:800;font-size:24px;letter-spacing:-0.05em">ron</span>
+        <span style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.06em">// Dublin // 2026</span>
+        <span style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.3em">+ + +</span>
+      </div>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

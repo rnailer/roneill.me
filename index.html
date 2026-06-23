@@ -1,0 +1,181 @@
+<!-- @dsCard group="Portfolio Site" viewport="1440x900" name="Home — V1 · Index (name + editorial list)" subtitle="Brutalist + UI frames + grain. Giant name hero, editorial numbered work list with framed preview." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Richard O'Neill — design engineer</title>
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="brutal.css">
+<style>
+  html{scroll-behavior:smooth} body{margin:0;background:var(--espresso)}
+  @keyframes ron-spin { to { transform: rotate(360deg) } }
+  @keyframes ron-cen-rot { from { transform: translate(-50%,-50%) rotate(0) } to { transform: translate(-50%,-50%) rotate(360deg) } }
+  .ron-spin{ transform-origin:50% 50%; animation: ron-spin 90s linear infinite }
+  .ron-cen{ position:absolute; top:50%; left:50%; transform-origin:50% 50%; animation: ron-cen-rot 64s linear infinite }
+  @media (prefers-reduced-motion: reduce){ .ron-spin,.ron-cen{ animation:none !important } .ron-cen{ transform:translate(-50%,-50%) } }
+  @media (max-width: 700px){ .ron-mark{ position:relative !important; inset:auto !important; transform:none !important; margin:1rem auto; width:min(70vw,440px) !important; max-width:none !important } }
+  @media (max-width: 820px){ .about-grid{ grid-template-columns:1fr !important } }
+</style>
+</head>
+<body data-theme="blackout">
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="content.js"></script>
+<script src="image-slot.js"></script>
+<script type="text/babel" src="atoms.jsx"></script>
+<script type="text/babel" src="brutal.jsx"></script>
+<script type="text/babel">
+const { Tag, MetricStat } = window.RonUI;
+const { FR, FR2, EDGE, DISP, SHAPE, Reg, ShapeChip, FramedShape, Corners, Handles, TopBar, Capabilities, Catalog, About, Contact, accentLast, LaySwitch } = window.RonBrutal;
+const RC = window.RON_CONTENT;
+const { useState } = React;
+
+function OrbitMark(){
+  const symbols = ['orbit','sphere','starburst','compass'];
+  const [idx,setIdx] = useState(0);
+  React.useEffect(()=>{ const t=setInterval(()=>setIdx(v=>(v+1)%symbols.length), 4200); return ()=>clearInterval(t); }, []);
+  const ring = "PRODUCT DESIGN · BUILDING WITH AI · DATA VISUALISATION · DESIGN SYSTEMS · RAPID PROTOTYPING · ";
+  return (
+    <div className="ron-mark" style={{ position:'absolute', right:'3%', top:'40%', transform:'translateY(-50%)', width:'min(58vh,560px)', maxWidth:'46vw', aspectRatio:'1', zIndex:1 }}>
+      <svg viewBox="0 0 400 400" className="ron-spin" style={{ position:'absolute', inset:0, width:'100%', height:'100%' }}>
+        <defs><path id="ringT" d="M44,200 a156,156 0 1,1 312,0 a156,156 0 1,1 -312,0" fill="none"/></defs>
+        <text fontFamily="var(--font-display)" fontSize="12.5" fontWeight="700" fill="rgba(255,255,255,0.92)">
+          <textPath href="#ringT" startOffset="0" textLength="968" lengthAdjust="spacing">{ring}</textPath>
+        </text>
+      </svg>
+      {symbols.map((s,i)=>(
+        <img key={s} src={`../../assets/motifs/${s}.svg`} alt="" aria-hidden="true" className="ron-cen"
+          style={{ width:'92%', height:'92%', filter:'invert(1)', opacity: i===idx?0.95:0, transition:'opacity 1300ms ease' }}/>
+      ))}
+    </div>
+  );
+}
+
+function Hero(){
+  const ink = 'rgba(26,19,16,0.55)';
+  return (
+    <header style={{ position:'relative', background:'var(--orange)', minHeight:'calc(100vh - var(--nav-h))', padding:`clamp(2rem,4vw,3.5rem) ${EDGE} clamp(2.5rem,5vw,4rem)`, overflow:'hidden', display:'flex', flexDirection:'column' }}>
+      <div className="grain" style={{ zIndex:0, mixBlendMode:'multiply', opacity:0.5 }}/>
+      <Reg style={{ top:18, left:18, zIndex:3 }} c={'rgba(26,19,16,0.4)'} /><Reg style={{ top:18, right:18, zIndex:3 }} c={'rgba(26,19,16,0.4)'} />
+      <div style={{ position:'relative', zIndex:3, display:'flex', justifyContent:'space-between', flexWrap:'wrap', gap:14 }}>
+        <span className="cap" style={{ fontSize:11, color:ink, letterSpacing:'0.1em' }}>[ product designer // building with ai ]</span>
+        <span className="cap" style={{ fontSize:11, color:ink }}>{RC.coords}</span>
+      </div>
+      <OrbitMark/>
+      <div style={{ marginTop:'auto', textAlign:'left', position:'relative', zIndex:4, width:'100%' }}>
+        <h1 className="disp" style={{ fontWeight:800, fontSize:'clamp(3rem,11vw,11rem)', lineHeight:0.82, letterSpacing:'-0.05em', color:'var(--paper)', margin:0, textTransform:'lowercase' }}>
+          richard<br/>o'neill
+        </h1>
+        <p style={{ fontFamily:'var(--font-text)', fontSize:'var(--fs-body-lg)', lineHeight:'var(--lh-body)', color:'rgba(236,234,228,0.9)', maxWidth:'42ch', margin:'clamp(1rem,2vw,1.5rem) 0 0' }}>{RC.positioning}</p>
+      </div>
+    </header>
+  );
+}
+
+function DeviceFrame({ shot }){
+  const stroke = 'rgba(236,234,228,0.5)';
+  const strokeSoft = 'rgba(236,234,228,0.3)';
+  if (!shot) return null;
+  if (shot.kind === 'mark'){
+    return (
+      <div style={{ width: shot.big ? '88%' : '62%', height: shot.big ? '72%' : '46%', display:'grid', placeItems:'center', position:'relative', zIndex:2 }}>
+        <img src={shot.src} alt="" style={{ maxWidth:'100%', maxHeight:'100%', objectFit:'contain', filter: shot.invert ? 'invert(1)' : 'none', display:'block' }} />
+      </div>
+    );
+  }
+  if (shot.kind === 'phone'){
+    return (
+      <div style={{ height:'84%', aspectRatio:'0.46', position:'relative', border:`1.5px solid ${stroke}`, borderRadius:22, padding:5, background:'#0b0b0b', boxShadow:'0 16px 34px rgba(0,0,0,0.5)' }}>
+        <span style={{ position:'absolute', top:9, left:'50%', transform:'translateX(-50%)', width:'28%', height:4, borderRadius:3, background:strokeSoft, zIndex:2 }} />
+        <img src={shot.src} alt="" style={{ width:'100%', height:'100%', objectFit:'cover', borderRadius:17, display:'block' }} />
+      </div>
+    );
+  }
+  // browser
+  return (
+    <div style={{ width:'90%', aspectRatio:'1.36', display:'flex', flexDirection:'column', border:`1.5px solid ${stroke}`, borderRadius:9, overflow:'hidden', background:'#131313', boxShadow:'0 16px 34px rgba(0,0,0,0.5)' }}>
+      <div style={{ height:28, flex:'none', borderBottom:`1px solid ${strokeSoft}`, display:'flex', alignItems:'center', gap:7, padding:'0 11px' }}>
+        {[0,1,2].map(i=> <span key={i} style={{ width:7, height:7, borderRadius:'50%', border:`1px solid ${stroke}` }} />)}
+        <span style={{ marginLeft:8, height:7, flex:1, maxWidth:'60%', borderRadius:4, border:`1px solid ${strokeSoft}` }} />
+      </div>
+      <div style={{ flex:1, minHeight:0, display:'grid', placeItems:'center', padding: shot.pad ? '15% 20%' : 0 }}>
+        {shot.slot
+          ? <image-slot id={shot.slot} shape="rect" placeholder="Drop Fidelity logo" style={{ width:'100%', height:'100%' }} />
+          : <img src={shot.src} alt="" style={{ maxWidth:'100%', maxHeight:'100%', objectFit:'contain', filter: shot.invert ? 'invert(1)' : 'none', display:'block' }} />
+        }
+      </div>
+    </div>
+  );
+}
+
+function ProjectPreview({ e }){
+  return (
+    <a href={e.href || undefined} style={{ display:'block', textDecoration:'none' }}>
+      <div className="checker halftone" style={{ position:'relative', overflow:'hidden', aspectRatio:'4/5', border:`1px solid ${FR}`, display:'grid', placeItems:'center' }}>
+        <span className="disp" style={{ position:'absolute', left:18, top:14, fontWeight:800, fontSize:'clamp(2.5rem,5vw,4rem)', lineHeight:0.8, letterSpacing:'-0.04em', color:'var(--orange)', zIndex:3 }}>{e.index}</span>
+        <DeviceFrame shot={e.shot} />
+        <Handles />
+        <Corners c={FR2} inset={9} />
+        <span className="cap" style={{ position:'absolute', left:18, bottom:16, fontSize:11, color:'var(--grey-400)', letterSpacing:'0.06em', zIndex:3 }}>{e.cover} // {e.href ? 'view case study →' : 'gated PDF'}</span>
+      </div>
+    </a>
+  );
+}
+
+function Work(){
+  const [active,setActive] = useState(0);
+  const e = RC.work[active];
+  return (
+    <section id="work" style={{ padding:`clamp(2.5rem,5vw,4rem) ${EDGE} clamp(3rem,6vw,5rem)`, borderTop:`1px solid ${FR}` }}>
+      <div style={{ display:'flex', alignItems:'baseline', gap:14, marginBottom:'clamp(1.5rem,4vw,3rem)' }}>
+        <span className="cap" style={{ fontSize:12, color:'var(--orange)' }}>(01)</span>
+        <span className="cap" style={{ fontSize:12, color:'var(--grey-400)', letterSpacing:'0.08em' }}>Selected work</span>
+        <span style={{ flex:1, height:1, background:FR }} />
+        <span className="cap" style={{ fontSize:11, color:FR2 }}>{String(RC.work.length).padStart(2,'0')} / projects</span>
+      </div>
+      <div style={{ display:'grid', gridTemplateColumns:'minmax(0,1.25fr) minmax(0,0.75fr)', gap:'clamp(1.5rem,5vw,4.5rem)', alignItems:'start' }}>
+        <div>
+          {RC.work.map((w,i)=>{
+            const on = active===i;
+            return (
+              <a key={w.index} href={w.href || '#'} onMouseEnter={()=>setActive(i)}
+                style={{ display:'block', textDecoration:'none', padding:'clamp(1.5rem,3vw,2.25rem) 0', borderTop:`1px solid ${FR}` }}>
+                <div style={{ display:'flex', alignItems:'baseline', gap:14, marginBottom:12 }}>
+                  <span className="disp" style={{ fontWeight:800, fontSize:'clamp(1.1rem,1.8vw,1.5rem)', color:'var(--orange)' }}>{w.index}</span>
+                  <span className="cap" style={{ fontSize:11, color:FR2, letterSpacing:'0.08em' }}>— {w.client} // {w.year}</span>
+                  <span className="cap" style={{ marginLeft:'auto', fontSize:10, color:on?'var(--orange)':FR2, letterSpacing:'0.06em' }}>{w.link.gated ? 'Gated PDF' : 'Case study'}</span>
+                  <span style={{ color:'var(--orange)', fontWeight:700, opacity:on?1:0, transform:on?'translateX(0)':'translateX(-8px)', transition:'all var(--dur) var(--ease-out)' }}>→</span>
+                </div>
+                <h2 className="disp" style={{ fontWeight:on?700:600, fontSize:'clamp(1.6rem,3.6vw,3rem)', lineHeight:0.98, letterSpacing:'-0.035em', color:on?'var(--paper)':'var(--grey-600)', margin:0, textTransform:'lowercase', maxWidth:'18ch', transition:'color var(--dur) var(--ease-out)' }}>{accentLast(w.headline)}</h2>
+                <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginTop:16 }}>{w.tags.map(t=> <Tag key={t}>{t}</Tag>)}</div>
+              </a>
+            );
+          })}
+          <div style={{ borderTop:`1px solid ${FR}` }} />
+        </div>
+        <div style={{ position:'sticky', top:'calc(var(--nav-h) + 24px)' }}>
+          <ProjectPreview e={e} />
+          <div style={{ display:'flex', gap:'clamp(1.5rem,3vw,2.5rem)', marginTop:'var(--space-5)' }}>
+            {e.metrics.map((m,k)=> <MetricStat key={k} value={m.value} unit={m.unit} caption={m.caption} size="md" />)}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function App(){
+  return (
+    <div style={{ background:'var(--espresso)', color:'var(--paper)', position:'relative' }}>
+      <div className="grain fixed" />
+      <TopBar/><Hero/><Work/><Catalog/><About/><Contact index="05"/>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

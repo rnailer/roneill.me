@@ -1,0 +1,44 @@
+/* ============================================================
+   brutal.css — shared styling for the brutalist portfolio
+   directions (index.html · home-reel.html · home-ledger.html).
+   Linked alongside ../../styles.css.
+   ============================================================ */
+
+@keyframes ron-badge-pulse { 0% { transform: scale(1); opacity:.55 } 70% { transform: scale(2.6); opacity:0 } 100% { opacity:0 } }
+
+/* layout switcher */
+.lay { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 200;
+  display: flex; gap: 2px; padding: 4px; background: rgba(18,13,11,0.82);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(236,234,228,0.16); border-radius: 999px; }
+.lay a { font-family: var(--font-text); font-size: 12px; font-weight: 600; color: var(--paper);
+  text-decoration: none; padding: 6px 12px; border-radius: 999px; white-space: nowrap; }
+.lay a.on { background: var(--orange); color: var(--espresso); }
+.lay a.alt { color: var(--grey-400); }
+
+/* display / caps helpers */
+.disp { font-family: var(--font-display); font-feature-settings: "liga" 1, "dlig" 1; }
+.cap { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* checkerboard transparency grid (dark) */
+.checker { background-color:#1b1410; background-image:
+    linear-gradient(45deg,#110c0a 25%,transparent 25%,transparent 75%,#110c0a 75%),
+    linear-gradient(45deg,#110c0a 25%,transparent 25%,transparent 75%,#110c0a 75%);
+  background-position:0 0,11px 11px; background-size:22px 22px; }
+
+/* halftone dot overlay (subtle, for framed shapes) */
+.halftone::after { content:""; position:absolute; inset:0; pointer-events:none;
+  background-image: radial-gradient(rgba(236,234,228,0.10) 0.8px, transparent 0.9px);
+  background-size: 6px 6px; mix-blend-mode: screen; }
+
+/* film-grain texture overlay — drop <div class="grain"></div> in a section */
+.grain { position:absolute; inset:0; pointer-events:none; z-index:3;
+  background-image: url(../../assets/textures/grain.png); background-size: 320px 320px;
+  opacity: 0.55; mix-blend-mode: soft-light; }
+.grain.fixed { position:fixed; opacity:0.4; }
+
+/* horizontal scroll rail */
+.hscroll { display:flex; gap: clamp(0.75rem,1.5vw,1.25rem); overflow-x:auto; scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch; scrollbar-width:none; padding-bottom: 4px; }
+.hscroll::-webkit-scrollbar { display:none; }
+.hscroll > * { scroll-snap-align:start; flex:0 0 auto; }

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="blackout">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sonarchy · A music party game that runs on one phone, roneill.me</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="case.css">
+<style>
+  /* page-local: round-loop flow + production-slot markers (on-system) */
+  .flow { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin: 1.6rem 0 0;
+    border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--border); }
+  .flow .step { background: var(--bg); padding: clamp(1.1rem, 2.4vw, 1.5rem); display: flex; gap: 14px; }
+  .flow .step .sn { font-family: ui-monospace, monospace; font-size: 12px; color: var(--orange); flex: none; padding-top: 3px; }
+  .flow .step h4 { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body); letter-spacing: -0.01em; margin: 0; color: var(--paper); }
+  .flow .step p { font-size: var(--fs-body-sm); line-height: 1.5; color: var(--text-muted); margin: 0.35em 0 0; text-wrap: pretty; }
+  .slot { font-family: ui-monospace, monospace; font-size: 0.84em; color: var(--orange);
+    background: color-mix(in srgb, var(--orange) 12%, transparent);
+    border: 1px dashed color-mix(in srgb, var(--orange) 45%, transparent); border-radius: 3px; padding: 1px 7px; }
+  .statline { font: var(--type-label); text-transform: uppercase; letter-spacing: var(--track-label);
+    color: var(--text-faint); margin: clamp(2rem,4vw,3rem) 0 1.4rem; }
+  @media (max-width: 920px){ .flow { grid-template-columns: 1fr; } }
+
+  /* real device shots, phone artboards on dark SMPTE stage */
+  .shot { position: relative; display: block; background: #070707; border: 1px solid var(--border-strong);
+    border-radius: 16px; overflow: hidden; box-shadow: 0 16px 44px rgba(0,0,0,.5); }
+  .shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .gallery figure .shot { aspect-ratio: 247 / 536; }
+  .stage { background: #070707; border: 1px solid var(--border); border-radius: var(--radius);
+    padding: clamp(1.4rem, 3.2vw, 2.8rem); overflow: hidden; }
+  .stage .sh { font: var(--type-label); text-transform: uppercase; letter-spacing: var(--track-label);
+    color: var(--text-faint); margin-bottom: clamp(1.2rem, 2.6vw, 1.8rem); }
+  .devrow { display: flex; gap: clamp(0.7rem, 1.8vw, 1.5rem); justify-content: center; align-items: flex-start; flex-wrap: wrap; }
+  .devrow .dev { flex: 0 0 auto; width: clamp(140px, 20vw, 228px); }
+  .devrow .dev .shot { aspect-ratio: 247 / 536; }
+  .devrow .dev figcaption { font-size: var(--fs-caption); color: var(--text-muted); margin-top: 0.7em; text-align: center; line-height: 1.4; }
+  .coverstage { margin-top: clamp(1.6rem, 3.5vw, 3rem); }
+</style>
+</head>
+<body>
+  <div class="bar"><div class="wrap bar-in">
+    <a href="../../index.html" class="mark">ron</a>
+    <nav class="topnav">
+      <a href="../../index.html#work" class="nav-link">Work</a>
+      <a href="../../index.html#about" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact</a>
+      <a href="../../cv.html" class="nav-link">CV</a>
+      <span class="avail"><span class="dot"></span>Available</span>
+    </nav>
+  </div></div>
+
+  <header class="hero"><div class="wrap">
+    <div class="kicker">Case study <b>[ 04 ]</b> · the full story</div>
+    <div class="num-big">04</div>
+    <h1>Designing a music party game that runs on <span class="o">one phone</span></h1>
+    <p class="summary"><strong>Sonarchy</strong> is a mobile music party game. One person hosts on their phone, plays a song through the room's speaker, and everyone else races to guess it, then rates it out of ten. Two cassette-tape mascots, <strong>Casey and Walker</strong>, run the show. A game about taste, played out loud, on the one device everyone's already holding.</p>
+    <dl class="meta">
+      <div><dt>Studio</dt><dd>Treble Studio</dd></div>
+      <div><dt>Year</dt><dd>2026 — Now</dd></div>
+      <div><dt>Type</dt><dd>Mobile game · Multiplayer</dd></div>
+      <div><dt>Role</dt><dd>Founder · Designer · Developer</dd></div>
+    </dl>
+    <div class="stage coverstage">
+      <div class="devrow">
+        <figure class="dev"><div class="shot"><img src="assets/shots/casey.png" alt="Category reveal, Casey"></div><figcaption>Category reveal</figcaption></figure>
+        <figure class="dev"><div class="shot"><img src="assets/shots/nowplaying.png" alt="Now playing, guess the song"></div><figcaption>Now playing · guess</figcaption></figure>
+        <figure class="dev"><div class="shot"><img src="assets/shots/rating.png" alt="Rate the fit slider"></div><figcaption>Rate the fit</figcaption></figure>
+        <figure class="dev"><div class="shot"><img src="assets/shots/leaderboard.png" alt="Finish-line standings"></div><figcaption>Finish line</figcaption></figure>
+      </div>
+    </div>
+  </div></header>
+
+  <div class="wrap"><div class="doc">
+    <aside class="rail"><nav>
+      <div class="rh">Sections</div>
+      <ol>
+        <li><a href="#c1"><span class="mono">01</span> Origin</a></li>
+        <li><a href="#c2"><span class="mono">02</span> Problem</a></li>
+        <li><a href="#c3"><span class="mono">03</span> Approach</a></li>
+        <li><a href="#c4"><span class="mono">04</span> Design</a></li>
+        <li><a href="#c5"><span class="mono">05</span> Build</a></li>
+        <li><a href="#c6"><span class="mono">06</span> Decisions</a></li>
+        <li><a href="#c7"><span class="mono">07</span> Reflection</a></li>
+      </ol>
+    </nav></aside>
+
+    <main>
+      <section class="chapter" id="c1">
+        <div class="chx"><span class="n">01</span><span class="l">Origin</span><span class="r"></span></div>
+        <h2>It worked in the room, then showed its seams</h2>
+        <div class="prose">
+          <p>Sonarchy started <span class="slot">ORIGIN, the human spark: where the idea landed, the moment "rate each other's songs" turned into a game</span>. v1 was rough on purpose, just enough to put real phones in real hands and watch a room play.</p>
+          <p>It worked: people got loud, argued over scores, queued the next track before the last finished. The core was right. But the seams showed, the host fumbled between playing music and driving the game, ratings were fiddly, and the best moment in the room, the score reveal, passed too quietly to land.</p>
+        </div>
+        <div class="pull">
+          <span class="k">The call</span>
+          <p>v1 proved the game, but the build couldn't carry it. Keep the idea, throw away the code, rebuild spec-first.</p>
+        </div>
+        <div class="stage" style="margin:clamp(1.8rem,4vw,2.6rem) 0 0">
+          <div class="sh">v2, the rebuild that came out of v1</div>
+          <div class="devrow">
+            <figure class="dev"><div class="shot"><img src="assets/shots/home.png" alt="Sonarchy home screen"></div><figcaption>Home, wordmark, mascots, NEW / JOIN</figcaption></figure>
+            <figure class="dev"><div class="shot"><img src="assets/shots/whoseturn.png" alt="Whose-turn beat"></div><figcaption>The whose-turn beat before each pick</figcaption></figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="c2">
+        <div class="chx"><span class="n">02</span><span class="l">Problem</span><span class="r"></span></div>
+        <h2>One phone has to be the whole arcade</h2>
+        <div class="prose">
+          <p>What makes Sonarchy work is also what makes it hard: it all happens on one phone. The host's phone is the <strong>jukebox, the screen, the referee and the source of truth</strong>, at once, in a noisy room, over a Bluetooth speaker.</p>
+          <p>That sets hard limits I don't control: the phone plays the audio, so it can't hide the song from whoever's holding it; it streams from YouTube, so their rules decide what's allowed; it pipes sound over Bluetooth, so latency is a fact, not a bug.</p>
+          <p><em>How do you build a fair, loud, fast party game when one device does everything, and half the constraints aren't yours to change?</em></p>
+        </div>
+        <div class="viz">
+          <div class="vh">What one phone has to do, load &amp; difficulty (illustrative)</div>
+          <div class="bars">
+            <div class="bar-row"><span class="bl">Play the music</span><span class="bar-track"><span class="bar-fill" style="width:90%"></span></span><span class="bv">High</span></div>
+            <div class="bar-row"><span class="bl">Run the game</span><span class="bar-track"><span class="bar-fill" style="width:84%"></span></span><span class="bv">High</span></div>
+            <div class="bar-row"><span class="bl">Stay fair</span><span class="bar-track"><span class="bar-fill hot" style="width:40%"></span></span><span class="bv">Hard</span></div>
+          </div>
+          <p class="note">Three jobs, one device, and the hardest isn't a feature, it's keeping the game <strong>fair</strong> when the host is holding the answer.</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="c3">
+        <div class="chx"><span class="n">03</span><span class="l">Approach</span><span class="r"></span></div>
+        <h2>Compliance first, physics second, fairness third</h2>
+        <div class="prose">
+          <p>Rather than design the game and bolt the constraints on after, I ordered them, and let the order drive every later decision.</p>
+          <p>YouTube's terms come first, breaking them ends the product, not just a feature. Audio and Bluetooth physics come next, no clever mechanic survives half a second of speaker lag. Fairness comes third, not because it matters least, but because it's the one I fully control, so it bends to fit the other two.</p>
+        </div>
+        <div class="pull">
+          <span class="k">The principle</span>
+          <p>Design the party around the phone's limits instead of fighting them.</p>
+        </div>
+        <div class="three">
+          <div><span class="top">01</span><h3>YouTube compliance</h3><p>Search, playback and quota all run inside YouTube's terms. A cached search layer keeps usage low; nothing reaches the room that shouldn't.</p></div>
+          <div><span class="top">02</span><h3>Audio &amp; Bluetooth physics</h3><p>The host phone is the audio source. Timing is anchored to the device, not a server clock, so the speaker and the screen stay in sync even when the network drifts.</p></div>
+          <div><span class="top">03</span><h3>Fairness</h3><p>The host sees the title, so the host never guesses. Scoring and reveals are built so the game can't be quietly gamed.</p></div>
+        </div>
+      </section>
+
+      <section class="chapter" id="c4">
+        <div class="chx"><span class="n">04</span><span class="l">Design</span><span class="r"></span></div>
+        <h2>Casey and Walker run the room</h2>
+        <div class="prose">
+          <p>A party game needs a host. Sonarchy has two. <strong>Casey</strong> is a pink cassette, scrappy, picks fights. <strong>Walker</strong> is a green walkman, drier, the straight man. They open each round, narrate the guesses, and reveal who rated what.</p>
+          <p>They speak in two words, always, in caps, <strong>ENORMOUS BETRAYAL</strong>, <strong>BOLD CHOICE</strong>, which keeps them fast, quotable and readable across a loud room. The round, in six beats:</p>
+        </div>
+
+        <div class="flow">
+          <div class="step"><span class="sn">01</span><div><h4>Pick a category</h4><p>Casey and Walker tee up the round.</p></div></div>
+          <div class="step"><span class="sn">02</span><div><h4>A song plays</h4><p>Through the speaker, host phone driving it.</p></div></div>
+          <div class="step"><span class="sn">03</span><div><h4>Guess it</h4><p>Everyone but the host races to name the track.</p></div></div>
+          <div class="step"><span class="sn">04</span><div><h4>Rate it</h4><p>One to ten, on a slider built for thumbs, not a ranked list.</p></div></div>
+          <div class="step"><span class="sn">05</span><div><h4>The reveal</h4><p>Scores come back <em>attributed</em>, character by character. The loudest beat in the game.</p></div></div>
+          <div class="step"><span class="sn">06</span><div><h4>The leaderboard</h4><p>A running timeline told through the characters, not a spreadsheet.</p></div></div>
+        </div>
+
+        <div class="prose" style="margin-top:clamp(1.8rem,4vw,2.6rem)">
+          <p>The big redesign from v1 lives here: ranking became a <strong>1–10 slider</strong> (richer signal, one-thumb easy); a <strong>guess phase</strong> now sits before the rating reveal, so the room commits before it judges; and the reveal went from a quiet number to a <strong>hosted, attributed moment</strong>, the thing the whole round builds toward.</p>
+        </div>
+
+        <div class="gallery" style="margin-top:clamp(1.8rem,4vw,2.6rem)">
+          <figure><div class="shot"><img src="assets/shots/lobby.png" alt="Host lobby"></div><figcaption>Lobby, room code, QR, six player slots</figcaption></figure>
+          <figure><div class="shot"><img src="assets/shots/category.png" alt="Category picker"></div><figcaption>Category, Casey &amp; Walker tee up the round</figcaption></figure>
+          <figure><div class="shot"><img src="assets/shots/nowplaying.png" alt="Now-playing, guess the song"></div><figcaption>Now-playing, race to name the track</figcaption></figure>
+          <figure><div class="shot"><img src="assets/shots/rating.png" alt="Rating slider"></div><figcaption>Rating, one-to-ten, built for thumbs</figcaption></figure>
+          <figure><div class="shot"><img src="assets/shots/reveal.png" alt="Attributed rate reveal"></div><figcaption>Reveal, scores attributed, character by character</figcaption></figure>
+          <figure><div class="shot"><img src="assets/shots/songreveal.png" alt="Song reveal"></div><figcaption>Song reveal, the winning guess, named</figcaption></figure>
+        </div>
+
+        <div class="stage" style="margin-top:clamp(1.4rem,3vw,2rem)">
+          <div class="sh">The show, six characters run every beat</div>
+          <div class="devrow">
+            <figure class="dev"><div class="shot"><img src="assets/shots/casey.png" alt="Casey calls the category"></div><figcaption>Casey calls the category, two words, in caps</figcaption></figure>
+            <figure class="dev"><div class="shot"><img src="assets/shots/celebration.png" alt="First correct guess celebration"></div><figcaption>First correct guess, the room reacts</figcaption></figure>
+            <figure class="dev"><div class="shot"><img src="assets/shots/cast.png" alt="All six characters, final standings"></div><figcaption>All six, the full cast on final standings</figcaption></figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="c5">
+        <div class="chx"><span class="n">05</span><span class="l">Build</span><span class="r"></span></div>
+        <h2>A production backend for a party trick</h2>
+        <div class="prose">
+          <p>Under the hood it's a <strong>state machine</strong>, lobby → category → play → guess → rate → reveal → leaderboard, driven by Supabase Realtime, so every phone in the room turns over together. Clients read only; every write runs through a <strong>locked server function</strong>, so scores and the answer can't be lifted from a phone or faked from the network tab. Integrity lives in the architecture, not in hope.</p>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:var(--radius);padding:clamp(1.1rem,2.4vw,1.5rem) clamp(1.2rem,2.6vw,1.7rem);margin-top:clamp(1.6rem,3.5vw,2.4rem);display:flex;flex-wrap:wrap;align-items:baseline;gap:0.55rem 1.1rem">
+          <span style="font-family:ui-monospace,monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--orange)">Stack</span>
+          <span style="font-size:var(--fs-body-sm);line-height:1.7;color:var(--text-muted)">React + Vite + TypeScript <span style="color:var(--text-faint)">(mobile-first)</span> · Supabase Realtime <span style="color:var(--text-faint)">(phase state machine)</span> · pure-RPC writes <span style="color:var(--text-faint)">(clients read-only)</span> · YouTube IFrame + two-tier cache <span style="color:var(--text-faint)">(quota-safe playback)</span></span>
+        </div>
+        <div class="stage" style="margin:clamp(1.8rem,4vw,2.6rem) 0 0">
+          <div class="sh">Three live screens from the v2 client, one shared system</div>
+          <div class="devrow">
+            <figure class="dev"><div class="shot"><img src="assets/shots/nowplaying.png" alt="Now-playing host controls"></div><figcaption>Now-playing · host controls</figcaption></figure>
+            <figure class="dev"><div class="shot"><img src="assets/shots/songreveal.png" alt="Song reveal"></div><figcaption>Song reveal</figcaption></figure>
+            <figure class="dev"><div class="shot"><img src="assets/shots/leaderboard.png" alt="Finish-line standings"></div><figcaption>Finish-line standings</figcaption></figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="c6">
+        <div class="chx"><span class="n">06</span><span class="l">Decisions</span><span class="r"></span></div>
+        <h2>The non-obvious calls</h2>
+        <div class="decisions">
+          <div class="decision"><span class="n">01</span><h3>The host never guesses</h3><p>The host's phone plays the audio, so it sees the title. Fairness falls out of who's holding the jukebox, not a rule bolted on.</p></div>
+          <div class="decision"><span class="n">02</span><h3>A slider, not a ranking</h3><p>One to ten reads instantly and moves with one thumb. Ranking everyone's songs was precise, and nobody enjoyed it.</p></div>
+        </div>
+      </section>
+
+      <section class="chapter" id="c7">
+        <div class="chx"><span class="n">07</span><span class="l">Reflection</span><span class="r"></span></div>
+        <h2>Design the party, not the screen</h2>
+        <div class="prose">
+          <p>The lesson v1 kept teaching: <strong>the room is the product, not the interface.</strong> The best Sonarchy isn't the one with the most features, it's the one where a phone, a speaker and six people can be loud together without the game getting in the way.</p>
+        </div>
+        <div class="stack" style="margin-top:clamp(1.5rem,3vw,2.5rem)">
+          <div class="listing">
+            <div class="lh">Lessons learned</div>
+            <div class="li"><span class="n">01</span><div><h4>Order your constraints</h4><p>Naming what comes first, compliance, physics, fairness, made every later decision faster and less arguable.</p></div></div>
+            <div class="li"><span class="n">02</span><div><h4>The seams are the work</h4><p>v1's "small" friction was the whole game. Fixing the reveal, the rating and the host's job <em>was</em> the rebuild.</p></div></div>
+          </div>
+          <div class="listing">
+            <div class="lh">What's next</div>
+            <div class="li"><span class="n">01</span><div><h4>Launch and live play</h4><p>Ship to stores, watch real rooms, let the numbers come in.</p></div></div>
+            <div class="li"><span class="n">02</span><div><h4>More of the cast</h4><p>The six characters are a system, not a set, room to grow the show.</p></div></div>
+          </div>
+        </div>
+
+        <div class="statline">Pre-launch, structural, not usage</div>
+        <div class="metrics">
+          <div class="metric"><div class="v">2</div><div class="c">Versions, one to prove it, one to build it right</div></div>
+          <div class="metric"><div class="v">6</div><div class="c">Playable characters running the show</div></div>
+          <div class="metric"><div class="v">1<span class="u">→10</span></div><div class="c">The scale a whole round turns on</div></div>
+        </div>
+      </section>
+
+      <div class="next">
+        <a href="../3-letter-daily/3 Letter Daily Case Study.html">
+          <div><div class="eyebrow">Next project</div><div class="t">3 Letter Daily</div></div>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </main>
+  </div></div>
+
+  <footer id="contact" class="contact">
+    <span class="creg" style="top:18px;left:18px"></span><span class="creg" style="top:18px;right:18px"></span>
+    <div class="wrap contact-in">
+      <div class="top">
+        <span class="cap">// Let's build</span>
+        <img src="assets/motifs/arrows-double.svg" alt="">
+      </div>
+      <a href="mailto:hi@roneill.me" class="email">hi@roneill.me</a>
+      <div class="clinks">
+        <a href="https://linkedin.com/in/roneillme">LinkedIn →</a>
+        <a href="../../cv.html">Download CV →</a>
+      </div>
+      <div class="crow">
+        <span class="cmark">ron</span>
+        <span>// Dublin // 2026</span>
+        <span>53.3498° N · 6.2603° W</span>
+        <span class="plus">+ + +</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="case.js"></script>
+</body>
+</html>

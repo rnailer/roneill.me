@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3 Letter Daily, Case Study · roneill.me</title>
+<meta name="description" content="3 Letter Daily, a daily three-letter word puzzle, designed, built and shipped solo with an AI-paired workflow. Next.js 15, Supabase, Vercel.">
+<style>
+  /* ============================================================
+     roneill.me, Portfolio Design System (tokens inlined)
+     ============================================================ */
+
+  /* Inter, text / UI */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap');
+
+  /* TBJ Ultra Centric, display, self-hosted, one family / six weights
+     Font: TBJ Ultra Centric · Foundry: Taboja Studio
+     License: https://www.youworkforthem.com/font-license */
+  @font-face { font-family:'TBJ Ultra Centric'; src:url('case-study-assets/fonts/tbj-ultra-centric-light.woff2') format('woff2'); font-weight:300; font-style:normal; font-display:swap; }
+  @font-face { font-family:'TBJ Ultra Centric'; src:url('case-study-assets/fonts/tbj-ultra-centric-regular.woff2') format('woff2'); font-weight:400; font-style:normal; font-display:swap; }
+  @font-face { font-family:'TBJ Ultra Centric'; src:url('case-study-assets/fonts/tbj-ultra-centric-medium.woff2') format('woff2'); font-weight:500; font-style:normal; font-display:swap; }
+  @font-face { font-family:'TBJ Ultra Centric'; src:url('case-study-assets/fonts/tbj-ultra-centric-semibold.woff2') format('woff2'); font-weight:600; font-style:normal; font-display:swap; }
+  @font-face { font-family:'TBJ Ultra Centric'; src:url('case-study-assets/fonts/tbj-ultra-centric-bold.woff2') format('woff2'); font-weight:700; font-style:normal; font-display:swap; }
+  @font-face { font-family:'TBJ Ultra Centric'; src:url('case-study-assets/fonts/tbj-ultra-centric-extrabold.woff2') format('woff2'); font-weight:800; font-style:normal; font-display:swap; }
+
+  :root {
+    /* Base palette */
+    --paper:#ECEAE4; --espresso:#1A1310; --orange:#EE5622;
+    --grey-600:#6B675F; --grey-400:#A8A39A; --grey-300:#CFCBC2;
+    --paper-bright:#F4F2EC; --paper-sunken:#E2DFD7;
+    --espresso-soft:#241A16; --espresso-deep:#120D0B;
+    --orange-press:#D6431A; --orange-tint:#F6C9B6;
+    --line-faint:rgba(26,19,16,0.10); --line:rgba(26,19,16,0.16); --line-strong:rgba(26,19,16,0.30);
+    --line-on-dark:rgba(236,234,228,0.14); --line-on-dark-strong:rgba(236,234,228,0.30);
+
+    /* Semantic, default (paper) */
+    --bg:var(--paper); --bg-elevated:var(--paper-bright); --bg-sunken:var(--paper-sunken); --bg-invert:var(--espresso);
+    --text:var(--espresso); --text-muted:var(--grey-600); --text-faint:var(--grey-400); --text-invert:var(--paper);
+    --accent:var(--orange); --accent-press:var(--orange-press); --link:var(--orange); --on-accent:var(--espresso);
+    --border:var(--line); --border-faint:var(--line-faint); --border-strong:var(--line-strong);
+    --focus-ring:var(--orange);
+
+    /* Type */
+    --font-display:'TBJ Ultra Centric', system-ui, sans-serif;
+    --font-text:'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+
+  /* Blackout theme, espresso canvas, paper text, orange accent */
+  [data-theme="blackout"] {
+    --bg:var(--espresso); --bg-elevated:var(--espresso-soft); --bg-sunken:var(--espresso-deep); --bg-invert:var(--paper);
+    --text:var(--paper); --text-muted:var(--grey-400); --text-faint:var(--grey-600); --text-invert:var(--espresso);
+    --accent:var(--orange); --accent-press:var(--orange-press); --link:var(--orange); --on-accent:var(--espresso);
+    --border:var(--line-on-dark); --border-faint:rgba(236,234,228,0.08); --border-strong:var(--line-on-dark-strong);
+  }
+
+  /* High-vis theme, orange field, espresso text (footer) */
+  [data-theme="highvis"] {
+    --bg:var(--orange); --bg-elevated:#F2693A; --bg-sunken:var(--orange-press); --bg-invert:var(--espresso);
+    --text:var(--espresso); --text-muted:rgba(26,19,16,0.66); --text-faint:rgba(26,19,16,0.46); --text-invert:var(--paper);
+    --accent:var(--espresso); --link:var(--espresso); --on-accent:var(--orange);
+    --border:rgba(26,19,16,0.26); --border-faint:rgba(26,19,16,0.14); --border-strong:rgba(26,19,16,0.5);
+  }
+
+  *, *::before, *::after { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; text-size-adjust:100%; scroll-behavior:smooth; }
+  body {
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--font-text); font-size:1.0625rem; line-height:1.6;
+    font-feature-settings:"kern" 1,"liga" 1,"calt" 1;
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; text-rendering:optimizeLegibility;
+  }
+  ::selection { background:var(--orange); color:var(--paper); }
+  a { color:var(--link); text-decoration:none; }
+  h1,h2,h3,h4 { font-family:var(--font-display); letter-spacing:-0.025em; line-height:1.04; margin:0; }
+  img { max-width:100%; display:block; }
+  :focus-visible { outline:2px solid var(--focus-ring); outline-offset:3px; }
+  /* ============================================================
+     3 Letter Daily product mockups, FT Baile, canary palette
+     ============================================================ */
+  @font-face { font-family:'FT Baile'; src:url('fonts/FT-Baile-Regular.otf') format('opentype'); font-weight:400; font-display:swap; }
+  @font-face { font-family:'FT Baile Script'; src:url('fonts/FT-Baile-Script-Regular.otf') format('opentype'); font-weight:400; font-display:swap; }
+  @font-face { font-family:'FT Baile Script Bulky'; src:url('fonts/FT-Baile-Script-Bulky-Regular.otf') format('opentype'); font-weight:400; font-display:swap; }
+  @font-face { font-family:'FT Baile West'; src:url('fonts/FT-Baile-West-Regular.otf') format('opentype'); font-weight:400; font-display:swap; }
+
+  .ld{ --y:#FFD22F; --sky:#8EC5E8; --green:#2E7D3F; --gold:#F5B800; --ld-ink:#0E1015; --paper3:#F4EEDC;
+       font-family:'FT Baile','Arial Black',sans-serif; color:var(--ld-ink); }
+  .ld-grain::after{ content:""; position:absolute; inset:0; pointer-events:none; z-index:3; mix-blend-mode:multiply; opacity:.15;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); }
+
+  /* generic 3LD tiles */
+  .ld-tile{ aspect-ratio:1; border:3px solid var(--ld-ink); border-radius:6px; display:flex; align-items:center; justify-content:center;
+    font-family:'FT Baile'; text-transform:uppercase; line-height:1; }
+  .ld-tile.correct{ background:var(--green); color:var(--y); }
+  .ld-tile.present{ background:var(--gold); color:var(--ld-ink); }
+  .ld-tile.absent{ background:var(--ld-ink); color:var(--sky); }
+  .ld-tile.empty{ background:rgba(14,16,21,0.04); border-style:dashed; }
+
+  /* cover board hero */
+  .ld-cover{ position:relative; overflow:hidden; background:var(--y); border-radius:4px; color:var(--ld-ink);
+    display:grid; grid-template-columns:1.15fr .85fr; gap:clamp(1rem,3vw,2.5rem); align-items:center;
+    padding:clamp(1.6rem,4vw,3.4rem); margin-top:clamp(1.6rem,3.5vw,3rem); }
+  .ld-cover .eyebrow3{ font-family:'FT Baile'; font-size:clamp(11px,1.2vw,14px); letter-spacing:0.14em; text-transform:uppercase; color:var(--green); }
+  .ld-lockup{ display:flex; gap:clamp(8px,1.2vw,14px); margin:clamp(.7rem,1.6vw,1.1rem) 0 0; }
+  .ld-lockup .lt{ width:clamp(54px,7vw,94px); aspect-ratio:1; border:3px solid var(--ld-ink); border-radius:9px;
+    display:flex; align-items:center; justify-content:center; font-family:'FT Baile'; font-size:clamp(34px,5vw,68px);
+    line-height:1; box-shadow:5px 6px 0 var(--ld-ink); }
+  .ld-lockup .lt.y{ background:var(--y); } .ld-lockup .lt.s{ background:var(--sky); } .ld-lockup .lt.g{ background:var(--green); color:var(--y); }
+  .ld-cover .tag{ font-family:'FT Baile Script Bulky','FT Baile',cursive; font-size:clamp(30px,4.8vw,60px); line-height:.95; margin:.45em 0 .3em; }
+  .ld-cover .meta3{ font-family:'FT Baile'; font-size:clamp(11px,1.3vw,15px); letter-spacing:0.07em; text-transform:uppercase; }
+  .ld-cover .board-wrap{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(7px,1.1vw,13px); width:100%; max-width:330px; margin-left:auto; }
+  .ld-cover .ld-tile{ font-size:clamp(26px,3.6vw,46px); box-shadow:4px 5px 0 var(--ld-ink); }
+
+  /* phone mockups */
+  .ld-phone{ container-type:inline-size; position:relative; width:100%; max-width:320px; margin:0 auto; aspect-ratio:300/615;
+    background:var(--y); border:3px solid var(--ld-ink); border-radius:11cqw; box-shadow:7px 9px 0 var(--ld-ink); overflow:hidden; }
+  .ld-phone.green{ background:var(--green); }
+  .ld-screen{ position:absolute; inset:0; padding:8.5cqw 6cqw 6.5cqw; display:flex; flex-direction:column; }
+  .ld-bar{ display:flex; align-items:center; justify-content:space-between; }
+  .ld-bar .mini{ display:flex; gap:1.6cqw; }
+  .ld-bar .mini .lt{ width:9cqw; height:9cqw; border:2px solid var(--ld-ink); border-radius:2.5cqw; display:flex; align-items:center; justify-content:center; font-size:5cqw; box-shadow:1.4px 1.8px 0 var(--ld-ink); }
+  .ld-bar .mini .y{ background:var(--y); } .ld-bar .mini .s{ background:var(--sky); } .ld-bar .mini .g{ background:var(--green); color:var(--y); }
+  .ld-pills{ display:flex; gap:1.8cqw; }
+  .ld-pill{ border:2px solid var(--ld-ink); border-radius:999px; background:var(--sky); font-family:'FT Baile'; font-size:3.4cqw; padding:1.6cqw 3cqw; letter-spacing:.04em; text-transform:uppercase; box-shadow:1.4px 1.8px 0 var(--ld-ink); }
+  .ld-chips{ display:flex; gap:2cqw; justify-content:center; margin:4.5cqw 0 4cqw; flex-wrap:wrap; }
+  .ld-chip{ border:2px solid var(--ld-ink); border-radius:999px; font-family:'FT Baile'; font-size:3.3cqw; padding:1.4cqw 2.8cqw; letter-spacing:.05em; text-transform:uppercase; box-shadow:1.4px 1.8px 0 var(--ld-ink); }
+  .ld-chip.y{ background:var(--y); } .ld-chip.s{ background:var(--sky); } .ld-chip.g{ background:var(--green); color:var(--y); }
+  .ld-board{ display:grid; grid-template-rows:repeat(6,1fr); gap:2.2cqw; margin:0 auto; width:50cqw; }
+  .ld-board .row{ display:grid; grid-template-columns:repeat(3,1fr); gap:2.2cqw; }
+  .ld-board .ld-tile{ font-size:9cqw; border-width:2.4px; box-shadow:2px 2.6px 0 var(--ld-ink); }
+  .ld-kb{ margin-top:auto; display:flex; flex-direction:column; gap:1.6cqw; padding-top:3.5cqw; }
+  .ld-kb .krow{ display:flex; gap:1.4cqw; justify-content:center; }
+  .ld-key{ flex:1 1 0; min-width:0; height:9cqw; border:2px solid var(--ld-ink); border-radius:2cqw; background:var(--sky); display:flex; align-items:center; justify-content:center; font-family:'FT Baile'; font-size:4cqw; box-shadow:1.2px 1.6px 0 var(--ld-ink); }
+  .ld-key.wide{ flex:1.7 1 0; font-size:3.2cqw; }
+  .ld-nice{ margin-top:auto; background:var(--green); border:3px solid var(--ld-ink); border-radius:4cqw; box-shadow:3px 4px 0 var(--ld-ink); padding:4cqw 3cqw; text-align:center; }
+  .ld-nice .nice{ display:block; font-family:'FT Baile Script','FT Baile',cursive; color:var(--y); font-size:13cqw; line-height:.85; }
+  .ld-nice .nicesub{ display:block; font-family:'FT Baile'; color:#fff; font-size:3.8cqw; text-transform:uppercase; letter-spacing:.1em; margin-top:1.4cqw; }
+  .ld-receipt{ position:relative; background:#fff; border:3px solid var(--ld-ink); border-radius:4cqw; box-shadow:6px 7px 0 var(--ld-ink); padding:7cqw 6cqw; width:80cqw; margin:auto; }
+  .ld-receipt::before,.ld-receipt::after{ content:""; position:absolute; top:50%; width:5cqw; height:5cqw; background:var(--green); border:3px solid var(--ld-ink); border-radius:50%; transform:translateY(-50%); }
+  .ld-receipt::before{ left:-3cqw; } .ld-receipt::after{ right:-3cqw; }
+  .ld-receipt h4{ font-family:'FT Baile West','FT Baile'; font-size:6.4cqw; text-transform:uppercase; text-align:center; margin:0; letter-spacing:.02em; color:var(--ld-ink); }
+  .ld-receipt .rsub{ font-family:ui-monospace,monospace; text-align:center; font-size:4cqw; letter-spacing:.1em; margin:2.4cqw 0 5cqw; color:var(--ld-ink); }
+  .ld-grid3{ display:grid; grid-template-columns:repeat(3,1fr); gap:2.4cqw; width:42cqw; margin:0 auto 6cqw; }
+  .ld-grid3 span{ aspect-ratio:1; border-radius:1.6cqw; }
+  .sq-ink{ background:var(--ld-ink); } .sq-gold{ background:var(--gold); } .sq-green{ background:var(--green); }
+  .ld-rcount{ font-family:ui-monospace,monospace; text-align:center; font-size:3.4cqw; letter-spacing:.08em; color:var(--ld-ink); margin-bottom:4.5cqw; }
+  .ld-share{ background:var(--sky); border:2px solid var(--ld-ink); border-radius:999px; text-align:center; font-family:'FT Baile'; text-transform:uppercase; letter-spacing:.05em; font-size:4.6cqw; padding:3.2cqw; box-shadow:2px 2.6px 0 var(--ld-ink); }
+
+  /* tile + key state helpers */
+  .ld-tile.typing{ background:var(--sky); color:var(--ld-ink); }
+  .ld-key.k-green{ background:var(--green); color:var(--y); }
+  .ld-key.k-ink{ background:var(--ld-ink); color:var(--sky); }
+  .ld-key.k-gold{ background:var(--gold); color:var(--ld-ink); }
+
+  /* win share card */
+  .ld-card{ background:var(--ld-ink); border:3px solid var(--ld-ink); border-radius:3.5cqw; box-shadow:3px 4px 0 var(--ld-ink); padding:4cqw 4.5cqw; width:74cqw; margin:0 auto; }
+  .ld-card .crow{ display:flex; align-items:center; justify-content:space-between; font-family:'FT Baile'; font-size:3.6cqw; color:var(--y); letter-spacing:.04em; }
+  .ld-card .emoji{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.4cqw; width:24cqw; margin:3cqw 0 0; }
+  .ld-card .emoji span{ aspect-ratio:1; border-radius:1cqw; }
+
+  /* stats modal */
+  .ld-dim{ position:absolute; inset:0; background:rgba(14,16,21,0.5); z-index:4; }
+  .ld-modal{ position:absolute; z-index:5; left:5cqw; right:5cqw; top:8cqw; background:var(--paper3); border:3px solid var(--ld-ink); border-radius:4.5cqw; box-shadow:5px 6px 0 var(--ld-ink); padding:5cqw 5cqw 5.5cqw; }
+  .ld-modal .mh{ display:flex; align-items:center; justify-content:space-between; }
+  .ld-modal h4{ font-family:'FT Baile West','FT Baile'; font-size:5.6cqw; text-transform:uppercase; margin:0; color:var(--ld-ink); letter-spacing:.02em; }
+  .ld-modal .x{ width:7cqw; height:7cqw; border:2.5px solid var(--ld-ink); border-radius:50%; background:var(--sky); display:flex; align-items:center; justify-content:center; font-family:'FT Baile'; font-size:3.4cqw; box-shadow:1.4px 1.8px 0 var(--ld-ink); }
+  .ld-stat-row{ display:flex; gap:2cqw; margin:4cqw 0 5cqw; }
+  .ld-stat{ flex:1; text-align:center; }
+  .ld-stat b{ display:block; font-family:'FT Baile West','FT Baile'; font-size:8cqw; line-height:1; color:var(--ld-ink); }
+  .ld-stat span{ display:block; font-family:ui-monospace,monospace; font-size:2.3cqw; letter-spacing:.05em; color:var(--green); margin-top:1.4cqw; text-transform:uppercase; }
+  .ld-dist-h{ font-family:ui-monospace,monospace; font-size:2.6cqw; letter-spacing:.07em; text-transform:uppercase; color:var(--green); margin-bottom:2.6cqw; }
+  .ld-dist{ display:flex; align-items:center; gap:2.4cqw; margin-bottom:2.2cqw; }
+  .ld-dist .n{ font-family:'FT Baile'; font-size:3.4cqw; width:3cqw; color:var(--ld-ink); }
+  .ld-dist .track{ flex:1; height:4.2cqw; background:var(--sky); border:2px solid var(--ld-ink); border-radius:1.4cqw; overflow:hidden; }
+  .ld-dist .fill{ height:100%; background:var(--green); }
+  .ld-dist .c{ font-family:'FT Baile'; font-size:3.2cqw; width:3cqw; text-align:right; color:var(--ld-ink); }
+
+  /* real game screens, 2x2 */
+  .cs-screens{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(1rem,2.5vw,2rem); margin-top:clamp(1.6rem,3.5vw,2.6rem); }
+  .cs-screens figure{ margin:0; }
+  .cs-screens .shot{ background:var(--bg-elevated); border:1px solid var(--border); border-radius:8px; display:flex; align-items:center; justify-content:center; padding:clamp(0.9rem,2vw,1.5rem); }
+  .cs-screens .shot img{ height:clamp(440px,46vw,600px); width:auto; max-width:100%; border-radius:18px; box-shadow:0 22px 48px -24px rgba(0,0,0,0.7); }
+  @media (max-width:600px){ .cs-screens{ grid-template-columns:1fr; } }
+
+  /* real game screens, static screenshots, equal frames */
+  .cs-shots{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(1.4rem,3vw,2.4rem) clamp(1.6rem,4vw,3rem); margin-top:clamp(1.6rem,3.5vw,2.6rem); justify-items:center; }
+  .cs-shots figure{ margin:0; display:flex; flex-direction:column; align-items:center; gap:0.95rem; width:100%; }
+  .cs-shots .cs-shot{ width:100%; max-width:300px; border:3px solid #0E1015; border-radius:26px; overflow:hidden; box-shadow:9px 11px 0 rgba(8,6,4,0.5); background:#FFD22F; }
+  .cs-shots .cs-shot img{ display:block; width:100%; height:auto; }
+  .cs-shots figcaption{ font-family:'Space Mono',monospace; font-size:12.5px; line-height:1.4; color:var(--text-muted); text-align:center; max-width:34ch; }
+  @media (max-width:600px){ .cs-shots{ grid-template-columns:1fr; } }
+
+  /* branded chat thread (about-page style) */
+  .bt-wrap{ display:flex; justify-content:center; margin-top:clamp(1.4rem,3vw,2rem); }
+  .bt{ width:100%; max-width:560px; background:#F4EEDC; border:3px solid #0E1015; border-radius:22px; box-shadow:10px 12px 0 #0E1015; padding:clamp(1.2rem,3.2vw,2rem); font-family:'Space Grotesk',system-ui,sans-serif; }
+  .bt-head{ display:flex; align-items:center; gap:12px; padding-bottom:14px; margin-bottom:16px; border-bottom:3px solid #0E1015; }
+  .bt-gicon{ width:42px;height:42px;background:#2E7D3F;color:#FFD22F;border:3px solid #0E1015;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'FT Baile';font-size:16px;box-shadow:2px 3px 0 #0E1015;flex-shrink:0; }
+  .bt-head h4{ font-family:'FT Baile';font-size:18px;text-transform:uppercase;margin:0;color:#0E1015;line-height:1; }
+  .bt-head p{ font-family:'Space Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#2E7D3F;margin:5px 0 0; }
+  .bt-div{ display:flex;align-items:center;gap:10px;margin:16px 0; }
+  .bt-div .ln{ flex:1;height:3px;background:#0E1015; }
+  .bt-div .pill{ background:#0E1015;color:#FFD22F;font-family:'Space Mono',monospace;font-weight:700;font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:5px 12px;border-radius:999px; }
+  .bt-row{ display:flex;gap:10px;margin-bottom:12px;align-items:flex-end; }
+  .bt-row.me{ justify-content:flex-end; }
+  .bt-av{ width:32px;height:32px;border-radius:50%;border:3px solid #0E1015;display:flex;align-items:center;justify-content:center;font-family:'FT Baile';font-size:14px;flex-shrink:0;box-shadow:2px 3px 0 #0E1015;color:#0E1015; }
+  .bt-b{ max-width:80%;border:3px solid #0E1015;border-radius:14px;padding:9px 13px 11px;background:#fff;box-shadow:4px 5px 0 #0E1015;color:#0E1015; }
+  .bt-row.me .bt-b{ background:#2E7D3F;color:#F4EEDC; }
+  .bt-nm{ font-family:'Space Mono',monospace;font-weight:700;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#2E7D3F;margin:0 0 4px; }
+  .bt-row.me .bt-nm{ color:#FFD22F; }
+  .bt-b p{ font-family:'Space Grotesk',sans-serif;font-size:15px;line-height:1.4;margin:0; }
+  .bt-hero{ box-shadow:6px 7px 0 #F5B800 !important; }
+  .bt-guess{ font-family:'Space Mono',monospace;font-size:13px;background:#0E1015;color:#FFD22F;border-radius:8px;padding:9px 12px;margin-top:4px;line-height:1.6;max-width:160px; }
+  .bt-guess .ans{ margin-top:6px;padding-top:6px;border-top:1px dashed rgba(255,210,47,0.45);color:#8EC5E8;font-weight:700; }
+  .bt-cap{ font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.04em;color:var(--text-muted);text-align:center;margin:1rem 0 0; }
+  .bt-three{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(1rem,2vw,1.5rem); margin-top:clamp(1.4rem,3vw,2rem); align-items:stretch; }
+  .bt-three .bt{ max-width:none; padding:clamp(1rem,1.5vw,1.3rem); border-radius:18px; box-shadow:7px 9px 0 #0E1015; }
+  .bt-three .bt-head{ padding-bottom:10px; margin-bottom:12px; gap:10px; }
+  .bt-three .bt-gicon{ width:34px; height:34px; font-size:13px; }
+  .bt-three .bt-head h4{ font-size:15px; }
+  .bt-three .bt-head p{ font-size:9px; margin-top:4px; }
+  .bt-three .bt-div{ margin:12px 0; }
+  .bt-three .bt-div .pill{ font-size:9px; padding:4px 9px; letter-spacing:.1em; }
+  .bt-three .bt-b{ max-width:86%; }
+  .bt-three .bt-b p{ font-size:14px; }
+  .bt-three .bt-av{ width:30px; height:30px; font-size:13px; }
+  .bt-three .bt-guess{ max-width:none; white-space:nowrap; font-size:12px; }
+  @media (max-width:900px){ .bt-three{ grid-template-columns:1fr; gap:1.4rem; } .bt-three .bt{ max-width:560px; width:100%; margin:0 auto; } }
+
+  @keyframes cs-pulse { 0%{transform:scale(1);opacity:.55} 70%{transform:scale(2.6);opacity:0} 100%{opacity:0} }
+
+  @media (max-width:900px){
+    .cs-doc{ grid-template-columns:1fr !important; }
+    .cs-rail{ display:none !important; }
+    .cs-three{ grid-template-columns:1fr !important; }
+    .cs-two{ grid-template-columns:1fr !important; }
+    .ld-cover{ grid-template-columns:1fr !important; }
+    .ld-cover .board-wrap{ margin:0 auto !important; }
+  }
+  @media (max-width:560px){
+    .cs-three.ld-phones{ grid-template-columns:1fr !important; }
+    .cs-three.ld-story{ grid-template-columns:1fr !important; }
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{ scroll-behavior:auto; }
+    .cs-dot::after{ animation:none !important; }
+    *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<div data-theme="blackout" style="background:var(--bg);color:var(--text);font-family:var(--font-text);-webkit-font-smoothing:antialiased;min-height:100vh">
+
+  <!-- header -->
+  <div style="position:sticky;top:0;z-index:40;background:color-mix(in srgb, var(--espresso) 82%, transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--border)">
+    <div style="max-width:1600px;margin:0 auto;padding:0 clamp(1.5rem,4vw,4rem);height:72px;display:flex;align-items:center;justify-content:space-between">
+      <a href="../../index.html" style="font-family:var(--font-display);font-weight:800;font-size:24px;letter-spacing:-0.05em;text-decoration:none;color:var(--paper)">ron</a>
+      <nav style="display:flex;align-items:center;gap:clamp(1rem,2.5vw,2rem)">
+        <a href="../../index.html#work" style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--paper);text-decoration:none">Work</a>
+        <a href="../../index.html#about" style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--paper);text-decoration:none">About</a>
+        <a href="#contact" style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--paper);text-decoration:none">Contact</a>
+        <a href="../../cv.html" style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--paper);text-decoration:none">CV</a>
+        <span style="display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:var(--paper);border:1px solid var(--border-strong);border-radius:999px;padding:6px 13px 6px 11px">
+          <span class="cs-dot" style="position:relative;width:8px;height:8px;border-radius:50%;background:var(--orange)"><span style="position:absolute;inset:0;border-radius:50%;background:var(--orange);animation:cs-pulse 1.9s cubic-bezier(0.22,1,0.36,1) infinite"></span></span>Available
+        </span>
+      </nav>
+    </div>
+  </div>
+
+  <!-- hero -->
+  <header style="max-width:1600px;margin:0 auto;padding:clamp(2.5rem,5vw,4.5rem) clamp(1.5rem,4vw,4rem) clamp(1.5rem,3vw,2.5rem)">
+    <div style="font-family:ui-monospace,Menlo,monospace;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted)">Case study <b style="color:var(--orange);font-weight:600">[ 05 ]</b></div>
+    <div style="font-family:var(--font-display);font-weight:800;font-size:clamp(1.1rem,2vw,1.4rem);color:var(--orange);letter-spacing:0.04em;margin-top:0.4em">05</div>
+    <h1 style="font-family:var(--font-display);font-weight:800;font-size:clamp(2.6rem,6.4vw,5.5rem);line-height:0.98;letter-spacing:-0.03em;margin:0.35em 0 0;max-width:17ch;text-wrap:balance">A daily word puzzle that lives in just three letters</h1>
+    <p style="font-size:1.1875rem;line-height:1.6;color:var(--text-muted);max-width:60ch;margin:clamp(1.4rem,3vw,2rem) 0 0;text-wrap:pretty"><strong style="color:var(--paper);font-weight:600">3 Letter Daily</strong> is a one-word-a-day game, six guesses, three letters, a fresh word every midnight. Designed, built and shipped solo <strong style="color:var(--paper);font-weight:600">in a single weekend</strong> with an AI-paired workflow. Live at 3letterdaily.com.</p>
+    <dl style="display:flex;flex-wrap:wrap;gap:clamp(1.5rem,4vw,3.5rem);margin:clamp(1.8rem,4vw,2.6rem) 0 0">
+      <div><dt style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-faint)">Studio</dt><dd style="margin:6px 0 0;font-family:var(--font-display);font-weight:600;font-size:1.0625rem;letter-spacing:-0.01em;color:var(--paper)">Treble Games</dd></div>
+      <div><dt style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-faint)">Year</dt><dd style="margin:6px 0 0;font-family:var(--font-display);font-weight:600;font-size:1.0625rem;letter-spacing:-0.01em;color:var(--paper)">2026</dd></div>
+      <div><dt style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-faint)">Built in</dt><dd style="margin:6px 0 0;font-family:var(--font-display);font-weight:600;font-size:1.0625rem;letter-spacing:-0.01em;color:var(--orange)">One weekend</dd></div>
+      <div><dt style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-faint)">Type</dt><dd style="margin:6px 0 0;font-family:var(--font-display);font-weight:600;font-size:1.0625rem;letter-spacing:-0.01em;color:var(--paper)">Daily word game · Full-stack</dd></div>
+      <div><dt style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-faint)">Role</dt><dd style="margin:6px 0 0;font-family:var(--font-display);font-weight:600;font-size:1.0625rem;letter-spacing:-0.01em;color:var(--paper)">Designer · Developer · Founder</dd></div>
+    </dl>
+    <div class="ld ld-cover ld-grain">
+      <div style="position:relative;z-index:2">
+        <div class="eyebrow3">3LD · Daily · No. 24 · 3letterdaily.com</div>
+        <div class="ld-lockup"><span class="lt y">3</span><span class="lt s">L</span><span class="lt g">D</span></div>
+        <div class="tag">Small words,<br>big stakes.</div>
+        <div class="meta3">Three letters · Six tries · One word a day</div>
+      </div>
+      <div class="board-wrap" style="position:relative;z-index:2" aria-hidden="true">
+        <span class="ld-tile absent">P</span><span class="ld-tile present">A</span><span class="ld-tile absent">T</span>
+        <span class="ld-tile correct">C</span><span class="ld-tile correct">A</span><span class="ld-tile correct">T</span>
+        <span class="ld-tile empty"></span><span class="ld-tile empty"></span><span class="ld-tile empty"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- doc: rail + body -->
+  <div style="max-width:1600px;margin:0 auto;padding:0 clamp(1.5rem,4vw,4rem)">
+    <div class="cs-doc" style="display:grid;grid-template-columns:200px minmax(0,1fr);gap:clamp(2rem,5vw,5rem);padding:clamp(2rem,4vw,3.5rem) 0 0">
+      <aside class="cs-rail" style="position:sticky;top:100px;align-self:start;height:max-content">
+        <div style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-faint);margin-bottom:0.8rem">Sections</div>
+        <ol style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1px">
+          <li><a href="#c-origin" style="display:block;padding:9px 0;font-size:0.9375rem;color:var(--text-faint);text-decoration:none;border-top:1px solid var(--border-faint)">Origin</a></li>
+          <li><a href="#c-problem" style="display:block;padding:9px 0;font-size:0.9375rem;color:var(--text-faint);text-decoration:none;border-top:1px solid var(--border-faint)">Problem</a></li>
+          <li><a href="#c-approach" style="display:block;padding:9px 0;font-size:0.9375rem;color:var(--text-faint);text-decoration:none;border-top:1px solid var(--border-faint)">Approach</a></li>
+          <li><a href="#c-design" style="display:block;padding:9px 0;font-size:0.9375rem;color:var(--text-faint);text-decoration:none;border-top:1px solid var(--border-faint)">Build</a></li>
+          <li><a href="#c-decisions" style="display:block;padding:9px 0;font-size:0.9375rem;color:var(--text-faint);text-decoration:none;border-top:1px solid var(--border-faint)">Decisions</a></li>
+          <li><a href="#c-impact" style="display:block;padding:9px 0;font-size:0.9375rem;color:var(--text-faint);text-decoration:none;border-top:1px solid var(--border-faint)">Outcome</a></li>
+        </ol>
+      </aside>
+
+      <main>
+        <!-- ORIGIN -->
+        <section id="c-origin" style="padding:0 0 clamp(2.5rem,5vw,4.5rem)">
+          <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-muted)">Origin</span><span style="flex:1;height:1px;background:var(--border)"></span></div>
+          <h2 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.7rem);line-height:1.05;letter-spacing:-0.025em;margin:0 0 0.8em;max-width:22ch;text-wrap:balance">It started as a joke in a group chat</h2>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:0 0 1.1em;text-wrap:pretty">3 Letter Daily began in a UX-design group chat that had been quietly hijacked by Wordle since 2022, every morning a race to post the day's score before 9am. One Friday the bickering tipped over: someone called Wordle a guessing game, someone took it personally, and I fired off the message that started the whole thing, <strong style="color:var(--paper);font-weight:600">“I’m actually going to make a 3-letter Wordle.”</strong></p>
+          <div class="bt-three">
+
+            <div class="bt">
+              <div class="bt-head"><div class="bt-gicon">UD</div><div><h4>UXD &amp; Wordle</h4><p>6 members</p></div></div>
+              <div class="bt-div"><span class="ln"></span><span class="pill">09:44 · The brainwave</span><span class="ln"></span></div>
+              <div class="bt-row me"><div class="bt-b"><div class="bt-nm">You</div><p>I feel like the users would like this game to be easier</p></div></div>
+              <div class="bt-row me"><div class="bt-b"><div class="bt-nm">You</div><p>3 word wordle maybe?</p></div></div>
+              <div class="bt-row me"><div class="bt-b bt-hero"><div class="bt-nm">You</div><p>I’m actually going to make a 3 letter wordle</p></div></div>
+              <div class="bt-row"><div class="bt-av" style="background:#E89B3F">R</div><div class="bt-b"><div class="bt-nm" style="color:#E89B3F">Rob</div><p>And 20 guesses</p></div></div>
+            </div>
+
+            <div class="bt">
+              <div class="bt-head"><div class="bt-gicon">UD</div><div><h4>UXD &amp; Wordle</h4><p>6 members</p></div></div>
+              <div class="bt-div"><span class="ln"></span><span class="pill">09:47 · The pile-on</span><span class="ln"></span></div>
+              <div class="bt-row"><div class="bt-av" style="background:#D7263D;color:#F4EEDC">A</div><div class="bt-b"><div class="bt-nm" style="color:#D7263D">Aiden</div><div class="bt-guess">Tip · Pip · Lip<br>Sip · Dip · Nip<br>Hip · Yip · Kip<div class="ans">Answer: Rip</div></div></div></div>
+              <div class="bt-row"><div class="bt-av" style="background:#7A5AF8;color:#F4EEDC">O</div><div class="bt-b"><div class="bt-nm" style="color:#7A5AF8">Olivia</div><p>three letters is harder than five btw. less to go on each guess</p></div></div>
+              <div class="bt-row me"><div class="bt-b"><div class="bt-nm">You</div><p>that’s the fun part</p></div></div>
+              <div class="bt-row"><div class="bt-av" style="background:#E89B3F">R</div><div class="bt-b"><div class="bt-nm" style="color:#E89B3F">Rob</div><p>name it something stupid</p></div></div>
+            </div>
+
+            <div class="bt">
+              <div class="bt-head"><div class="bt-gicon">UD</div><div><h4>UXD &amp; Wordle</h4><p>6 members</p></div></div>
+              <div class="bt-div"><span class="ln"></span><span class="pill">Sun · 21:30 · It’s live</span><span class="ln"></span></div>
+              <div class="bt-row me"><div class="bt-b bt-hero"><div class="bt-nm">You</div><p>ok. it’s live → 3letterdaily.com</p></div></div>
+              <div class="bt-row me"><div class="bt-b"><div class="bt-nm">You</div><div class="bt-guess" style="max-width:150px">3LD #24 · 3/6<br>⬛🟨⬛<br>⬛🟩⬛<br>🟩🟩🟩</div></div></div>
+              <div class="bt-row"><div class="bt-av" style="background:#2A6FDB;color:#F4EEDC">R</div><div class="bt-b"><div class="bt-nm" style="color:#2A6FDB">Richard</div><p>solved in 4. my streak is already ruined</p></div></div>
+              <div class="bt-row"><div class="bt-av" style="background:#7A5AF8;color:#F4EEDC">O</div><div class="bt-b"><div class="bt-nm" style="color:#7A5AF8">Olivia</div><p>wait you actually shipped it</p></div></div>
+            </div>
+
+          </div>
+          <p class="bt-cap">The thread that started it all, idea, pile-on, ship, rebuilt in the 3LD brand. Names lightly redacted.</p>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:clamp(1.6rem,3.5vw,2.4rem) 0 0;text-wrap:pretty">From that message it was Friday night to Sunday night, <strong style="color:var(--paper);font-weight:600">one person, one weekend</strong>, about a hundred prompts and a concerning amount of coffee. By Sunday it was live: brand, daily-word logic, sign-in, streaks and share cards, the lot.</p>
+        </section>
+
+        <!-- PROBLEM -->
+        <section id="c-problem" style="padding:0 0 clamp(2.5rem,5vw,4.5rem)">
+          <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-muted)">Problem</span><span style="flex:1;height:1px;background:var(--border)"></span></div>
+          <h2 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.7rem);line-height:1.05;letter-spacing:-0.025em;margin:0 0 0.8em;max-width:22ch;text-wrap:balance">Three letters. Deceptively harder than five.</h2>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:0 0 1.1em;text-wrap:pretty">The premise reads simple, a Wordle you solve on a coffee break. But three letters is mechanically <strong style="color:var(--paper);font-weight:600">harder</strong> than five, not easier. Each guess returns less information, the structural constraints that make five-letter words guessable mostly vanish, and the space is packed with rhyming clusters, BAT, CAT, FAT, HAT, with no spare positions to throw away a probing guess.</p>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:0 0 1.1em;text-wrap:pretty"><em style="color:var(--paper);font-style:italic">How do you keep a daily puzzle fair inside a space this tight, without turning it into a coin-flip?</em></p>
+          <div style="border:1px solid var(--border);border-radius:4px;padding:clamp(1.4rem,3vw,2rem);margin:1.8rem 0;background:var(--bg-elevated)">
+            <div style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-faint);margin-bottom:1.3rem">Why three letters is hard (illustrative)</div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div style="display:grid;grid-template-columns:120px 1fr auto;align-items:center;gap:14px"><span style="font-size:0.9375rem;color:var(--text-muted)">Info per guess</span><span style="height:26px;background:var(--bg-sunken);border-radius:3px;overflow:hidden"><span style="display:block;height:100%;width:32%;background:var(--orange);border-radius:3px"></span></span><span style="font-family:var(--font-display);font-weight:700;font-size:1.0625rem;color:var(--paper)">Low</span></div>
+              <div style="display:grid;grid-template-columns:120px 1fr auto;align-items:center;gap:14px"><span style="font-size:0.9375rem;color:var(--text-muted)">Rhyming traps</span><span style="height:26px;background:var(--bg-sunken);border-radius:3px;overflow:hidden"><span style="display:block;height:100%;width:82%;background:var(--grey-600);border-radius:3px"></span></span><span style="font-family:var(--font-display);font-weight:700;font-size:1.0625rem;color:var(--paper)">High</span></div>
+              <div style="display:grid;grid-template-columns:120px 1fr auto;align-items:center;gap:14px"><span style="font-size:0.9375rem;color:var(--text-muted)">Room to probe</span><span style="height:26px;background:var(--bg-sunken);border-radius:3px;overflow:hidden"><span style="display:block;height:100%;width:28%;background:var(--orange);border-radius:3px"></span></span><span style="font-family:var(--font-display);font-weight:700;font-size:1.0625rem;color:var(--paper)">Low</span></div>
+            </div>
+            <p style="font-size:0.8125rem;color:var(--text-muted);margin:1.3rem 0 0;line-height:1.5;max-width:60ch">The difficulty isn't finding words, it's that a tiny space leaves no room to spend a guess gathering information. The fix lives in the <strong style="color:var(--paper);font-weight:600">answer pool</strong>, not the guess count.</p>
+          </div>
+        </section>
+
+        <!-- APPROACH -->
+        <section id="c-approach" style="padding:clamp(2.5rem,5vw,4.5rem) 0;border-top:1px solid var(--border)">
+          <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-muted)">Approach</span><span style="flex:1;height:1px;background:var(--border)"></span></div>
+          <h2 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.7rem);line-height:1.05;letter-spacing:-0.025em;margin:0 0 0.8em;max-width:22ch;text-wrap:balance">Fix fairness at the source</h2>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:0 0 1.1em;text-wrap:pretty">Built with an AI-paired workflow, planning, building and interface each handled on a different surface, with handover docs holding context across sessions.</p>
+          <p style="font-size:0.9375rem;line-height:1.6;color:var(--text-muted);max-width:66ch;margin:0"><a href="../333-games/333 Games Studio - Case Study.html" style="color:var(--orange);border-bottom:1px solid color-mix(in srgb, var(--orange) 45%, transparent);padding-bottom:1px">The full operating model</a> is in the 333 Games studio piece. &rarr;</p>
+          <div style="border-left:2px solid var(--orange);padding:0.4rem 0 0.4rem 1.4rem;margin:clamp(1.8rem,4vw,2.6rem) 0 0;max-width:60ch">
+            <span style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--orange)">The bet</span>
+            <p style="font-family:var(--font-display);font-weight:500;font-size:clamp(1.375rem,2vw,1.875rem);line-height:1.25;letter-spacing:-0.01em;color:var(--paper);margin:0.6em 0 0">Curate the answer pool instead of padding the guess count, fix fairness at the source, and a three-letter puzzle stays solvable on a coffee break.</p>
+          </div>
+        </section>
+
+        <!-- BUILD (was: Design) -->
+        <section id="c-design" style="padding:clamp(2.5rem,5vw,4.5rem) 0;border-top:1px solid var(--border)">
+          <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-muted)">Build</span><span style="flex:1;height:1px;background:var(--border)"></span></div>
+          <h2 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.7rem);line-height:1.05;letter-spacing:-0.025em;margin:0 0 0.8em;max-width:22ch;text-wrap:balance">A production stack, not a prototype</h2>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:0 0 1.1em;text-wrap:pretty">3 Letter Daily runs on the stack you'd reach for to ship something you mean to keep, <strong style="color:var(--paper);font-weight:600">nothing here is throwaway</strong>.</p>
+          <div style="border:1px solid var(--border);border-radius:4px;padding:clamp(1.1rem,2.4vw,1.5rem) clamp(1.2rem,2.6vw,1.7rem);margin-top:0.6rem;display:flex;flex-wrap:wrap;align-items:baseline;gap:0.55rem 1.1rem">
+            <span style="font-family:ui-monospace,monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--orange)">Stack</span>
+            <span style="font-size:0.9375rem;line-height:1.7;color:var(--text-muted)">Next.js 15 + TypeScript · Supabase / Postgres · Vercel · interface type in FT Baile</span>
+          </div>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:1.3em 0 0;text-wrap:pretty">The one call worth flagging, guesses are graded <strong style="color:var(--paper);font-weight:600">server-side</strong>, so the day's answer never reaches the browser and can't be lifted from the page source. Auth is anonymous-first: you play from the first visit via a cookie, and only claim a streak (magic link or Google) if you want it across devices. The word list is generated by pipeline, with rhyming families pruned out of the answer pool.</p>
+          <div class="cs-shots">
+            <figure>
+              <div class="cs-shot"><img src="case-study-assets/screens/home.png" alt="3 Letter Daily home screen, billboard landing with PLAY"></div>
+              <figcaption>Home, billboard landing, one tap to play</figcaption>
+            </figure>
+            <figure>
+              <div class="cs-shot"><img src="case-study-assets/screens/play.png" alt="3 Letter Daily mid-solve, RED / BAR guesses, full keyboard"></div>
+              <figcaption>Play, mid-solve, tiles flip sky → state colour</figcaption>
+            </figure>
+            <figure>
+              <div class="cs-shot"><img src="case-study-assets/screens/win.png" alt="3 Letter Daily solved, RED / BAR / CAR, the ‘Nice.’ banner + share card"></div>
+              <figcaption>Success, solved, the “Nice.” banner + share card</figcaption>
+            </figure>
+            <figure>
+              <div class="cs-shot"><img src="case-study-assets/screens/stats.png" alt="3 Letter Daily stats modal, streak, win rate, guess distribution"></div>
+              <figcaption>Stats, streak, win rate, guess distribution</figcaption>
+            </figure>
+          </div>
+        </section>
+
+        <!-- DECISIONS -->
+        <section id="c-decisions" style="padding:clamp(2.5rem,5vw,4.5rem) 0;border-top:1px solid var(--border)">
+          <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-muted)">Decisions</span><span style="flex:1;height:1px;background:var(--border)"></span></div>
+          <h2 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.7rem);line-height:1.05;letter-spacing:-0.025em;margin:0 0 0.8em;max-width:22ch;text-wrap:balance">The non-obvious calls</h2>
+          <div class="cs-two" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.4rem,3vw,2.5rem) clamp(2rem,4vw,4rem);margin-top:0.4rem">
+            <div style="border-top:2px solid var(--paper);padding-top:1.1rem"><span style="font-family:ui-monospace,monospace;font-size:12px;color:var(--orange)">01</span><h3 style="font-family:var(--font-display);font-weight:600;font-size:1.1875rem;letter-spacing:-0.01em;margin:0.5em 0 0;color:var(--paper)">Evaluate on the server</h3><p style="font-size:0.9375rem;line-height:1.6;color:var(--text-muted);margin:0.6em 0 0">The answer is graded server-side and never shipped to the client, so it can't be lifted from the page source or network tab. Integrity before convenience.</p></div>
+            <div style="border-top:2px solid var(--paper);padding-top:1.1rem"><span style="font-family:ui-monospace,monospace;font-size:12px;color:var(--orange)">02</span><h3 style="font-family:var(--font-display);font-weight:600;font-size:1.1875rem;letter-spacing:-0.01em;margin:0.5em 0 0;color:var(--paper)">Curate the pool, don't pad the guesses</h3><p style="font-size:0.9375rem;line-height:1.6;color:var(--text-muted);margin:0.6em 0 0">Three-letter difficulty was solved by pruning rhyming-family answers, not by adding guesses, fairness fixed at the source.</p></div>
+          </div>
+        </section>
+
+        <!-- OUTCOME (was: Impact) -->
+        <section id="c-impact" style="padding:clamp(2.5rem,5vw,4.5rem) 0;border-top:1px solid var(--border)">
+          <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-muted)">Outcome</span><span style="flex:1;height:1px;background:var(--border)"></span></div>
+          <div style="background:var(--bg-elevated);border:1px solid var(--border);border-radius:4px;padding:clamp(2.5rem,5vw,4rem)">
+            <p style="font-size:1.1875rem;line-height:1.55;color:var(--text-muted);max-width:56ch;margin:0 0 clamp(2rem,4vw,3rem)">3 Letter Daily is <strong style="color:var(--paper);font-weight:600">live at 3letterdaily.com</strong> and soft-launched to friends and family, a real product, played daily, on a stack that can grow. Play numbers come next; the structural results are in.</p>
+            <div class="cs-three" style="display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.5rem,4vw,3rem)">
+              <div><div style="font-family:var(--font-display);font-weight:800;font-size:clamp(2.6rem,5.5vw,4.5rem);line-height:0.9;letter-spacing:-0.04em">1</div><div style="font-size:0.8125rem;line-height:1.45;color:var(--text-muted);margin-top:0.9em;max-width:22ch">Weekend, Friday night to Sunday night, idea to live</div></div>
+              <div><div style="font-family:var(--font-display);font-weight:800;font-size:clamp(2.6rem,5.5vw,4.5rem);line-height:0.9;letter-spacing:-0.04em">~100</div><div style="font-size:0.8125rem;line-height:1.45;color:var(--text-muted);margin-top:0.9em;max-width:22ch">Prompts, roughly, from blank repo to a shipped product</div></div>
+              <div><div style="font-family:var(--font-display);font-weight:800;font-size:clamp(2.6rem,5.5vw,4.5rem);line-height:0.9;letter-spacing:-0.04em">100<span style="color:var(--orange)">%</span></div><div style="font-size:0.8125rem;line-height:1.45;color:var(--text-muted);margin-top:0.9em;max-width:22ch">Guesses graded server-side, the answer never ships to the client</div></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- next project -->
+        <div style="border-top:1px solid var(--border);margin-top:clamp(2rem,4vw,3rem)">
+          <a href="../fidelity-finops/index.html" style="display:flex;justify-content:space-between;align-items:baseline;gap:20px;text-decoration:none;padding:clamp(2rem,5vw,3.5rem) 0;flex-wrap:wrap">
+            <div><div style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-muted)">Next project</div><div style="font-family:var(--font-display);font-weight:700;font-size:clamp(2.25rem,4.6vw,4rem);letter-spacing:-0.025em;color:var(--paper);margin-top:0.3em">Fidelity</div></div>
+            <span style="font-family:var(--font-display);font-size:clamp(1.75rem,3vw,2.75rem);color:var(--orange)">→</span>
+          </a>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- footer = index Contact band -->
+  <footer id="contact" data-theme="highvis" style="background:var(--orange);color:var(--espresso);padding:clamp(3rem,7vw,6rem) 0;position:relative;overflow:hidden">
+    <div style="max-width:1600px;margin:0 auto;padding:0 clamp(1.5rem,4vw,4rem)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:clamp(1.5rem,4vw,2.5rem)">
+        <span style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.08em">// Let's build</span>
+      </div>
+      <a href="mailto:hi@roneill.me" style="display:block;text-decoration:none;font-family:var(--font-display);font-weight:800;font-size:clamp(2rem,9vw,8rem);line-height:0.9;letter-spacing:-0.05em;color:var(--espresso);text-transform:lowercase;text-wrap:balance">hi@roneill.me</a>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:clamp(1.5rem,3vw,2rem)">
+        <a href="https://linkedin.com/in/roneillme" style="font-family:var(--font-display);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:0.06em;color:var(--espresso);text-decoration:none;border-bottom:2px solid var(--espresso);padding-bottom:2px">LinkedIn →</a>
+        <a href="../../cv.html" style="font-family:var(--font-display);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:0.06em;color:var(--espresso);text-decoration:none;border-bottom:2px solid var(--espresso);padding-bottom:2px">Download CV →</a>
+      </div>
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:clamp(2.5rem,6vw,4rem);padding-top:2rem;border-top:2px solid var(--espresso)">
+        <span style="font-family:var(--font-display);font-weight:800;font-size:24px;letter-spacing:-0.05em">ron</span>
+        <span style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.06em">// Dublin // 2026</span>
+        <span style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.3em">+ + +</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>

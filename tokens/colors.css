@@ -1,0 +1,124 @@
+/* ============================================================
+   COLOR TOKENS — roneill.me
+   Base palette: Paper · Espresso · Orange + warm neutral greys.
+   Rule: base everything in paper + espresso; orange is sharp
+   punctuation, never wallpaper. One full-orange field max.
+   ============================================================ */
+
+:root {
+  /* ---- Base palette (raw) ---- */
+  --paper:        #ECEAE4;   /* Canvas — warm off-white */
+  --espresso:     #1A1310;   /* Ink — warm near-black */
+  --orange:       #EE5622;   /* Accent — links, hover, key marks */
+
+  /* Warm neutral greys (UI / data labels / hairlines) */
+  --grey-600:     #6B675F;   /* labels, secondary text on paper */
+  --grey-400:     #A8A39A;   /* faint text, captions */
+  --grey-300:     #CFCBC2;   /* dividers, disabled */
+
+  /* ---- Derived tints / shades ---- */
+  --paper-bright: #F4F2EC;   /* elevated panel on paper */
+  --paper-sunken: #E2DFD7;   /* sunken / inset on paper */
+  --espresso-soft:#241A16;   /* elevated panel on espresso */
+  --espresso-deep:#120D0B;   /* sunken on espresso */
+  --orange-press: #D6431A;   /* pressed / active accent */
+  --orange-tint:  #F6C9B6;   /* faint orange wash */
+
+  /* Hairlines (espresso @ low alpha) */
+  --line-faint:   rgba(26, 19, 16, 0.10);
+  --line:         rgba(26, 19, 16, 0.16);
+  --line-strong:  rgba(26, 19, 16, 0.30);
+  /* Hairlines on dark (paper @ low alpha) */
+  --line-on-dark:        rgba(236, 234, 228, 0.14);
+  --line-on-dark-strong: rgba(236, 234, 228, 0.30);
+
+  /* ============================================================
+     SEMANTIC ALIASES — default (Paper / Direction C)
+     Components reference these, never the raw palette.
+     ============================================================ */
+  --bg:            var(--paper);
+  --bg-elevated:   var(--paper-bright);
+  --bg-sunken:     var(--paper-sunken);
+  --bg-invert:     var(--espresso);   /* opposite field (e.g. contact band base) */
+
+  --text:          var(--espresso);
+  --text-muted:    var(--grey-600);
+  --text-faint:    var(--grey-400);
+  --text-invert:   var(--paper);
+
+  --accent:        var(--orange);
+  --accent-press:  var(--orange-press);
+  --link:          var(--orange);
+  --on-accent:     var(--espresso);   /* text/icons sitting ON an orange field */
+
+  --border:        var(--line);
+  --border-faint:  var(--line-faint);
+  --border-strong: var(--line-strong);
+
+  --field:         var(--paper-bright);
+  --field-border:  var(--line-strong);
+  --focus-ring:    var(--orange);
+
+  --motif:         var(--grey-400);   /* default tint for line-geometry motifs */
+}
+
+/* ============================================================
+   THEME SCOPE — BLACKOUT (Direction A)
+   Espresso canvas, paper text, orange sharp accent.
+   ============================================================ */
+[data-theme="blackout"] {
+  --bg:           var(--espresso);
+  --bg-elevated:  var(--espresso-soft);
+  --bg-sunken:    var(--espresso-deep);
+  --bg-invert:    var(--paper);
+
+  --text:         var(--paper);
+  --text-muted:   var(--grey-400);
+  --text-faint:   var(--grey-600);
+  --text-invert:  var(--espresso);
+
+  --accent:       var(--orange);
+  --accent-press: var(--orange-press);
+  --link:         var(--orange);
+  --on-accent:    var(--espresso);
+
+  --border:        var(--line-on-dark);
+  --border-faint:  rgba(236, 234, 228, 0.08);
+  --border-strong: var(--line-on-dark-strong);
+
+  --field:        var(--espresso-soft);
+  --field-border: var(--line-on-dark-strong);
+
+  --motif:        rgba(236, 234, 228, 0.22);
+}
+
+/* ============================================================
+   THEME SCOPE — HIGH-VIS (Direction B)
+   Orange field, espresso text. Imagery panels switch to
+   paper/espresso so work stays readable (use --panel-* there).
+   ============================================================ */
+[data-theme="highvis"] {
+  --bg:           var(--orange);
+  --bg-elevated:  #F2693A;
+  --bg-sunken:    var(--orange-press);
+  --bg-invert:    var(--espresso);
+
+  --text:         var(--espresso);
+  --text-muted:   rgba(26, 19, 16, 0.66);
+  --text-faint:   rgba(26, 19, 16, 0.46);
+  --text-invert:  var(--paper);
+
+  --accent:       var(--espresso);   /* on orange, black IS the accent */
+  --accent-press: #000;
+  --link:         var(--espresso);
+  --on-accent:    var(--orange);
+
+  --border:        rgba(26, 19, 16, 0.26);
+  --border-faint:  rgba(26, 19, 16, 0.14);
+  --border-strong: rgba(26, 19, 16, 0.5);
+
+  --field:        var(--paper);
+  --field-border: var(--espresso);
+
+  --motif:        rgba(26, 19, 16, 0.3);
+}
