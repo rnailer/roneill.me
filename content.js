@@ -50,7 +50,7 @@ window.RON_CONTENT = {
       summary: "Led the redesign of Fidelity's stock-option exercise flow, co-facilitating a four-week design sprint, then owning it through to an FDS-ready prototype. Built on a deep research base: the flow opens with a plain-language goal, pulls the most-valued calculator into the transaction, and answers the one question that stopped people submitting, what you'll actually receive.",
       cover: "Fidelity · Exercise flow",
       motif: "target",
-      shot: { kind: "mark", src: "assets/marks/fidelity.png" },
+      shot: { kind: "mark", src: "assets/shots/exercise-flow-cash-or-shares.png", big: true },
       href: "case-studies/fidelity-exercise-flow/index.html",
       link: { label: "View case study", kind: "case", gated: false },
     },
