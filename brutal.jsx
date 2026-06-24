@@ -69,7 +69,7 @@ function TopBar(){
         <div style={{ display:'flex', alignItems:'center', gap:'clamp(1rem,2.5vw,2rem)' }}>
           {['Work','About','Contact'].map(l=> <a key={l} href={'#'+l.toLowerCase()} style={link}>{l}</a>)}
           <a href="cv.html" style={link}>CV</a>
-          <BBadge status="available">Available</BBadge>
+          <span className="topbar-avail" style={{ display:'inline-flex' }}><BBadge status="available">Available</BBadge></span>
         </div>
       </div>
     </div>

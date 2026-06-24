@@ -29,7 +29,7 @@ a { color: inherit; }
   animation: ron-badge-pulse 1.9s var(--ease-out) infinite; }
 @keyframes ron-badge-pulse { 0% { transform: scale(1); opacity: .55 } 70% { transform: scale(2.6); opacity: 0 } 100% { opacity: 0 } }
 @media (prefers-reduced-motion: reduce){ .avail .dot::after { animation: none; } }
-@media (max-width: 560px){ .topnav .nav-link { display: none; } }
+@media (max-width: 512px){ .avail { display: none; } .topnav { gap: 14px; } }
 
 /* ---- hero (long-style numbered intro) ---- */
 .hero { padding: clamp(2.5rem,5vw,4.5rem) 0 clamp(1.5rem,3vw,2.5rem); }
