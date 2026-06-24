@@ -1,0 +1,14 @@
+{
+  "name": "Richard O'Neill",
+  "short_name": "roneill.me",
+  "description": "Product designer bridging design, code and AI.",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/favicon-32x32.png",    "sizes": "32x32",   "type": "image/png" },
+    { "src": "/favicon-16x16.png",    "sizes": "16x16",   "type": "image/png" }
+  ],
+  "theme_color": "#EE5622",
+  "background_color": "#1A1310",
+  "display": "browser",
+  "start_url": "/"
+}
