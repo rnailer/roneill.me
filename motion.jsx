@@ -7,7 +7,7 @@
      • components attach to window.RonMotion (consumed like RonUI/RonBrutal).
    Pairs with tokens/motion.css (.reveal / .is-revealed).
    ============================================================ */
-const { useState, useEffect, useRef, Children, cloneElement, isValidElement } = React;
+const { useState, useEffect, useRef, useMemo, Children, cloneElement, isValidElement } = React;
 
 /* ------------------------------------------------------------
    useReveal — one-shot entrance via IntersectionObserver. 0 dependencies.
@@ -148,4 +148,93 @@ function RevealGroup({ as: Tag = "div", stagger = 60, className, children, style
   );
 }
 
-window.RonMotion = { useReveal, useScrollProgress, Reveal, RevealGroup };
+/* ------------------------------------------------------------
+   <Typewriter> — types `text` character by character on mount (once,
+   never on scroll). The line grows as each char flips display:none ->
+   inline, so the block caret trails the last typed character. The final
+   word accents in orange (accentLast). \n becomes a line break.
+   prefers-reduced-motion: full text immediately, no typing, no caret.
+   ------------------------------------------------------------ */
+function Typewriter({ text, as: Tag = 'span', accent = true, speed = 45, className, style }){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const chars = useMemo(() => {
+    const trimmed = text.replace(/\s+$/, '');
+    const lastStart = accent ? trimmed.search(/\S+$/) : -1;   // index where the final word begins
+    return Array.from(text).map((ch, i) => ({
+      ch,
+      br: ch === '\n',
+      hot: accent && lastStart >= 0 && i >= lastStart && /\S/.test(ch),
+    }));
+  }, [text, accent]);
+
+  const [n, setN] = useState(reduce ? chars.length : 0);
+  const [caret, setCaret] = useState(reduce ? 'off' : 'on');   // on -> fading -> (gone)
+
+  useEffect(() => {
+    if (reduce) return;
+    if (n < chars.length) {
+      const t = setTimeout(() => setN(n + 1), speed);
+      return () => clearTimeout(t);
+    }
+    const t = setTimeout(() => setCaret('fading'), 2500);       // blink ~2-3x, then fade
+    return () => clearTimeout(t);
+  }, [n, chars.length, speed, reduce]);
+
+  return (
+    <Tag className={className} style={style} aria-label={text.replace(/\n/g, ' ')}>
+      {chars.map((c, i) => c.br
+        ? (i < n ? <br key={i} /> : null)
+        : <span key={i} aria-hidden="true" style={{ display: i < n ? 'inline' : 'none', color: c.hot ? 'var(--orange)' : undefined }}>{c.ch}</span>
+      )}
+      {caret !== 'off' && <span className={'tw-caret' + (caret === 'fading' ? ' tw-done' : '')} aria-hidden="true">▍</span>}
+    </Tag>
+  );
+}
+
+/* ------------------------------------------------------------
+   <Decode> — the full text lays out from frame one (the <br> is always
+   present, so the name never appears incomplete); only the letters
+   scramble through random glyphs and settle left-to-right. No caret.
+   The final word settles in orange (accentLast). Spaces, the apostrophe
+   and punctuation stay fixed. Once on mount, never on scroll.
+   prefers-reduced-motion: full text immediately, no scramble.
+   ------------------------------------------------------------ */
+function Decode({ text, as: Tag = 'span', accent = true, className, style }){
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const chars = useMemo(() => {
+    const lastStart = accent ? text.replace(/\s+$/, '').search(/\S+$/) : -1;
+    return Array.from(text).map((ch, i) => ({
+      ch,
+      br: ch === '\n',
+      hot: accent && lastStart >= 0 && i >= lastStart && /\S/.test(ch),
+      scramble: /[a-z0-9]/i.test(ch),
+    }));
+  }, [text, accent]);
+
+  const [disp, setDisp] = useState(() => chars.map(c => c.ch));
+
+  useEffect(() => {
+    if (reduce) return;
+    const G = 'abcdefghijkmnpqrstuvwxyz#%&/()=+<>';
+    const ivs = [], ts = [];
+    chars.forEach((c, i) => {
+      if (!c.scramble) return;
+      const lock = 200 + i * 45;
+      const iv = setInterval(() => setDisp(d => { const n = d.slice(); n[i] = G[Math.floor(Math.random() * G.length)]; return n; }), 40);
+      ivs.push(iv);
+      ts.push(setTimeout(() => { clearInterval(iv); setDisp(d => { const n = d.slice(); n[i] = c.ch; return n; }); }, lock));
+    });
+    return () => { ivs.forEach(clearInterval); ts.forEach(clearTimeout); };
+  }, [chars, reduce]);
+
+  return (
+    <Tag className={className} style={style} aria-label={text.replace(/\n/g, ' ')}>
+      {chars.map((c, i) => c.br
+        ? <br key={i} />
+        : <span key={i} aria-hidden="true" style={{ color: c.hot ? 'var(--orange)' : undefined }}>{disp[i]}</span>
+      )}
+    </Tag>
+  );
+}
+
+window.RonMotion = { useReveal, useScrollProgress, Reveal, RevealGroup, Typewriter, Decode };

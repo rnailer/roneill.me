@@ -64,6 +64,7 @@
 <script type="text/babel">
 const { Tag, MetricStat } = window.RonUI;
 const { FR, FR2, EDGE, DISP, SHAPE, Reg, ShapeChip, FramedShape, Corners, Handles, TopBar, Capabilities, Catalog, About, Contact, accentLast, LaySwitch } = window.RonBrutal;
+const { Decode } = window.RonMotion;
 const RC = window.RON_CONTENT;
 const { useState } = React;
 
@@ -100,9 +101,8 @@ function Hero(){
       </div>
       <OrbitMark/>
       <div style={{ marginTop:'auto', textAlign:'left', position:'relative', zIndex:4, width:'100%' }}>
-        <h1 className="disp" style={{ fontWeight:800, fontSize:'clamp(3rem,11vw,11rem)', lineHeight:0.82, letterSpacing:'-0.05em', color:'var(--paper)', margin:0, textTransform:'lowercase' }}>
-          richard<br/>o'neill
-        </h1>
+        <Decode as="h1" className="disp" accent={false} text={"richard\no'neill"}
+          style={{ fontWeight:800, fontSize:'clamp(3rem,11vw,11rem)', lineHeight:0.82, letterSpacing:'-0.05em', color:'var(--paper)', margin:0, textTransform:'lowercase' }} />
         <p style={{ fontFamily:'var(--font-text)', fontSize:'var(--fs-body-lg)', lineHeight:'var(--lh-body)', color:'rgba(236,234,228,0.9)', maxWidth:'42ch', margin:'clamp(1rem,2vw,1.5rem) 0 0' }}>{RC.positioning}</p>
       </div>
     </header>
