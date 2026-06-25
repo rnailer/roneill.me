@@ -11,6 +11,7 @@
   --motion-short:   200ms;  /* state changes */
   --motion-medium:  320ms;  /* reveals, entrances */
   --motion-long:    480ms;  /* signature moments only */
+  --motion-hero:    900ms;  /* longest: SVG stroke draw-in / constructed sequences */
 
   /* — Easing — one language across the whole site —
      crisp decelerate, engineered rather than bouncy */
@@ -114,5 +115,103 @@
       from { transform: translateY(calc(var(--motion-rise-lg) * -1)); }
       to   { transform: translateY(var(--motion-rise-lg)); }
     }
+  }
+}
+
+/* ============================================================
+   MERGED from motion-draw.css — SVG stroke draw-in + constructed
+   box sequence. Requires INLINE <svg> with stroke-based paths
+   (pathLength="1"). All guarded by prefers-reduced-motion.
+   ============================================================ */
+/* ------------------------------------------------------------
+   1. STROKE DRAW-IN
+   Markup:
+     <svg class="draw" ...>            <- gets .is-revealed on enter
+       <path pathLength="1" d="..." />
+       <path pathLength="1" d="..." style="--reveal-delay: 120ms" />
+     </svg>
+   Each path can carry its own --reveal-delay to draw in sequence.
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: no-preference) {
+  .draw path,
+  .draw line,
+  .draw polyline,
+  .draw circle,
+  .draw rect,
+  .draw .stroke {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset var(--motion-hero) var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: stroke-dashoffset;
+  }
+  .draw.is-revealed path,
+  .draw.is-revealed line,
+  .draw.is-revealed polyline,
+  .draw.is-revealed circle,
+  .draw.is-revealed rect,
+  .draw.is-revealed .stroke {
+    stroke-dashoffset: 0;
+    will-change: auto;
+  }
+}
+
+/* Fallback for paths WITHOUT pathLength="1": set --len to the real length
+   (JS: el.style.setProperty('--len', el.getTotalLength())) and add .draw-measured */
+@media (prefers-reduced-motion: no-preference) {
+  .draw-measured path,
+  .draw-measured .stroke {
+    stroke-dasharray: var(--len, 1000);
+    stroke-dashoffset: var(--len, 1000);
+  }
+  .draw-measured.is-revealed path,
+  .draw-measured.is-revealed .stroke {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ------------------------------------------------------------
+   2. CONSTRUCTED BOX — the process-box showpiece.
+   The box assembles in stages as it enters: edge draws, then the SVG
+   draws, then the label rises. Stages are driven by --reveal-delay on
+   the children; the box itself just toggles .is-revealed once.
+
+   Suggested markup:
+     <div class="construct is-revealed">         <- observer toggles this
+       <svg class="construct-edge draw">...</svg> <- box outline as a path
+       <svg class="construct-art draw" style="--reveal-delay: 320ms">...</svg>
+       <p class="construct-label" style="--reveal-delay: 700ms">Discovery</p>
+     </div>
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: no-preference) {
+  /* the drawing stages inherit the .draw behaviour above; the label rises */
+  .construct .construct-label {
+    opacity: 0;
+    transform: translateY(var(--motion-rise));
+    transition:
+      opacity   var(--motion-medium) var(--ease-out),
+      transform var(--motion-medium) var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  .construct.is-revealed .construct-label {
+    opacity: 1;
+    transform: none;
+    will-change: auto;
+  }
+}
+
+/* ------------------------------------------------------------
+   3. AMBIENT — optional slow perpetual motion for a resting motif.
+   Use on ONE or two motifs only, or it stops feeling considered.
+   ------------------------------------------------------------ */
+@media (prefers-reduced-motion: no-preference) {
+  .drift-slow {
+    animation: drift-slow 14s ease-in-out infinite;
+    transform-origin: center;
+  }
+  @keyframes drift-slow {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50%      { transform: translateY(-6px) rotate(1.2deg); }
   }
 }
