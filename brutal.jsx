@@ -157,17 +157,23 @@ function Catalog(){
 function About(){
   const A = RCB.about;
   const splitLead = (t)=>{ const i = t.indexOf(','); return i>0 ? [t.slice(0,i+1), t.slice(i+1)] : [t,'']; };
+  // — motion demo (single block): staggered reveal of the about section.
+  //   The only RonMotion usage on the site; the rest is rolled out deliberately.
+  const { Reveal, RevealGroup } = window.RonMotion;
   return (
     <section id="about" style={{ borderTop:`1px solid ${FR}`, background:'var(--espresso)', color:'var(--paper)', padding:`clamp(2.5rem,6vw,4.5rem) ${EDGE}`, position:'relative' }}>
       <div className="grain" />
-      <div style={{ position:'relative', zIndex:1 }}>
-        <div style={{ display:'flex', alignItems:'baseline', gap:14, marginBottom:'clamp(1.5rem,3vw,2.2rem)', flexWrap:'wrap' }}>
-          <span className="cap" style={{ fontSize:12, color:'var(--orange)' }}>(04)</span>
-          <span className="cap" style={{ fontSize:12, color:'var(--grey-400)', letterSpacing:'0.08em' }}>About, my story</span>
-          <span style={{ flex:1, height:1, background:FR, minWidth:40 }} />
-          <span className="cap" style={{ fontSize:11, color:FR2 }}>{RCB.location} // since 2013</span>
-        </div>
-        <h2 className="disp" style={{ margin:'0 0 clamp(2rem,5vw,3.5rem)', fontWeight:800, fontSize:'clamp(3rem,11vw,9rem)', lineHeight:0.82, letterSpacing:'-0.05em', color:'var(--paper)', textTransform:'lowercase' }}>{accentLast('About')}</h2>
+      <RevealGroup style={{ position:'relative', zIndex:1 }}>
+        <Reveal>
+          <div style={{ display:'flex', alignItems:'baseline', gap:14, marginBottom:'clamp(1.5rem,3vw,2.2rem)', flexWrap:'wrap' }}>
+            <span className="cap" style={{ fontSize:12, color:'var(--orange)' }}>(04)</span>
+            <span className="cap" style={{ fontSize:12, color:'var(--grey-400)', letterSpacing:'0.08em' }}>About, my story</span>
+            <span style={{ flex:1, height:1, background:FR, minWidth:40 }} />
+            <span className="cap" style={{ fontSize:11, color:FR2 }}>{RCB.location} // since 2013</span>
+          </div>
+        </Reveal>
+        <Reveal as="h2" className="disp" style={{ margin:'0 0 clamp(2rem,5vw,3.5rem)', fontWeight:800, fontSize:'clamp(3rem,11vw,9rem)', lineHeight:0.82, letterSpacing:'-0.05em', color:'var(--paper)', textTransform:'lowercase' }}>{accentLast('About')}</Reveal>
+        <Reveal>
         <div style={{ display:'grid', gridTemplateColumns:'minmax(0,1.25fr) minmax(0,1fr)', gap:'clamp(2rem,5vw,4.5rem)', alignItems:'start' }} className="about-grid">
           <div>
             {A.lead.map((p,i)=>{ const [a,b]=splitLead(p); return (
@@ -195,7 +201,8 @@ function About(){
             </ul>
           </div>
         </div>
-      </div>
+        </Reveal>
+      </RevealGroup>
     </section>
   );
 }
