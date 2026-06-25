@@ -4,6 +4,11 @@
    Imports-only by design; all rules live in tokens/.
    ============================================================ */
 
+/* Motion tokens + reveal utilities — imported FIRST so the design tokens
+   below always win on any overlap (e.g. --ease-out), regardless of value.
+   Adds --motion-* vars and .reveal helpers. */
+@import url("tokens/motion.css");
+
 @import url("tokens/fonts.css");
 @import url("tokens/colors.css");
 @import url("tokens/typography.css");

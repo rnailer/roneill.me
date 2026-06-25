@@ -1,0 +1,118 @@
+/* ============================================================
+   motion.css — motion design tokens + utilities for roneill.me
+   Philosophy: one fixed vocabulary, used everywhere. Restraint = coherence.
+   Performance: transform/opacity only. Native CSS does the heavy lifting.
+   ============================================================ */
+
+:root {
+  /* — Duration — keep the ceiling low; >500ms reads sluggish, not considered */
+  --motion-instant: 0ms;
+  --motion-micro:   120ms;  /* hover, focus, press */
+  --motion-short:   200ms;  /* state changes */
+  --motion-medium:  320ms;  /* reveals, entrances */
+  --motion-long:    480ms;  /* signature moments only */
+
+  /* — Easing — one language across the whole site —
+     crisp decelerate, engineered rather than bouncy */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);   /* entrances (decelerate) */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);   /* symmetrical state change */
+  --ease-in:     cubic-bezier(0.55, 0, 1, 0.45);   /* exits (accelerate) */
+  /* reserved for the ONE signature moment — a subtle, near-critically-damped spring */
+  --ease-signature: linear(
+    0, 0.006, 0.025, 0.101, 0.539, 0.721, 0.849, 0.937, 0.991, 1.006, 1.005, 1
+  );
+
+  /* — Displacement — small. Big parallax is the opposite of restraint */
+  --motion-rise:    16px;   /* reveal translateY */
+  --motion-rise-lg: 24px;   /* larger blocks */
+  --motion-stagger: 60ms;   /* delay between siblings */
+}
+
+/* ============================================================
+   Global accessibility reset — motion is an enhancement, never required.
+   Reduced-motion users keep opacity, lose movement.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   TIER 2 — One-shot reveal (driven by the useReveal IO hook).
+   Default state = hidden ONLY when motion is allowed; otherwise visible.
+   The .is-revealed class is toggled once on enter and never removed.
+   ============================================================ */
+.reveal {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(var(--motion-rise));
+    transition:
+      opacity   var(--motion-medium) var(--ease-out),
+      transform var(--motion-medium) var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  .reveal.is-revealed {
+    opacity: 1;
+    transform: none;
+    will-change: auto; /* drop the GPU layer once settled */
+  }
+}
+
+/* ============================================================
+   TIER 1 — SVG motif stroke-draw (motion weight tracks the ~10% visual weight).
+   Apply to a path/circle; it draws itself once on reveal.
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  .motif-draw {
+    stroke-dasharray: var(--motif-len, 1000);
+    stroke-dashoffset: var(--motif-len, 1000);
+    transition: stroke-dashoffset var(--motion-long) var(--ease-out);
+  }
+  .reveal.is-revealed .motif-draw,
+  .motif-draw.is-revealed {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ============================================================
+   TIER 3 — Native scroll-driven decoration (compositor thread, 0 JS).
+   Use for progress bars / parallax where reversing on scroll-up is fine.
+   Falls back to a static state automatically.
+   ============================================================ */
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* Reading-progress bar: position: fixed; top: 0; transform-origin: left */
+    .scroll-progress {
+      transform: scaleX(0);
+      transform-origin: left center;
+      animation: scroll-progress linear both;
+      animation-timeline: scroll(root block);
+    }
+    @keyframes scroll-progress {
+      to { transform: scaleX(1); }
+    }
+
+    /* Gentle parallax for a figure: subject moves through the viewport */
+    .parallax-soft {
+      animation: parallax-soft linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+    @keyframes parallax-soft {
+      from { transform: translateY(calc(var(--motion-rise-lg) * -1)); }
+      to   { transform: translateY(var(--motion-rise-lg)); }
+    }
+  }
+}
