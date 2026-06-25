@@ -215,3 +215,10 @@
     50%      { transform: translateY(-6px) rotate(1.2deg); }
   }
 }
+
+/* ============================================================
+   Heading reveal — hide each case-study H1 until the rise script
+   rebuilds it in final position, so the original title never flashes
+   before it animates. The script removes .tw-pending once rebuilt.
+   ============================================================ */
+.tw-pending { visibility: hidden; }
