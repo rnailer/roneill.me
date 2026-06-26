@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 980" width="1200" height="980" font-family="'Inter','Helvetica Neue',Arial,sans-serif">
+<defs>
+  <marker id="arrO" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M1,1 L7,4.5 L1,8" fill="none" stroke="#EE5622" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arrG" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M1,1 L7,4.5 L1,8" fill="none" stroke="#A8A39A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arrE" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M1,1 L7,4.5 L1,8" fill="none" stroke="#1A1310" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+<rect width="1200" height="980" fill="#1A1310"/>
+<text x="64" y="72" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="600" fill="#EE5622" letter-spacing="2.4" style="">PATTERN ARCHITECTURE</text>
+<text x="64" y="106" font-family="'TBJ Ultra Centric','Arial Black','Helvetica Neue',sans-serif" font-size="30" font-weight="800" fill="#ECEAE4" letter-spacing="-0.4" style="">One journey. Swappable tasks.</text>
+<text x="64" y="134" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="15" font-weight="400" fill="#A8A39A" style="">The progress page orchestrates each sub-task — and returns the user to the same place every time.</text>
+<line x1="720" y1="94" x2="746" y2="94" stroke="#EE5622" stroke-width="2" stroke-linecap="round" marker-end="url(#arrO)"/>
+<text x="754" y="98" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="500" fill="#A8A39A" style="">Dispatch to sub-task</text>
+<line x1="930" y1="94" x2="956" y2="94" stroke="#A8A39A" stroke-width="2" stroke-linecap="round" stroke-dasharray="2 3" marker-end="url(#arrG)"/>
+<text x="964" y="98" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="500" fill="#A8A39A" style="">Return to progress page</text>
+<rect x="216" y="196" width="240" height="60" rx="12" fill="#241A16" stroke="#38302A" stroke-width="1.4"/>
+<g stroke="#A8A39A" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="239" y="218" width="22" height="16" rx="2.5"/><path d="M239,220 L250,228 L261,220"/></g>
+<text x="278" y="221" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="11" font-weight="600" fill="#6B675F" letter-spacing="1.4" style="">ENTRY POINT</text>
+<text x="278" y="240" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="15.5" font-weight="600" fill="#ECEAE4" style="">Stock award email</text>
+<line x1="336.0" y1="256" x2="336.0" y2="294" stroke="#A8A39A" stroke-width="1.6" stroke-linecap="round" marker-end="url(#arrG)"/>
+<rect x="96" y="300" width="480" height="540" rx="18" fill="#241A16" stroke="#38302A" stroke-width="1.4"/>
+<text x="128" y="344" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="11.5" font-weight="700" fill="#EE5622" letter-spacing="1.8" style="">PROGRESS PAGE · HOME BASE</text>
+<text x="128" y="374" font-family="'TBJ Ultra Centric','Arial Black','Helvetica Neue',sans-serif" font-size="21" font-weight="800" fill="#ECEAE4" letter-spacing="-0.3" style="">Your stock plan</text>
+<text x="128" y="397" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13" font-weight="400" fill="#A8A39A" style="">A single page that always shows what&#x27;s done and what&#x27;s next.</text>
+<line x1="128" y1="416" x2="544" y2="416" stroke="#33291F" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="152" y1="420" x2="152" y2="580" stroke="#EE5622" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="152" y1="580" x2="152" y2="740" stroke="#6B675F" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="2 5"/>
+<circle cx="152" cy="432" r="13" fill="#EE5622"/>
+<path d="M147.0,432.3 L150.4,435.6 L157.0,428.4" fill="none" stroke="#1A1310" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="186" y="437" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="16" font-weight="600" fill="#ECEAE4" style="">Open brokerage account</text>
+<text x="544" y="437" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="11.5" font-weight="700" fill="#EE5622" text-anchor="end" letter-spacing="1.2" style="">DONE</text>
+<text x="186" y="456" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13" font-weight="400" fill="#A8A39A" style="">Account · THETARSA01 ····4589</text>
+<rect x="120" y="548" width="432" height="72" rx="12" fill="#2A1812" stroke="#EE5622" stroke-width="1.4"/>
+<circle cx="152" cy="572" r="13" fill="#241A16" stroke="#EE5622" stroke-width="3"/>
+<circle cx="152" cy="572" r="4.5" fill="#EE5622"/>
+<text x="186" y="577" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="16" font-weight="600" fill="#ECEAE4" style="">Learn about your award</text>
+<text x="544" y="577" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="500" fill="#A8A39A" text-anchor="end" style="">1 min</text>
+<text x="186" y="596" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13" font-weight="400" fill="#A8A39A" style="">See what it&#x27;s worth and when it pays out.</text>
+<circle cx="152" cy="712" r="13" fill="#241A16" stroke="#6B675F" stroke-width="2.4"/>
+<text x="186" y="717" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="16" font-weight="600" fill="#ECEAE4" style="">Accept award</text>
+<text x="544" y="717" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="500" fill="#A8A39A" text-anchor="end" style="">2 min</text>
+<text x="186" y="736" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13" font-weight="400" fill="#A8A39A" style="">Accept by Nov 15, 2023.</text>
+<rect x="720" y="400" width="400" height="80" rx="14" fill="#241A16" stroke="#38302A" stroke-width="1.4"/>
+<g stroke="#A8A39A" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="749" y="433" width="22" height="15" rx="2.5"/><path d="M749,438 h22"/><circle cx="766" cy="443" r="1.4" fill="#A8A39A"/></g>
+<text x="792" y="432" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="11" font-weight="700" fill="#6B675F" letter-spacing="1.6" style="">SUB-TASK</text>
+<text x="792" y="452" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="16" font-weight="600" fill="#ECEAE4" style="">Open brokerage account</text>
+<text x="1098" y="432" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="11.5" font-weight="500" fill="#EE5622" text-anchor="end" style="">one-page flow</text>
+<line x1="584" y1="430" x2="712" y2="430" stroke="#EE5622" stroke-width="1.8" stroke-linecap="round" marker-end="url(#arrO)"/>
+<line x1="712" y1="452" x2="584" y2="452" stroke="#A8A39A" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="2 3" marker-end="url(#arrG)"/>
+<rect x="720" y="540" width="400" height="80" rx="14" fill="#241A16" stroke="#38302A" stroke-width="1.4"/>
+<g stroke="#A8A39A" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M752,569 h11 l5,5 v17 h-16 z"/><path d="M763,569 v5 h5"/><path d="M756,579 h8 M756,584 h8"/></g>
+<text x="792" y="572" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="11" font-weight="700" fill="#6B675F" letter-spacing="1.6" style="">SUB-TASK</text>
+<text x="792" y="592" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="16" font-weight="600" fill="#ECEAE4" style="">Review award details</text>
+<text x="1098" y="572" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="11.5" font-weight="500" fill="#EE5622" text-anchor="end" style="">education</text>
+<line x1="584" y1="570" x2="712" y2="570" stroke="#EE5622" stroke-width="1.8" stroke-linecap="round" marker-end="url(#arrO)"/>
+<line x1="712" y1="592" x2="584" y2="592" stroke="#A8A39A" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="2 3" marker-end="url(#arrG)"/>
+<rect x="720" y="680" width="400" height="80" rx="14" fill="#241A16" stroke="#38302A" stroke-width="1.4"/>
+<g stroke="#A8A39A" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M752,709 h11 l5,5 v17 h-16 z"/><path d="M763,709 v5 h5"/><path d="M756,719 h8 M756,724 h8"/></g>
+<text x="792" y="712" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="11" font-weight="700" fill="#6B675F" letter-spacing="1.6" style="">SUB-TASK</text>
+<text x="792" y="732" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="16" font-weight="600" fill="#ECEAE4" style="">Accept award</text>
+<text x="1098" y="712" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="11.5" font-weight="500" fill="#EE5622" text-anchor="end" style="">documents + e-sign</text>
+<line x1="584" y1="710" x2="712" y2="710" stroke="#EE5622" stroke-width="1.8" stroke-linecap="round" marker-end="url(#arrO)"/>
+<line x1="712" y1="732" x2="584" y2="732" stroke="#A8A39A" stroke-width="1.6" stroke-linecap="round" stroke-dasharray="2 3" marker-end="url(#arrG)"/>
+<line x1="336.0" y1="840" x2="336.0" y2="874" stroke="#A8A39A" stroke-width="1.6" stroke-linecap="round" marker-end="url(#arrG)"/>
+<rect x="120" y="874" width="300" height="64" rx="14" fill="#2A1812" stroke="#EE5622" stroke-width="1.4"/>
+<circle cx="154" cy="906.0" r="12" fill="#EE5622"/>
+<path d="M149.0,906.3 L152.4,909.6 L159.0,902.4" fill="none" stroke="#1A1310" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="178" y="902" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="11" font-weight="700" fill="#EE5622" letter-spacing="1.4" style="">CONFIRMATION</text>
+<text x="178" y="921" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="15.5" font-weight="600" fill="#ECEAE4" style="">Award accepted</text>
+<line x1="428" y1="906.0" x2="464" y2="906.0" stroke="#A8A39A" stroke-width="1.6" stroke-linecap="round" marker-end="url(#arrG)"/>
+<rect x="472" y="888" width="118" height="36" rx="18" fill="#241A16" stroke="#38302A" stroke-width="1.4"/>
+<text x="531" y="911" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="600" fill="#A8A39A" text-anchor="middle" style="">Exit</text>
+<rect x="720" y="800" width="400" height="140" rx="14" fill="#20160F" stroke="#4A3E33" stroke-width="1.4" stroke-dasharray="5 4"/>
+<text x="744" y="834" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="14.5" font-weight="700" fill="#ECEAE4" style="">Swap the tasks, keep the experience</text>
+<text x="744" y="855" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="400" fill="#A8A39A" style="">The same tracker hosts any ordered journey.</text>
+<rect x="744" y="880" width="47.0" height="30" rx="15" fill="#241A16" stroke="#4A3E33" stroke-width="1.2"/>
+<text x="767.5" y="899.5" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="500" fill="#A8A39A" text-anchor="middle" style="">RMD</text>
+<rect x="801.0" y="880" width="131.0" height="30" rx="15" fill="#241A16" stroke="#4A3E33" stroke-width="1.2"/>
+<text x="866.5" y="899.5" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="500" fill="#A8A39A" text-anchor="middle" style="">Add beneficiary</text>
+<rect x="942.0" y="880" width="131.0" height="30" rx="15" fill="#241A16" stroke="#4A3E33" stroke-width="1.2"/>
+<text x="1007.5" y="899.5" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="500" fill="#A8A39A" text-anchor="middle" style="">401(k) rollover</text>
+<rect x="744" y="918" width="124.0" height="30" rx="15" fill="#241A16" stroke="#4A3E33" stroke-width="1.2"/>
+<text x="806.0" y="937.5" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="500" fill="#A8A39A" text-anchor="middle" style="">Crypto funding</text>
+<line x1="760" y1="768" x2="760" y2="798" stroke="#4A3E33" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="2 4"/>
+</svg>

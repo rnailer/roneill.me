@@ -21,8 +21,26 @@ window.RON_CONTENT = {
     {
       index: "01",
       client: "Fidelity",
-      year: "2026",
+      year: "2023",
       lead: true,
+      headline: "Collapsed two broken flows into one guided experience — acceptance up 64%",
+      tags: ["UX", "Systems design", "Research-led"],
+      metrics: [
+        { value: "64", unit: "%", caption: "Lift in award acceptance (SPS pilot)" },
+        { value: "9", unit: "", caption: "Guided journeys built on the framework" },
+      ],
+      summary: "An onboarding redesign that lifted award acceptance by 64% — and the orchestration pattern behind it became a reusable framework across the platform. The brief was one flow; the delivery was an enterprise pattern adopted across nine guided journeys and three business units.",
+      cover: "Fidelity · Guided Tracker",
+      motif: "network",
+      shot: { kind: "mark", src: "assets/marks/guided-tracker.svg", big: true },
+      href: "case-studies/guided-tracker/index.html",
+      link: { label: "View case study", kind: "case", gated: false },
+    },
+    {
+      index: "02",
+      client: "Fidelity",
+      year: "2026",
+      lead: false,
       headline: "Turned a FinOps chatbot into a dashboard that shows what needs attention",
       tags: ["AI product", "Data viz", "Dashboard"],
       metrics: [
@@ -37,7 +55,7 @@ window.RON_CONTENT = {
       link: { label: "View case study", kind: "case", gated: false },
     },
     {
-      index: "02",
+      index: "03",
       client: "Fidelity",
       year: "2023 — 24",
       lead: false,
@@ -55,7 +73,7 @@ window.RON_CONTENT = {
       link: { label: "View case study", kind: "case", gated: false },
     },
     {
-      index: "03",
+      index: "04",
       client: "333 Games",
       year: "2026 — Now",
       lead: false,
@@ -73,7 +91,7 @@ window.RON_CONTENT = {
       link: { label: "View case study", kind: "case", gated: false },
     },
     {
-      index: "04",
+      index: "05",
       client: "Sonarchy",
       year: "2026 — Now",
       lead: false,
@@ -91,7 +109,7 @@ window.RON_CONTENT = {
       link: { label: "View case study", kind: "case", gated: false },
     },
     {
-      index: "05",
+      index: "06",
       client: "3 Letter Daily",
       year: "2026",
       lead: false,

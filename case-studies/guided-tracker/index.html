@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="blackout">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Guided Tracker · roneill.me</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="case.css">
+<style>
+  /* ---- page-local: dark hero figure, light exhibits, outcome bands ---- */
+
+  /* hero figure — dark-native (#1A1310 baked in), sits on the blackout page */
+  .hero-figure { margin: clamp(1.8rem,4vw,3rem) 0 0; border-radius: var(--radius); overflow: hidden;
+    border: 1px solid var(--border-strong); background: var(--bg-sunken); box-shadow: 0 18px 48px rgba(0,0,0,.5); }
+  .hero-figure img { width: 100%; height: auto; display: block; }
+
+  /* numbered problem/effect lists (reuses .listing rhythm but standalone) */
+  .points-list { list-style: none; margin: 1.6rem 0 0; padding: 0; }
+  .points-list li { display: flex; gap: 16px; padding: 1.15rem 0; border-top: 1px solid var(--border); }
+  .points-list .n { font-family: ui-monospace, monospace; font-size: 12px; color: var(--orange); flex: none; padding-top: 3px; }
+  .points-list h4 { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body); letter-spacing: -0.01em; margin: 0; color: var(--paper); }
+  .points-list p { font-size: var(--fs-body-sm); line-height: 1.6; color: var(--text-muted); margin: 0.4em 0 0; max-width: 64ch; text-wrap: pretty; }
+  .points-list p strong { color: var(--paper); font-weight: 600; }
+
+  /* light "exhibit" figures — the SVGs carry their own paper/elevated bg */
+  .exhibits { display: flex; flex-direction: column; gap: clamp(1.8rem,4vw,3rem); margin-top: clamp(1.8rem,4vw,2.8rem); }
+  figure.exhibit { margin: 0; }
+  figure.exhibit .frame { border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); box-shadow: 0 16px 42px rgba(0,0,0,.45); }
+  figure.exhibit img { width: 100%; height: auto; display: block; }
+  figure.exhibit figcaption { font-size: var(--fs-caption); line-height: 1.55; color: var(--text-muted); margin-top: 0.9em; max-width: 72ch; text-wrap: pretty; }
+  figure.exhibit figcaption b { color: var(--paper); font-weight: 600; }
+
+  /* research usability mini-stats */
+  .statline { font: var(--type-label); text-transform: uppercase; letter-spacing: var(--track-label);
+    color: var(--text-faint); margin: clamp(2rem,4vw,3rem) 0 1.4rem; }
+  .usab { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: clamp(1.2rem,3vw,2rem); margin-top: clamp(1.4rem,3vw,2rem); }
+  .usab .v { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.9rem,4vw,3rem); line-height: 0.95; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; color: var(--paper); }
+  .usab .c { font-size: var(--fs-caption); line-height: 1.45; color: var(--text-muted); margin-top: 0.7em; }
+  .usab .c .frac { color: var(--orange); font-family: ui-monospace, monospace; }
+
+  /* outcome bands — attribution must stay visually unambiguous */
+  .bands { display: flex; flex-direction: column; gap: clamp(1.2rem,3vw,1.8rem); margin-top: 0.6rem; }
+  .band { border: 1px solid var(--border); border-radius: var(--radius); padding: clamp(1.6rem,4vw,2.6rem); }
+  .band.mine { background: var(--bg-elevated); border-color: var(--border-strong); }
+  .band.framework { background: var(--bg-sunken); }
+  .blabel { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; margin-bottom: clamp(1.2rem,3vw,1.8rem); }
+  .blabel .who { font: var(--type-label); text-transform: uppercase; letter-spacing: var(--track-label); color: var(--orange); }
+  .blabel .meta-when { font-family: ui-monospace, monospace; font-size: 12px; color: var(--text-faint); }
+  .band .disclaimer { font-size: var(--fs-body-sm); line-height: 1.55; color: var(--text-muted); margin: 0 0 1.5rem;
+    max-width: 64ch; border-left: 2px solid var(--border-strong); padding-left: 1.1rem; text-wrap: pretty; }
+  .band .disclaimer strong { color: var(--paper); font-weight: 600; }
+  .bandmetrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px,1fr)); gap: clamp(1.4rem,3.5vw,2.6rem); }
+  .bandmetrics .v { font-family: var(--font-display); font-weight: 800; font-size: clamp(2.2rem,5vw,4rem); line-height: 0.9;
+    letter-spacing: -0.04em; font-variant-numeric: tabular-nums; color: var(--paper); }
+  .bandmetrics .v .u { color: var(--orange); }
+  .band.mine .bandmetrics .v { color: var(--orange); }
+  .bandmetrics .c { font-size: var(--fs-caption); line-height: 1.45; color: var(--text-muted); margin-top: 0.8em; max-width: 24ch; }
+
+  /* confidentiality note */
+  .confid { font-size: var(--fs-caption); line-height: 1.55; color: var(--text-faint); margin: clamp(2.5rem,5vw,4rem) 0 0;
+    padding-top: 1.4rem; border-top: 1px solid var(--border); max-width: 76ch; text-wrap: pretty; }
+
+  @media (max-width: 580px){ .bandmetrics { grid-template-columns: 1fr 1fr; } }
+</style>
+
+  <!-- ── Favicons + manifest (roneill.me) ─────────────────────── -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#EE5622">
+
+  <!-- ── Open Graph / Twitter ─────────────────────────────────── -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://roneill.me/case-studies/guided-tracker/">
+  <meta property="og:title" content="The Guided Tracker — Richard O'Neill">
+  <meta property="og:description" content="Collapsed two broken equity-onboarding flows into one guided experience — acceptance up 64%, and the pattern became a reusable platform framework.">
+  <meta property="og:image" content="https://roneill.me/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Richard O'Neill — Product designer bridging design, code and AI.">
+  <meta property="og:locale" content="en_IE">
+  <meta property="og:site_name" content="roneill.me">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="The Guided Tracker — Richard O'Neill">
+  <meta name="twitter:description" content="Collapsed two broken equity-onboarding flows into one guided experience — acceptance up 64%.">
+  <meta name="twitter:image" content="https://roneill.me/og-image.png">
+  <meta name="twitter:image:alt" content="Richard O'Neill — Product designer bridging design, code and AI.">
+  <!-- Motion: shared reveal tokens + dormant IntersectionObserver / rise driver -->
+  <link rel="stylesheet" href="/tokens/motion.css">
+  <script defer src="/motion-observe.js"></script>
+</head>
+<body>
+  <div class="bar"><div class="wrap bar-in">
+    <a href="../../index.html" class="mark">ron</a>
+    <nav class="topnav">
+      <a href="../../index.html#work" class="nav-link">Work</a>
+      <a href="../../index.html#about" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact</a>
+      <a href="../../cv.html" class="nav-link">CV</a>
+      <span class="avail"><span class="dot"></span>Available</span>
+    </nav>
+  </div></div>
+
+  <header class="hero"><div class="wrap">
+    <div class="kicker">Case study <b>[ 01 ]</b> · the full story</div>
+    <div class="num-big">01</div>
+    <h1 data-rise class="tw-pending">collapsed two broken flows into one guided experience — acceptance up <span class="o">64%</span></h1>
+    <p class="summary">An onboarding redesign that lifted award acceptance by <strong>64%</strong> — and the orchestration pattern behind it became a reusable framework across the platform. The brief was one flow; the delivery was an enterprise pattern adopted across nine guided journeys.</p>
+    <dl class="meta">
+      <div><dt>Client</dt><dd>Fidelity Stock Plan Services</dd></div>
+      <div><dt>Year</dt><dd>2023</dd></div>
+      <div><dt>Role</dt><dd>Lead Product Designer</dd></div>
+      <div><dt>Type</dt><dd>UX · Systems design · Research</dd></div>
+    </dl>
+
+    <figure class="hero-figure">
+      <img src="assets/guided-tracker-01-journey.svg" alt="The island-hopping problem reframed as one continuous guided journey: a single progress tracker sequencing accept, enrol and confirm steps end to end.">
+    </figure>
+  </div></header>
+
+  <div class="wrap"><div class="doc">
+    <aside class="rail"><nav>
+      <div class="rh">Sections</div>
+      <ol>
+        <li><a href="#c1"><span class="mono">01</span> The brief</a></li>
+        <li><a href="#c2"><span class="mono">02</span> The reframe</a></li>
+        <li><a href="#c3"><span class="mono">03</span> What I designed</a></li>
+        <li><a href="#c4"><span class="mono">04</span> The pivot</a></li>
+        <li><a href="#c5"><span class="mono">05</span> Research</a></li>
+        <li><a href="#c6"><span class="mono">06</span> Outcome</a></li>
+        <li><a href="#c7"><span class="mono">07</span> What this shows</a></li>
+      </ol>
+    </nav></aside>
+
+    <main>
+      <section class="chapter" id="c1">
+        <div class="chx"><span class="n">01</span><span class="l">The brief</span><span class="r"></span></div>
+        <h2>Less than half of participants finished in the first session</h2>
+        <div class="prose">
+          <p>Fidelity Stock Plan Services is where employees manage their equity — accepting awards, understanding vesting, taking action on grants. When a new award arrived, the accept-and-enrol flow demanded context participants didn't yet have. Most bailed and came back later — if they came back at all.</p>
+          <p>For the firm, that incompletion had three concrete costs:</p>
+        </div>
+        <ul class="points-list">
+          <li><span class="n">01</span><div><h4>Low completion</h4><p>Awards left unaccepted: <strong>money employees were entitled to, left on the table.</strong></p></div></li>
+          <li><span class="n">02</span><div><h4>Call volume</h4><p>Confused participants called service reps. Completion was happening — just expensively.</p></div></li>
+          <li><span class="n">03</span><div><h4>Low confidence</h4><p>Participants who did finish weren't sure they'd done it right, eroding trust in the platform.</p></div></li>
+        </ul>
+      </section>
+
+      <section class="chapter" id="c2">
+        <div class="chx"><span class="n">02</span><span class="l">The reframe</span><span class="r"></span></div>
+        <h2>Island-hopping</h2>
+        <div class="prose">
+          <p>Accepting an award and enrolling in a plan were two separate flows — built at different times, sitting in different parts of the product. Participants had to jump between them, losing the thread each time. We called it <em>island-hopping</em>.</p>
+          <p>The pattern had three compounding effects:</p>
+        </div>
+        <ul class="points-list">
+          <li><span class="n">01</span><div><h4>Cognitive load</h4><p>Each island reset context. Participants re-oriented on every jump, carrying what they'd just learnt in working memory.</p></div></li>
+          <li><span class="n">02</span><div><h4>False-completion trap</h4><p>Finishing the accept flow <em>felt</em> like done. Most didn't realise enrolment was a separate, necessary step.</p></div></li>
+          <li><span class="n">03</span><div><h4>Post-action anxiety</h4><p>"Did I do that right?" No persistent status view left participants unable to confirm they'd finished.</p></div></li>
+        </ul>
+        <div class="pull">
+          <span class="k">The reframe</span>
+          <p>Collapse two flows into one guided experience. Give participants a single journey — not a series of destinations to find their own way between.</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="c3">
+        <div class="chx"><span class="n">03</span><span class="l">What I designed</span><span class="r"></span></div>
+        <h2>Four moves. One continuous experience.</h2>
+        <div class="decisions">
+          <div class="decision"><div class="n">01</div><h3>Persistent progress tracker</h3><p>A fixed component showing every step, always visible, always showing where you are and what's left. Eliminates the false-completion trap and post-action anxiety in a single structural move.</p></div>
+          <div class="decision"><div class="n">02</div><h3>Consolidation</h3><p>Accept and enrol stitched into one sequential flow. No redirects, no "go here next." The tracker owns the journey end-to-end.</p></div>
+          <div class="decision"><div class="n">03</div><h3>Contextual education</h3><p>Plain-language explanations of vesting, award value, and tax, surfaced at the moment of relevance, not buried three clicks away.</p></div>
+          <div class="decision"><div class="n">04</div><h3>Visual cohesion</h3><p>One visual language across every step, so participants always knew where they were in the broader experience.</p></div>
+        </div>
+
+        <div class="exhibits">
+          <figure class="exhibit">
+            <div class="frame"><img src="assets/guided-tracker-02-progress.svg" alt="The persistent progress tracker showing the accept-and-enrol journey with the current step highlighted and remaining steps visible, using fictional Theta Corporation / Jenny Jones data."></div>
+            <figcaption><b>The progress tracker</b> — persistent, step-aware, always in view. Fictional Theta Corporation / Jenny Jones data.</figcaption>
+          </figure>
+          <figure class="exhibit">
+            <div class="frame"><img src="assets/guided-tracker-03-vesting.svg" alt="A vesting schedule showing when each tranche of an award pays out, surfaced inline at the moment it matters."></div>
+            <figcaption><b>Vesting schedule</b> — when it pays out, shown at the moment it matters.</figcaption>
+          </figure>
+          <figure class="exhibit">
+            <div class="frame"><img src="assets/guided-tracker-04-award-value.svg" alt="An award-value breakdown translating gross award to net value in plain numbers."></div>
+            <figcaption><b>Award value</b> — gross to net in plain numbers, answering the question participants actually had.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <section class="chapter" id="c4">
+        <div class="chx"><span class="n">04</span><span class="l">The pivot</span><span class="r"></span></div>
+        <h2>From a feature to a framework</h2>
+        <div class="prose">
+          <p>Mid-project it became clear that what I'd built wasn't just a better onboarding screen. The progress tracker was acting as an <strong>orchestrator</strong> — a shell that could sequence any set of sub-tasks, not just these ones.</p>
+          <p>Three properties made the architecture inherently reusable: steps were <em>swappable</em>, the completion model was <em>persistent</em>, and progress state was <em>always visible</em>. The structural fixes — false-completion, post-action anxiety — were solved at the level of the pattern, not patched individually on each flow.</p>
+        </div>
+        <div class="pull">
+          <span class="k">The decision</span>
+          <p>Productise the pattern. Hand off not just a design for one flow, but a framework any SPS team could adopt for any guided journey on the platform.</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="c5">
+        <div class="chx"><span class="n">05</span><span class="l">Research</span><span class="r"></span></div>
+        <h2>Two rounds, no changes recommended</h2>
+        <ul class="points-list">
+          <li><span class="n">01</span><div><h4>Concept testing — moderated · 11 participants</h4><p>Mapped where participants got stuck, what the tracker gave them, and whether the consolidated flow resolved island-hopping. Directed iteration on all four design moves.</p></div></li>
+          <li><span class="n">02</span><div><h4>Validation — UserTesting · 8 participants</h4><p>Screened for <strong>low financial knowledge</strong> — the hardest users, by design. Unmoderated. Validated the refined design against all three original problem statements. No changes recommended.</p></div></li>
+        </ul>
+        <div class="pull">
+          <span class="k">Validation verdict</span>
+          <p>"Performed exactly as planned and hoped." — research lead, validation round.</p>
+        </div>
+        <div class="statline">Usability · validation round · n = 8 · low-financial-knowledge screened</div>
+        <div class="usab">
+          <div><div class="v">100%</div><div class="c">found the flow useful <span class="frac">7&thinsp;/&thinsp;7</span></div></div>
+          <div><div class="v">100%</div><div class="c">found it easy to complete <span class="frac">7&thinsp;/&thinsp;7</span></div></div>
+          <div><div class="v">87.5%</div><div class="c">would use this going forward <span class="frac">7&thinsp;/&thinsp;8</span></div></div>
+        </div>
+      </section>
+
+      <section class="chapter" id="c6">
+        <div class="chx"><span class="n">06</span><span class="l">Outcome</span><span class="r"></span></div>
+        <h2>One pilot result. One enterprise track record.</h2>
+        <div class="bands">
+          <div class="band mine">
+            <div class="blabel"><span class="who">My work · SPS pilot</span><span class="meta-when">2023</span></div>
+            <div class="bandmetrics">
+              <div><div class="v">+64<span class="u">%</span></div><div class="c">grant acceptance rate — the headline result of the pilot</div></div>
+              <div><div class="v">&lt; half</div><div class="c">completed in the first session: the baseline this design was built to fix</div></div>
+            </div>
+          </div>
+          <div class="band framework">
+            <div class="blabel"><span class="who">Framework track record · after handoff</span><span class="meta-when">Oct 2025</span></div>
+            <p class="disclaimer"><strong>Attribution:</strong> RMD, NQDC, and crypto journeys were built by other teams using this pattern — other teams' work, not mine. These figures are the framework's post-handoff track record.</p>
+            <div class="bandmetrics">
+              <div><div class="v">9</div><div class="c">guided experiences built on the framework</div></div>
+              <div><div class="v">3</div><div class="c">business units adopted it</div></div>
+              <div><div class="v">910<span class="u">K</span></div><div class="c">customers reached</div></div>
+              <div><div class="v">85<span class="u">%</span></div><div class="c">CSAT across framework-built journeys</div></div>
+              <div><div class="v">+25<span class="u">%</span></div><div class="c">incremental completion across the platform</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="chapter" id="c7">
+        <div class="chx"><span class="n">07</span><span class="l">What this shows</span><span class="r"></span></div>
+        <h2>One flow. An enterprise pattern.</h2>
+        <div class="decisions">
+          <div class="decision"><div class="n">01</div><h3>Systems thinking under a narrow brief</h3><p>The brief was one flow; the delivery was a reusable enterprise pattern. Seeing the structural opportunity, and building to it, is the point.</p></div>
+          <div class="decision"><div class="n">02</div><h3>Research-led, point-for-point</h3><p>Every design decision maps to a specific problem — island-hopping, false-completion, post-action anxiety — each validated across two rounds.</p></div>
+          <div class="decision"><div class="n">03</div><h3>Restraint as a result</h3><p>No feature bloat. The tracker does one thing, consistently. That constraint is exactly what made it adoptable across nine journeys and three business units.</p></div>
+          <div class="decision"><div class="n">04</div><h3>Concept-to-handoff ownership</h3><p>From the first research insight to framework documentation handed to other product teams: one designer, one thread, one accountable outcome.</p></div>
+        </div>
+
+        <p class="confid">Confidentiality: all figures, names and screens use fictional "Theta Corporation / Jenny Jones" scenario data. Mockups are original recreations of generic stepper and journey components in my own visual language; no production screens, internal research, or client branding are reproduced.</p>
+      </section>
+
+      <div class="next">
+        <a href="../fidelity-finops/index.html">
+          <div><div class="eyebrow">Next project</div><div class="t">FinOps Dashboard</div></div>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </main>
+  </div></div>
+
+  <footer id="contact" class="contact">
+    <span class="creg" style="top:18px;left:18px"></span><span class="creg" style="top:18px;right:18px"></span>
+    <div class="wrap contact-in">
+      <div class="top">
+        <span class="cap">// Let's build</span>
+        <img src="assets/motifs/arrows-double.svg" alt="">
+      </div>
+      <a href="mailto:hello@roneill.me" class="email">hello@roneill.me</a>
+      <div class="clinks">
+        <a href="https://linkedin.com/in/roneillme">LinkedIn →</a>
+        <a href="../../cv.html">Download CV →</a>
+      </div>
+      <div class="crow">
+        <span class="cmark">ron</span>
+        <span>// Dublin // 2026</span>
+        <span>53.3498° N · 6.2603° W</span>
+        <span class="plus">+ + +</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="case.js"></script>
+</body>
+</html>
