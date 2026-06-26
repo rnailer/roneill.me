@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1140 720" width="1140" height="720" font-family="'Inter','Helvetica Neue',Arial,sans-serif">
+<defs>
+  <marker id="arrO" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M1,1 L7,4.5 L1,8" fill="none" stroke="#EE5622" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arrG" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M1,1 L7,4.5 L1,8" fill="none" stroke="#A8A39A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arrE" markerWidth="9" markerHeight="9" refX="6.5" refY="4.5" orient="auto" markerUnits="userSpaceOnUse">
+    <path d="M1,1 L7,4.5 L1,8" fill="none" stroke="#1A1310" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+<rect width="1140" height="720" fill="#F4F2EC"/>
+<text x="64" y="72" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12" font-weight="600" fill="#EE5622" letter-spacing="2.4" style="">AWARD VALUE</text>
+<text x="64" y="106" font-family="'TBJ Ultra Centric','Arial Black','Helvetica Neue',sans-serif" font-size="30" font-weight="800" fill="#1A1310" letter-spacing="-0.4" style="">What the award is worth</text>
+<text x="64" y="134" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="15" font-weight="400" fill="#6B675F" style="">100 RSUs at $50.00 — estimated value before taxes, which may be due at vesting.</text>
+<rect x="40" y="150" width="1060" height="520" rx="16" fill="#FFFFFF" stroke="#E2DDD5" stroke-width="1.4"/>
+<text x="96" y="236" font-family="'TBJ Ultra Centric','Arial Black','Helvetica Neue',sans-serif" font-size="34" font-weight="800" fill="#1A1310" letter-spacing="-0.6" style="">$5,000.00</text>
+<text x="96" y="260" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="500" fill="#6B675F" letter-spacing="0.2" style="">Gross value · before tax</text>
+<text x="510" y="230" font-family="'TBJ Ultra Centric','Arial Black','Helvetica Neue',sans-serif" font-size="22" font-weight="800" fill="#6B675F" text-anchor="middle" letter-spacing="-0.3" style="">− $1,782.50</text>
+<text x="510" y="254" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="500" fill="#6B675F" text-anchor="middle" style="">Taxes withheld · 35.65%</text>
+<text x="1044" y="236" font-family="'TBJ Ultra Centric','Arial Black','Helvetica Neue',sans-serif" font-size="34" font-weight="800" fill="#EE5622" text-anchor="end" letter-spacing="-0.6" style="">$3,217.50</text>
+<text x="1044" y="260" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="600" fill="#EE5622" text-anchor="end" letter-spacing="0.2" style="">Estimated take-home</text>
+<line x1="290" y1="226" x2="400" y2="226" stroke="#A8A39A" stroke-width="1.5" stroke-linecap="round" marker-end="url(#arrG)"/>
+<line x1="624" y1="226" x2="734" y2="226" stroke="#EE5622" stroke-width="1.6" stroke-linecap="round" marker-end="url(#arrO)"/>
+<clipPath id="barclip"><rect x="96" y="350" width="948" height="52" rx="9"/></clipPath>
+<g clip-path="url(#barclip)">
+<rect x="96" y="350" width="610.538" height="52" rx="0" fill="#EE5622"/>
+<rect x="706.038" y="350" width="209.06" height="52" rx="0" fill="#1A1310"/>
+<rect x="914.598" y="350" width="57.379999999999995" height="52" rx="0" fill="#6B675F"/>
+<rect x="971.478" y="350" width="59.275999999999996" height="52" rx="0" fill="#A8A39A"/>
+<rect x="1030.254" y="350" width="14.246" height="52" rx="0" fill="#CFCBC2"/>
+<line x1="706.038" y1="350" x2="706.038" y2="402" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round"/>
+<line x1="914.598" y1="350" x2="914.598" y2="402" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round"/>
+<line x1="971.478" y1="350" x2="971.478" y2="402" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round"/>
+<line x1="1030.254" y1="350" x2="1030.254" y2="402" stroke="#FFFFFF" stroke-width="1.4" stroke-linecap="round"/>
+</g>
+<rect x="96" y="350" width="948" height="52" rx="9" fill="none" stroke="#E2DDD5" stroke-width="1.2"/>
+<text x="110" y="382" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="15" font-weight="700" fill="#FFFFFF" style="">Take-home</text>
+<text x="692.038" y="382" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13" font-weight="600" fill="#FFFFFF" text-anchor="end" style="">64.35%</text>
+<text x="96" y="442" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="11.5" font-weight="700" fill="#A8A39A" letter-spacing="1.6" style="">BREAKDOWN</text>
+<rect x="96" y="448" width="16" height="16" rx="4" fill="#EE5622"/>
+<text x="122" y="460" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="600" fill="#1A1310" style="">Net take-home</text>
+<text x="346" y="460" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="500" fill="#EE5622" style="">you keep</text>
+<text x="566" y="460" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="600" fill="#1A1310" text-anchor="end" style="">64.35%</text>
+<text x="736" y="460" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="700" fill="#1A1310" text-anchor="end" style="">$3,217.50</text>
+<rect x="96" y="482" width="16" height="16" rx="4" fill="#1A1310"/>
+<text x="122" y="494" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="600" fill="#1A1310" style="">Federal income</text>
+<text x="346" y="494" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="500" fill="#6B675F" style="">withheld</text>
+<text x="566" y="494" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="600" fill="#1A1310" text-anchor="end" style="">22.00%</text>
+<text x="736" y="494" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="700" fill="#1A1310" text-anchor="end" style="">$1,100.00</text>
+<rect x="96" y="516" width="16" height="16" rx="4" fill="#6B675F"/>
+<text x="122" y="528" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="600" fill="#1A1310" style="">State income</text>
+<text x="346" y="528" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="500" fill="#6B675F" style="">withheld</text>
+<text x="566" y="528" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="600" fill="#1A1310" text-anchor="end" style="">6.00%</text>
+<text x="736" y="528" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="700" fill="#1A1310" text-anchor="end" style="">$300.00</text>
+<rect x="96" y="550" width="16" height="16" rx="4" fill="#A8A39A"/>
+<text x="122" y="562" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="600" fill="#1A1310" style="">Social Security</text>
+<text x="346" y="562" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="500" fill="#6B675F" style="">withheld</text>
+<text x="566" y="562" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="600" fill="#1A1310" text-anchor="end" style="">6.20%</text>
+<text x="736" y="562" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="700" fill="#1A1310" text-anchor="end" style="">$310.00</text>
+<rect x="96" y="584" width="16" height="16" rx="4" fill="#CFCBC2"/>
+<text x="122" y="596" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="600" fill="#1A1310" style="">Medicare</text>
+<text x="346" y="596" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="500" fill="#6B675F" style="">withheld</text>
+<text x="566" y="596" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="600" fill="#1A1310" text-anchor="end" style="">1.45%</text>
+<text x="736" y="596" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="700" fill="#1A1310" text-anchor="end" style="">$72.50</text>
+<text x="96" y="644" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="400" fill="#A8A39A" style="">Illustrative estimate. A stock award is treated as income, so taxes may be due at vesting.</text>
+</svg>
