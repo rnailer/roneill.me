@@ -75,7 +75,7 @@
 <line x1="428" y1="906.0" x2="464" y2="906.0" stroke="#A8A39A" stroke-width="1.6" stroke-linecap="round" marker-end="url(#arrG)"/>
 <rect x="472" y="888" width="118" height="36" rx="18" fill="#241A16" stroke="#38302A" stroke-width="1.4"/>
 <text x="531" y="911" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="13.5" font-weight="600" fill="#A8A39A" text-anchor="middle" style="">Exit</text>
-<rect x="720" y="800" width="400" height="140" rx="14" fill="#20160F" stroke="#4A3E33" stroke-width="1.4" stroke-dasharray="5 4"/>
+<rect x="720" y="800" width="400" height="164" rx="14" fill="#20160F" stroke="#4A3E33" stroke-width="1.4" stroke-dasharray="5 4"/>
 <text x="744" y="834" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="14.5" font-weight="700" fill="#ECEAE4" style="">Swap the tasks, keep the experience</text>
 <text x="744" y="855" font-family="'Inter','Helvetica Neue',Arial,sans-serif" font-size="12.5" font-weight="400" fill="#A8A39A" style="">The same tracker hosts any ordered journey.</text>
 <rect x="744" y="880" width="47.0" height="30" rx="15" fill="#241A16" stroke="#4A3E33" stroke-width="1.2"/>
