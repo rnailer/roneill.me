@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="case.css">
 <style>
-  /* page-local: prototype embed, traffic-light list, stat line (on-system) */
+  /* page-local: prototype embed, figures, stat line (on-system) */
   .proto { margin: clamp(1.8rem,4vw,3rem) 0 0; }
   .proto-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 10px 18px;
     margin-bottom: clamp(0.9rem,2vw,1.2rem); }
@@ -23,23 +23,13 @@
   .proto-frame iframe { width: 100%; height: 1060px; border: 0; display: block; }
   @media (max-width: 700px){ .proto-frame iframe { height: 860px; } }
 
-  /* traffic-light status model */
-  .traffic { list-style: none; margin: 1.6rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 1px;
-    border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--border); max-width: 62ch; }
-  .traffic li { background: var(--bg); display: flex; gap: 14px; align-items: baseline;
-    padding: 0.95rem clamp(1rem,2.4vw,1.4rem); font-size: var(--fs-body-sm); line-height: 1.5; color: var(--text-muted); text-wrap: pretty; }
-  .traffic li b { color: var(--paper); font-weight: 700; font-family: ui-monospace, monospace; font-size: 12px;
-    text-transform: uppercase; letter-spacing: 0.04em; }
-  .traffic .tl { width: 11px; height: 11px; border-radius: 50%; flex: none; margin-top: 5px; }
-  .tl.green { background: #57B97A; }
-  .tl.orange { background: var(--orange); }
-  .tl.red { background: #D6402F; }
-  .tl.grey { background: var(--grey-600); }
-  .tl.flag { background: transparent; border: 2px solid var(--orange); box-shadow: 0 0 0 2px color-mix(in srgb, var(--orange) 22%, transparent); }
+  /* in-chapter figures */
+  .fig { margin: 1.8rem 0; }
+  .fig img { display: block; width: 100%; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-sunken); }
+  .fig figcaption { font-size: var(--fs-caption); color: var(--text-muted); margin-top: 0.7em; line-height: 1.4; max-width: 60ch; }
 
   .statline { font: var(--type-label); text-transform: uppercase; letter-spacing: var(--track-label);
     color: var(--text-faint); margin: clamp(2rem,4vw,3rem) 0 1.4rem; }
-  @media (max-width: 640px){ .traffic li { align-items: flex-start; } }
 </style>
 
   <!-- ── Favicons + manifest (roneill.me) ─────────────────────── -->
@@ -54,7 +44,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://roneill.me/case-studies/fidelity-finops/">
   <meta property="og:title" content="Fidelity · VM Utilisation Dashboard — Richard O'Neill">
-  <meta property="og:description" content="Turning a FinOps chatbot into a dashboard that shows what needs attention.">
+  <meta property="og:description" content="From FinOps chatbot to cost-action dashboard, designed, built, and pressure-tested with AI agents.">
   <meta property="og:image" content="https://roneill.me/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -63,7 +53,7 @@
   <meta property="og:site_name" content="roneill.me">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Fidelity · VM Utilisation Dashboard — Richard O'Neill">
-  <meta name="twitter:description" content="Turning a FinOps chatbot into a dashboard that shows what needs attention.">
+  <meta name="twitter:description" content="From FinOps chatbot to cost-action dashboard, designed, built, and pressure-tested with AI agents.">
   <meta name="twitter:image" content="https://roneill.me/og-image.png">
   <meta name="twitter:image:alt" content="Richard O'Neill — Product designer bridging design, code and AI.">
   <!-- Motion: shared reveal tokens + dormant IntersectionObserver driver -->
@@ -114,11 +104,11 @@
       <div class="rh">Sections</div>
       <ol>
         <li><a href="#c1"><span class="mono">01</span> Overview</a></li>
-        <li><a href="#c2"><span class="mono">02</span> The problem</a></li>
-        <li><a href="#c3"><span class="mono">03</span> Research</a></li>
-        <li><a href="#c4"><span class="mono">04</span> The design</a></li>
-        <li><a href="#c5"><span class="mono">05</span> Insight → action</a></li>
-        <li><a href="#c6"><span class="mono">06</span> A decision</a></li>
+        <li><a href="#c2"><span class="mono">02</span> Research</a></li>
+        <li><a href="#c3"><span class="mono">03</span> The design</a></li>
+        <li><a href="#c4"><span class="mono">04</span> Insight to action</a></li>
+        <li><a href="#c5"><span class="mono">05</span> Extending it</a></li>
+        <li><a href="#c6"><span class="mono">06</span> Testing it</a></li>
         <li><a href="#c7"><span class="mono">07</span> Outcome</a></li>
       </ol>
     </nav></aside>
@@ -126,27 +116,19 @@
     <main>
       <section class="chapter" id="c1">
         <div class="chx"><span class="n">01</span><span class="l">Overview</span><span class="r"></span></div>
-        <h2>A conversational product with a visual layer alongside it</h2>
+        <h2>A conversational product that made users do the hard part</h2>
         <div class="prose">
-          <p>Behind the chatbot, a daily pipeline pulled utilisation metrics, <strong>CPU and network in/out</strong>, from virtual machines and databases across the cloud estate, and served them to a conversational interface.</p>
-          <p>The front-end work covered the usual chatbot questions: how many prompts to show, how to move people from guided prompts into freeform questions, how to gather context, how feedback should work. I owned that UX direction, then went a step further and designed a dashboard to sit alongside it.</p>
+          <p>Behind the AI/ML FinOps chatbot, a daily pipeline pulled utilisation metrics from virtual machines across the cloud estate. I owned the chatbot's front-end UX: <strong>prompt patterns, context gathering, feedback loops</strong>.</p>
+          <p>But the product had a structural limit. It could answer detailed FinOps questions, yet the value was locked behind knowing the right question. To find underused machines, you already had to <em>suspect</em> they were there.</p>
+          <p>That is a lot to ask of a busy engineer who just wants to know whether their estate is healthy. So I designed a visual layer to sit alongside it.</p>
         </div>
       </section>
 
       <section class="chapter" id="c2">
-        <div class="chx"><span class="n">02</span><span class="l">The problem</span><span class="r"></span></div>
-        <h2>A chat-only product makes users do the hard part</h2>
-        <div class="prose">
-          <p>The chatbot could answer detailed FinOps questions, but the value was locked behind knowing the right question. To find underused machines or the biggest savings, you already had to <em>suspect</em> they were there.</p>
-          <p>That's a lot to ask of a busy engineer who just wants to know whether their estate is healthy.</p>
-        </div>
-      </section>
-
-      <section class="chapter" id="c3">
-        <div class="chx"><span class="n">03</span><span class="l">Research</span><span class="r"></span></div>
+        <div class="chx"><span class="n">02</span><span class="l">Research</span><span class="r"></span></div>
         <h2>“Show me, don't make me ask”</h2>
         <div class="prose">
-          <p>I ran the chatbot through moderated usability sessions, affinity-mapped the results, and prioritised with MoSCoW. One theme surfaced again and again: people wanted to <em>see</em> the data, not interrogate it. <strong>“Would love a graph to visualise this.” “Add labels and structure so I can scan it.” “Just show me what needs attention.”</strong></p>
+          <p>I ran the chatbot through moderated usability sessions. One theme surfaced again and again: people wanted to <em>see</em> the data, not interrogate it. <strong>“Would love a graph to visualise this.” “Add labels and structure so I can scan it.” “Just show me what needs attention.”</strong></p>
           <p>Answers that were accurate but dense made users work to interpret them. The research pointed clearly past a better chatbot, toward a visual layer.</p>
         </div>
         <div class="pull">
@@ -155,31 +137,33 @@
         </div>
       </section>
 
-      <section class="chapter" id="c4">
-        <div class="chx"><span class="n">04</span><span class="l">The design</span><span class="r"></span></div>
+      <section class="chapter" id="c3">
+        <div class="chx"><span class="n">03</span><span class="l">The design</span><span class="r"></span></div>
         <h2>A dashboard that answers one question first</h2>
         <div class="prose">
           <p>I designed the dashboard around a single question: <em>what needs attention, and what should I do next?</em> You enter an <strong>Application, Product, or Product Line ID</strong>; the dashboard resolves the right level of data and shows a colour-coded summary.</p>
-          <p>For an application, every VM appears as a card grouped by environment, <strong>DEV, QA, PROD</strong>, showing its name, average CPU, a traffic-light status, and a review flag where relevant. The traffic-light model does the interpreting so the user doesn't have to:</p>
+          <p>For an application, every VM appears as a card grouped by environment, <strong>DEV, QA, PROD</strong>, showing its name, average CPU, a traffic-light status, and a review flag where relevant.</p>
         </div>
-        <ul class="traffic">
-          <li><span class="tl green"></span><div><b>Green</b>, correctly utilised</div></li>
-          <li><span class="tl orange"></span><div><b>Orange</b>, underutilised</div></li>
-          <li><span class="tl red"></span><div><b>Red</b>, severely underutilised</div></li>
-          <li><span class="tl grey"></span><div><b>Grey</b>, not enough data to score yet</div></li>
-          <li><span class="tl flag"></span><div><b>Flagged</b>, Max CPU spiked, so it may need a closer look rather than simple downsizing</div></li>
-        </ul>
-        <div class="prose" style="margin-top:clamp(1.8rem,4vw,2.6rem)">
+        <figure class="fig">
+          <img src="assets/img/vm-states.png" width="2782" height="680" loading="lazy"
+            alt="Five VM card states: healthy, underutilised, severe, not scored, flagged">
+          <figcaption>The traffic-light model does the interpreting so the user doesn't have to.</figcaption>
+        </figure>
+        <div class="prose">
           <p>A simple score, the ratio of green machines, rolls the same logic up the hierarchy: <strong>Product Line → Product → Application → VM</strong>. Whatever level you enter at, status reads the same way.</p>
         </div>
       </section>
 
-      <section class="chapter" id="c5">
-        <div class="chx"><span class="n">05</span><span class="l">Insight → action</span><span class="r"></span></div>
+      <section class="chapter" id="c4">
+        <div class="chx"><span class="n">04</span><span class="l">Insight to action</span><span class="r"></span></div>
         <h2>Connecting insight to action</h2>
         <div class="prose">
           <p>The dashboard wasn't built to report; it was built to move people to the next step. For an underutilised machine, the design put the actions right there: <strong>right-sizing guidance</strong>, a button to open the chatbot <em>pre-scoped to that VM</em>, and a button to <strong>raise a resizing ticket</strong>.</p>
           <p>That join is the point, scan visually first, drop into chat for the follow-up, escalate without leaving the page.</p>
+        </div>
+        <div class="pull">
+          <span class="k">A decision</span>
+          <p>After the usability round, VM cards gained Max CPU alongside Average CPU. Average alone could make a machine look idle when it was actually spiking periodically; Max CPU let reviewers tell “genuinely underused” from “quiet most of the time, critical occasionally.”</p>
         </div>
         <div class="pull">
           <span class="k">The shift</span>
@@ -187,28 +171,54 @@
         </div>
       </section>
 
-      <section class="chapter" id="c6">
-        <div class="chx"><span class="n">06</span><span class="l">A decision</span><span class="r"></span></div>
-        <h2>A decision from the research</h2>
+      <section class="chapter" id="c5">
+        <div class="chx"><span class="n">05</span><span class="l">Extending it</span><span class="r"></span></div>
+        <h2>From utilisation to cost action</h2>
         <div class="prose">
-          <p>After the usability round, VM cards gained <strong>Max CPU</strong> alongside Average CPU. Average alone could make a machine look idle when it was actually spiking periodically; Max CPU let reviewers tell <em>“genuinely underused”</em> from <em>“quiet most of the time, critical occasionally.”</em></p>
-          <p>A small addition that changed how trustworthy the call felt.</p>
+          <p>The utilisation view answered <em>what needs attention</em>. The obvious next question was <em>what it is worth to fix</em>.</p>
+          <p>I researched how FinOps tools like <strong>CloudZero, Kubecost, and Vantage</strong> turn cost data into engineer action, and extended the prototype with the patterns the space converges on: a ranked opportunities table where every row carries an estimated saving, an owner, and an action; a utilisation-versus-cost scatter for rightsizing calls; and commitment coverage tracked against target.</p>
+          <p>One rule governed all of it: <strong>every visualisation ends in an action with a dollar value</strong>, not a chart to admire.</p>
+        </div>
+        <figure class="fig">
+          <img src="assets/img/opportunities-table.png" width="2624" height="1850" loading="lazy"
+            alt="Ranked optimisation opportunities table with estimated savings and actions">
+        </figure>
+        <figure class="fig">
+          <img src="assets/img/rightsizing-scatter.png" width="3196" height="1438" loading="lazy"
+            alt="Utilisation versus cost scatter with rightsizing drawer open">
+        </figure>
+      </section>
+
+      <section class="chapter" id="c6">
+        <div class="chx"><span class="n">06</span><span class="l">Testing it</span><span class="r"></span></div>
+        <h2>Three AI personas, one hierarchy problem</h2>
+        <div class="prose">
+          <p>Before polishing, I wanted evidence the hierarchy worked. A heuristic pass predicted a problem: the page led with a health score while savings figures sat scattered at different scroll depths. I pressure-tested the prediction with agentic AI evaluation, running three AI personas configured as platform engineers through a task: <strong>find the biggest saving and action it</strong>.</p>
+          <p>All three completed it. All three also picked a different number as the biggest saving, and one hit action buttons that failed silently. <em>“That kind of dead button is how people stop trusting the page.”</em></p>
+          <p>Three changes followed: the commitment recommendation became the top-ranked table row, the savings total moved into the page header above the health score, and every action was wired to one confirm-and-ticket pattern. The retest with fresh personas: <strong>3 of 3 completed in 6 to 8 steps, all named the same top opportunity, verdict clean</strong>.</p>
+        </div>
+        <figure class="fig">
+          <img src="assets/img/verdict-before-after.png" width="1558" height="1485" loading="lazy"
+            alt="Swarm evaluation verdicts before and after the redesign">
+        </figure>
+        <div class="prose">
+          <p>AI agents are not users, and this is not user testing. It is a fast way to test a hierarchy hypothesis before spending anyone's time. But when three evaluators fail the same way, then stop failing after one structural change, that is signal.</p>
         </div>
       </section>
 
       <section class="chapter" id="c7">
         <div class="chx"><span class="n">07</span><span class="l">Outcome</span><span class="r"></span></div>
-        <h2>From question-led to discovery-led</h2>
+        <h2>Question-led to discovery-led to action-led</h2>
         <div class="prose">
-          <p>The work gave the team a clear, reviewable direction for extending the chatbot into a visual, self-service experience, and moved the product from question-led to discovery-led.</p>
-          <p>Instead of asking users to start with the perfect prompt, it surfaces the issues first and lets the chatbot handle the depth. I built the prototype independently from the brief; it's the interactive piece at the top of this page.</p>
+          <p>The chatbot asked users to arrive with the perfect prompt. The dashboard surfaces what needs attention first. The extension prices it and hands over the action.</p>
+          <p>The evaluation loop, heuristic pass, agent test, redesign, retest, is now part of how I would run the next iteration too. I built and tested the prototype independently from the brief; it is the interactive piece at the top of this page.</p>
         </div>
 
         <div class="statline">The dashboard at a glance</div>
         <div class="metrics">
-          <div class="metric"><div class="v">3</div><div class="c">Entry points, App, Product, Product Line ID</div></div>
-          <div class="metric"><div class="v">4</div><div class="c">Levels of hierarchy, Product Line → Product → App → VM</div></div>
-          <div class="metric"><div class="v">5</div><div class="c">At-a-glance utilisation states</div></div>
+          <div class="metric"><div class="v">4</div><div class="c">Levels of hierarchy, Product Line to Product to App to VM</div></div>
+          <div class="metric"><div class="v">2</div><div class="c">Evaluation rounds, before and after redesign</div></div>
+          <div class="metric"><div class="v">3 <span class="u">of</span> 3</div><div class="c">AI personas completing the task post-redesign</div></div>
         </div>
       </section>
 
