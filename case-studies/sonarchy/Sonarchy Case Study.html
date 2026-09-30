@@ -48,7 +48,7 @@
   <!-- ── Open Graph / Twitter ─────────────────────────────────── -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://roneill.me/case-studies/sonarchy/Sonarchy%20Case%20Study.html">
-  <meta property="og:title" content="Sonarchy · A music party game on one phone — Richard O'Neill">
+  <meta property="og:title" content="Sonarchy · A party game designed twice, Richard O'Neill">
   <meta property="og:description" content="A real-time music party game that runs on a single phone.">
   <meta property="og:image" content="https://roneill.me/og-image.png">
   <meta property="og:image:width" content="1200">
@@ -57,7 +57,7 @@
   <meta property="og:locale" content="en_IE">
   <meta property="og:site_name" content="roneill.me">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Sonarchy · A music party game on one phone — Richard O'Neill">
+  <meta name="twitter:title" content="Sonarchy · A party game designed twice, Richard O'Neill">
   <meta name="twitter:description" content="A real-time music party game that runs on a single phone.">
   <meta name="twitter:image" content="https://roneill.me/og-image.png">
   <meta name="twitter:image:alt" content="Richard O'Neill — Product designer bridging design, code and AI.">
@@ -80,12 +80,12 @@
   <header class="hero"><div class="wrap">
     <div class="kicker">Case study <b>[ 05 ]</b> · the full story</div>
     <div class="num-big">05</div>
-    <h1 data-rise class="tw-pending">Designing a music party game that runs on <span class="o">one phone</span></h1>
-    <p class="summary"><strong>Sonarchy</strong> is a mobile music party game. One person hosts on their phone, plays a song through the room's speaker, and everyone else races to guess it, then rates it out of ten. Two cassette-tape mascots, <strong>Casey and Walker</strong>, run the show. A game about taste, played out loud, on the one device everyone's already holding.</p>
+    <h1 data-rise class="tw-pending">A party game I designed twice, and what the <span class="o">second time</span> taught me</h1>
+    <p class="summary"><strong>Sonarchy</strong> is a music party game for one speaker and a room full of phones. Someone calls a category, a song plays, everyone guesses it, then rates it out of ten, and two cassette-tape hosts, <strong>Casey and Walker</strong>, tell you exactly who gave you a four. I designed it in Figma first, built it, watched a room play it, then threw all the code away and built it again properly. This is the story of both versions.</p>
     <dl class="meta">
       <div><dt>Studio</dt><dd><a href="https://treblegames.ie" style="color:inherit">Treble Games</a></dd></div>
       <div><dt>Year</dt><dd>2026 — Now</dd></div>
-      <div><dt>Status</dt><dd><a href="https://sonarchy.com" style="color:inherit">Live · sonarchy.com ↗</a></dd></div>
+      <div><dt>Status</dt><dd><a href="https://sonarchy.com" style="color:inherit">Live · App Store &amp; sonarchy.com ↗</a></dd></div>
       <div><dt>Type</dt><dd>Mobile game · Multiplayer</dd></div>
       <div><dt>Role</dt><dd>Founder · Designer · Developer</dd></div>
     </dl>
@@ -116,14 +116,15 @@
     <main>
       <section class="chapter" id="c1">
         <div class="chx"><span class="n">01</span><span class="l">Origin</span><span class="r"></span></div>
-        <h2>It worked in the room, then showed its seams</h2>
+        <h2>It started around a table</h2>
         <div class="prose">
-          <p>Sonarchy started <span class="slot">ORIGIN, the human spark: where the idea landed, the moment "rate each other's songs" turned into a game</span>. v1 was rough on purpose, just enough to put real phones in real hands and watch a room play.</p>
-          <p>It worked: people got loud, argued over scores, queued the next track before the last finished. The core was right. But the seams showed, the host fumbled between playing music and driving the game, ratings were fiddly, and the best moment in the room, the score reveal, passed too quietly to land.</p>
+          <p>Sonarchy began as a family game. Drinks, food, a Bluetooth speaker outside, everyone digging through Spotify on their phones. Someone would call a category, <em>love songs</em>, <em>songs to cry to</em>, <em>songs that should never have been hits</em>, and we'd take turns playing our picks. Then the argument.</p>
+          <p>The fun was never the music. It was the gaps. My parents' love songs were never going to match the grandkids' picks, and the cheesy ones landed differently depending on who was at the table. Three generations, one speaker, and a running dispute about taste. That collision is the whole game.</p>
+          <p>When I did an AI course and started building apps, the family game was the obvious thing to try and make real. So I did. Twice, as it turned out.</p>
         </div>
         <div class="pull">
-          <span class="k">The call</span>
-          <p>v1 proved the game, but the build couldn't carry it. Keep the idea, throw away the code, rebuild spec-first.</p>
+          <span class="k">The premise</span>
+          <p>One device plays the music. Everyone else picks, guesses and rates from their own phone. The same shape as the kitchen table, with timers and a scoreboard bolted on.</p>
         </div>
         <div class="stage" style="margin:clamp(1.8rem,4vw,2.6rem) 0 0">
           <div class="sh">v2, the rebuild that came out of v1</div>
@@ -136,11 +137,11 @@
 
       <section class="chapter" id="c2">
         <div class="chx"><span class="n">02</span><span class="l">Problem</span><span class="r"></span></div>
-        <h2>One phone has to be the whole arcade</h2>
+        <h2>v1: I designed screens before I understood the system</h2>
         <div class="prose">
-          <p>What makes Sonarchy work is also what makes it hard: it all happens on one phone. The host's phone is the <strong>jukebox, the screen, the referee and the source of truth</strong>, at once, in a noisy room, over a Bluetooth speaker.</p>
-          <p>That sets hard limits I don't control: the phone plays the audio, so it can't hide the song from whoever's holding it; it streams from YouTube, so their rules decide what's allowed; it pipes sound over Bluetooth, so latency is a fact, not a bug.</p>
-          <p><em>How do you build a fair, loud, fast party game when one device does everything, and half the constraints aren't yours to change?</em></p>
+          <p>I did what a designer does. I designed it in Figma first, screen by screen, and it looked great. Then I built it, put real phones in real hands, and watched a room play. The core was right. People got loud, argued over scores, queued the next track before the last one finished. And the first test broke three of my assumptions in about twenty minutes.</p>
+          <p>Showing the video to everyone pulled the room out of the game; people watched the screen instead of each other. The guessing had quietly disappeared, so the best bit of the table version needed a workaround. And scoring by dragging songs onto a leaderboard was precise, fiddly, and nobody enjoyed it. On top of that the host was fumbling between playing music and running the game, and the score reveal, the loudest moment at the table, passed in silence.</p>
+          <p>None of that was a visual problem. It was a system problem. There was no product spec and no technical spec, just screens. And the constraints that actually shape this game had never been written down: the host's phone plays the audio, so it can't hide the song from whoever's holding it. It streams from YouTube, so their rules decide what's allowed. It pipes sound over Bluetooth, so latency is a fact, not a bug. One phone is the <strong>jukebox, the screen, the referee and the source of truth</strong>, and half of its limits aren't mine to change.</p>
         </div>
         <div class="viz">
           <div class="vh">What one phone has to do, load &amp; difficulty (illustrative)</div>
@@ -149,20 +150,20 @@
             <div class="bar-row"><span class="bl">Run the game</span><span class="bar-track"><span class="bar-fill" style="width:84%"></span></span><span class="bv">High</span></div>
             <div class="bar-row"><span class="bl">Stay fair</span><span class="bar-track"><span class="bar-fill hot" style="width:40%"></span></span><span class="bv">Hard</span></div>
           </div>
-          <p class="note">Three jobs, one device, and the hardest isn't a feature, it's keeping the game <strong>fair</strong> when the host is holding the answer.</p>
+          <p class="note">Three jobs, one device. The hardest isn't a feature, it's keeping the game <strong>fair</strong> when the host is holding the answer. v1 never asked the question.</p>
         </div>
       </section>
 
       <section class="chapter" id="c3">
         <div class="chx"><span class="n">03</span><span class="l">Approach</span><span class="r"></span></div>
-        <h2>Compliance first, physics second, fairness third</h2>
+        <h2>v2: keep the idea, bin the code, write it down first</h2>
         <div class="prose">
-          <p>Rather than design the game and bolt the constraints on after, I ordered them, and let the order drive every later decision.</p>
-          <p>YouTube's terms come first, breaking them ends the product, not just a feature. Audio and Bluetooth physics come next, no clever mechanic survives half a second of speaker lag. Fairness comes third, not because it matters least, but because it's the one I fully control, so it bends to fit the other two.</p>
+          <p>The call was easy to make and hard to do. v1 had proved the game and the build couldn't carry it. So I kept the idea, threw away every line of code, and spent three weeks writing before I opened an editor: a product spec, a technical spec, scoring rules, playback gating, what happens when a song won't play and someone has to re-pick.</p>
+          <p>The most useful thing in those documents was an ordering. Rather than design the game and bolt the constraints on after, I ranked them and let the ranking settle every argument that came later. YouTube's terms first, because breaking them ends the product, not a feature. Audio and speaker physics second, because no clever mechanic survives half a second of Bluetooth lag. Fairness third, not because it matters least, but because it's the one I fully control, so it bends to fit the other two.</p>
         </div>
         <div class="pull">
           <span class="k">The principle</span>
-          <p>Design the party around the phone's limits instead of fighting them.</p>
+          <p>Design the party around the phone's limits instead of fighting them. And plan the system before you push pixels.</p>
         </div>
         <div class="three">
           <div><span class="top">01</span><h3>YouTube compliance</h3><p>Search, playback and quota all run inside YouTube's terms. A cached search layer keeps usage low; nothing reaches the room that shouldn't.</p></div>
@@ -175,8 +176,8 @@
         <div class="chx"><span class="n">04</span><span class="l">Design</span><span class="r"></span></div>
         <h2>Casey and Walker run the room</h2>
         <div class="prose">
-          <p>A party game needs a host. Sonarchy has two. <strong>Casey</strong> is a pink cassette, scrappy, picks fights. <strong>Walker</strong> is a green walkman, drier, the straight man. They open each round, narrate the guesses, and reveal who rated what.</p>
-          <p>They speak in two words, always, in caps, <strong>ENORMOUS BETRAYAL</strong>, <strong>BOLD CHOICE</strong>, which keeps them fast, quotable and readable across a loud room. The round, in six beats:</p>
+          <p>A party game needs a host, and in v1 the host was me, half-watching the phone. In v2 the game has two of its own. <strong>Casey</strong> is a pink cassette, scrappy, picks fights. <strong>Walker</strong> is a green walkman, drier, the straight man. They open each round, narrate the guesses, and reveal who rated what, so the person holding the phone gets to be at the party too.</p>
+          <p>They only ever speak in two words, in caps. <strong>ENORMOUS BETRAYAL</strong>. <strong>BOLD CHOICE</strong>. Two words is what you can read across a loud room while someone's shouting the wrong answer. The round, in six beats:</p>
         </div>
 
         <div class="flow">
@@ -189,7 +190,7 @@
         </div>
 
         <div class="prose" style="margin-top:clamp(1.8rem,4vw,2.6rem)">
-          <p>The big redesign from v1 lives here: ranking became a <strong>1–10 slider</strong> (richer signal, one-thumb easy); a <strong>guess phase</strong> now sits before the rating reveal, so the room commits before it judges; and the reveal went from a quiet number to a <strong>hosted, attributed moment</strong>, the thing the whole round builds toward.</p>
+          <p>Each of v1's three broken assumptions has a fix in that list. The leaderboard drag became a <strong>1 to 10 slider</strong>, one thumb, richer signal. A <strong>guess phase</strong> went back in before the rating, so the room commits before it judges. And the reveal stopped being a quiet number and became a <strong>hosted, attributed moment</strong>: you see exactly who gave you a four, and Casey has an opinion about it. That's the argument from the kitchen table, put back where it belongs.</p>
         </div>
 
         <div class="gallery" style="margin-top:clamp(1.8rem,4vw,2.6rem)">
@@ -213,13 +214,14 @@
 
       <section class="chapter" id="c5">
         <div class="chx"><span class="n">05</span><span class="l">Build</span><span class="r"></span></div>
-        <h2>A production backend for a party trick</h2>
+        <h2>I design it. Claude builds it. The rig checks it.</h2>
         <div class="prose">
-          <p>Under the hood it's a <strong>state machine</strong>, lobby → category → play → guess → rate → reveal → leaderboard, driven by Supabase Realtime, so every phone in the room turns over together. Clients read only; every write runs through a <strong>locked server function</strong>, so scores and the answer can't be lifted from a phone or faked from the network tab. Integrity lives in the architecture, not in hope.</p>
+          <p>I'm not hiding how this got built. The design calls, the product decisions, the copy and the SMPTE-yellow obsession are mine. The code and the architecture were built with Claude, argued out against a spec I'd written first. That partnership is the reason a solo designer could ship a realtime multiplayer game at all, and it's also why I'm careful about it: AI makes code cheap, and cheap code is a liability unless something is checking it.</p>
+          <p>So the third member of the team is the rig. <strong>Around 1,100 automated checks</strong> run on every pass, Playwright across three browsers and five devices, catching the things both of us had stopped seeing. Under all of it is a <strong>state machine</strong>, lobby → category → play → guess → rate → reveal → leaderboard, driven by Supabase Realtime so every phone in the room turns over together. Clients read only; every write goes through a <strong>locked server function</strong>, so scores and the answer can't be lifted from a phone or faked from the network tab. Integrity lives in the architecture, not in hope.</p>
         </div>
         <div style="border:1px solid var(--border);border-radius:var(--radius);padding:clamp(1.1rem,2.4vw,1.5rem) clamp(1.2rem,2.6vw,1.7rem);margin-top:clamp(1.6rem,3.5vw,2.4rem);display:flex;flex-wrap:wrap;align-items:baseline;gap:0.55rem 1.1rem">
           <span style="font-family:ui-monospace,monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:var(--orange)">Stack</span>
-          <span style="font-size:var(--fs-body-sm);line-height:1.7;color:var(--text-muted)">React + Vite + TypeScript <span style="color:var(--text-faint)">(mobile-first)</span> · Supabase Realtime <span style="color:var(--text-faint)">(phase state machine)</span> · pure-RPC writes <span style="color:var(--text-faint)">(clients read-only)</span> · YouTube IFrame + two-tier cache <span style="color:var(--text-faint)">(quota-safe playback)</span></span>
+          <span style="font-size:var(--fs-body-sm);line-height:1.7;color:var(--text-muted)">React + TypeScript <span style="color:var(--text-faint)">(mobile-first)</span> · Supabase Realtime <span style="color:var(--text-faint)">(phase state machine, RPC-only writes)</span> · YouTube APIs <span style="color:var(--text-faint)">(two-tier cache, quota-safe)</span> · Capacitor <span style="color:var(--text-faint)">(App Store)</span> · RevenueCat · Vercel · Playwright <span style="color:var(--text-faint)">(~1,100 checks, 3 browsers, 5 devices)</span></span>
         </div>
         <div class="stage" style="margin:clamp(1.8rem,4vw,2.6rem) 0 0">
           <div class="sh">Three live screens from the v2 client, one shared system</div>
@@ -237,32 +239,36 @@
         <div class="decisions">
           <div class="decision"><span class="n">01</span><h3>The host never guesses</h3><p>The host's phone plays the audio, so it sees the title. Fairness falls out of who's holding the jukebox, not a rule bolted on.</p></div>
           <div class="decision"><span class="n">02</span><h3>A slider, not a ranking</h3><p>One to ten reads instantly and moves with one thumb. Ranking everyone's songs was precise, and nobody enjoyed it.</p></div>
+          <div class="decision"><span class="n">03</span><h3>Throw the code away</h3><p>v1 worked well enough to patch. Patching would have carried its discovery debt into every later feature. Three weeks of writing was cheaper than a year of workarounds.</p></div>
+          <div class="decision"><span class="n">04</span><h3>Say how it was built</h3><p>The about page says AI wrote most of the code. Hiding that would be dishonest and, worse, it would hide the actual skill: knowing what to ask for, and what to reject.</p></div>
         </div>
       </section>
 
       <section class="chapter" id="c7">
         <div class="chx"><span class="n">07</span><span class="l">Reflection</span><span class="r"></span></div>
-        <h2>Design the party, not the screen</h2>
+        <h2>Tests see properties. People see the screen.</h2>
         <div class="prose">
-          <p>The lesson v1 kept teaching: <strong>the room is the product, not the interface.</strong> The best Sonarchy isn't the one with the most features, it's the one where a phone, a speaker and six people can be loud together without the game getting in the way.</p>
+          <p>The lesson v1 kept teaching: <strong>the room is the product, not the interface.</strong> The best Sonarchy isn't the one with the most features, it's the one where a phone, a speaker and six people can be loud together without the game getting in the way. I only learned that by watching a room, and I only fixed it by stopping and writing the system down.</p>
+          <p>The other lesson is about the tools. AI raised the ceiling on what I could build alone. It did nothing for the floor. The rig passes and the room still goes quiet at the wrong moment, because tests check properties and people look at screens. Someone still has to sit at the table.</p>
         </div>
         <div class="stack" style="margin-top:clamp(1.5rem,3vw,2.5rem)">
           <div class="listing">
             <div class="lh">Lessons learned</div>
-            <div class="li"><span class="n">01</span><div><h4>Order your constraints</h4><p>Naming what comes first, compliance, physics, fairness, made every later decision faster and less arguable.</p></div></div>
-            <div class="li"><span class="n">02</span><div><h4>The seams are the work</h4><p>v1's "small" friction was the whole game. Fixing the reveal, the rating and the host's job <em>was</em> the rebuild.</p></div></div>
+            <div class="li"><span class="n">01</span><div><h4>Plan the system before you push pixels</h4><p>Beautiful screens on top of an unwritten system is how v1 happened. Spec first is now a rule, not a preference.</p></div></div>
+            <div class="li"><span class="n">02</span><div><h4>Order your constraints</h4><p>Naming what comes first, YouTube, physics, fairness, made every later decision faster and less arguable.</p></div></div>
+            <div class="li"><span class="n">03</span><div><h4>The seams are the work</h4><p>v1's "small" friction was the whole game. Fixing the reveal, the rating and the host's job <em>was</em> the rebuild.</p></div></div>
           </div>
           <div class="listing">
             <div class="lh">What's next</div>
-            <div class="li"><span class="n">01</span><div><h4>Live play</h4><p>It's live. Now: watch real rooms, let the numbers come in, iterate on what they show.</p></div></div>
-            <div class="li"><span class="n">02</span><div><h4>More of the cast</h4><p>The six characters are a system, not a set, room to grow the show.</p></div></div>
+            <div class="li"><span class="n">01</span><div><h4>Come break my game</h4><p>It's live on the App Store and the web. I'm running play-test rooms of five to ten people ahead of a bigger hosted night, and I want the rooms I haven't thought of.</p></div></div>
+            <div class="li"><span class="n">02</span><div><h4>More of the cast</h4><p>The six characters are a system, not a set. There's room to grow the show.</p></div></div>
           </div>
         </div>
 
         <div class="statline">Structural, not usage (yet)</div>
         <div class="metrics">
           <div class="metric"><div class="v">2</div><div class="c">Versions, one to prove it, one to build it right</div></div>
-          <div class="metric"><div class="v">6</div><div class="c">Playable characters running the show</div></div>
+          <div class="metric"><div class="v">1,100</div><div class="c">Automated checks on every pass, 3 browsers, 5 devices</div></div>
           <div class="metric"><div class="v">1<span class="u">→10</span></div><div class="c">The scale a whole round turns on</div></div>
         </div>
       </section>
