@@ -1,6 +1,6 @@
 /* ============================================================
    roneill.me, portfolio content (placeholder where noted).
-   Real Fidelity / 333 Games copy + metrics + covers slot in later.
+   Real Fidelity / Treble Games copy + metrics + covers slot in later.
    ============================================================ */
 window.RON_CONTENT = {
   name: "Richard O'Neill",
@@ -74,17 +74,17 @@ window.RON_CONTENT = {
     },
     {
       index: "04",
-      client: "333 Games",
+      client: "Treble Games",
       year: "2026 — Now",
       lead: false,
-      headline: "An R&D lab that ships real games",
+      headline: "Where I build with AI outside work, and ship",
       tags: ["AI product", "End-to-end build", "Studio"],
       metrics: [
-        { value: "2", unit: "", caption: "Products shipped under the studio" },
-        { value: "100", unit: "%", caption: "Solo-built, design to ship" },
+        { value: "2", unit: "", caption: "Games live: Sonarchy and 3 Letter Daily" },
+        { value: "100", unit: "%", caption: "Designed and coded by me, idea to ship" },
       ],
-      summary: "An independent Dublin studio where I build AI-made games and apps end to end, design and code, idea to shipped. The place to keep my hands on the newest tools. jam → prototype → build → ship.",
-      cover: "333 Games · studio",
+      summary: "Treble Games is my independent Dublin studio, where I build games and apps with AI outside my day job. Design and code end to end: idea to working prototype in days, then finished by hand. Two games live so far. treblegames.ie",
+      cover: "Treble Games · studio",
       motif: "network",
       shot: { kind: "mark", src: "assets/marks/333-games.svg" },
       href: "case-studies/333-games/333 Games Studio - Case Study.html",
@@ -95,13 +95,13 @@ window.RON_CONTENT = {
       client: "Sonarchy",
       year: "2026 — Now",
       lead: false,
-      headline: "A music party game on one phone",
-      tags: ["Mobile game", "Realtime", "AI build"],
+      headline: "A music party game on one phone, now live",
+      tags: ["Live", "Realtime", "AI build"],
       metrics: [
         { value: "1", unit: "", caption: "Phone runs the whole arcade" },
         { value: "7", unit: "", caption: "Live game phases, realtime-synced" },
       ],
-      summary: "A mobile music party game that runs on a single host phone, jukebox, screen, referee and source of truth at once. A locked-down Supabase Realtime state machine keeps the room fair and in sync.",
+      summary: "A mobile music party game that runs on a single host phone, jukebox, screen, referee and source of truth at once. A locked-down Supabase Realtime state machine keeps the room fair and in sync. Live at sonarchy.com.",
       cover: "Sonarchy · music game",
       motif: "orbit",
       shot: { kind: "mark", src: "assets/marks/sonarchy.svg" },
@@ -135,7 +135,7 @@ window.RON_CONTENT = {
     ],
     // Experience timeline, from LinkedIn (roneill.me).
     timeline: [
-      { role: "Founder & AI Product Designer", org: "333 Games", years: "2026 — Now" },
+      { role: "Founder & Design Engineer", org: "Treble Games", years: "2026 — Now" },
       { role: "Principal Product Designer", org: "Fidelity Investments", years: "2023 — Now" },
       { role: "Senior Product Designer", org: "Fidelity Investments", years: "2021 — 2023" },
       { role: "Product Designer", org: "Workhuman", years: "2017 — 2021" },
