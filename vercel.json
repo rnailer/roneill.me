@@ -1,0 +1,5 @@
+{
+  "redirects": [
+    { "source": "/case-studies/333-games/:path*", "destination": "/case-studies/treble-games/", "permanent": true }
+  ]
+}

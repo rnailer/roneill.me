@@ -86,8 +86,8 @@ window.RON_CONTENT = {
       summary: "Treble Games is my independent Dublin studio, where I build games and apps with AI outside my day job. Design and code end to end: idea to working prototype in days, then finished by hand. Two games live so far. treblegames.ie",
       cover: "Treble Games · studio",
       motif: "network",
-      shot: { kind: "mark", src: "assets/marks/333-games.svg" },
-      href: "case-studies/333-games/333 Games Studio - Case Study.html",
+      shot: { kind: "mark", src: "assets/marks/treble-games.svg" },
+      href: "case-studies/treble-games/index.html",
       link: { label: "View case study", kind: "case", gated: false },
     },
     {
