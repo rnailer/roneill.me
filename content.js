@@ -95,7 +95,7 @@ window.RON_CONTENT = {
       client: "Sonarchy",
       year: "2026 — Now",
       lead: false,
-      headline: "A music party game on one phone, now live",
+      headline: "A party game I designed three times",
       tags: ["Live", "Realtime", "AI build"],
       metrics: [
         { value: "1", unit: "", caption: "Phone runs the whole arcade" },
