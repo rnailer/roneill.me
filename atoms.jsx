@@ -55,7 +55,7 @@ function Tag({ children, tone = 'default', style, ...rest }) {
   return (
     <span style={{ display: 'inline-flex', alignItems: 'center', fontFamily: 'var(--font-text)',
       fontWeight: 'var(--w-medium)', fontSize: 'var(--fs-body-sm)', lineHeight: 1, letterSpacing: '0.01em',
-      padding: '6px 11px', border: 'var(--bw-hair) solid', borderRadius: 'var(--radius-pill)', whiteSpace: 'nowrap',
+      padding: '6px 11px', border: 'var(--bw-hair) solid', borderRadius: 'var(--radius-pill)', maxWidth: '100%', overflowWrap: 'anywhere',
       ...tones[tone], ...style }} {...rest}>{children}</span>
   );
 }
@@ -74,7 +74,7 @@ function Badge({ children, status = 'available', style, ...rest }) {
       borderRadius: 'var(--radius-pill)', padding: '7px 12px 7px 11px', whiteSpace: 'nowrap', ...style }} {...rest}>
       <span style={{ position: 'relative', display: 'inline-flex' }}>
         <span style={{ width: 7, height: 7, borderRadius: '50%', background: s.dot, display: 'inline-block' }} />
-        {s.pulse && <span style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: s.dot, animation: 'ron-badge-pulse 1.9s var(--ease-out) infinite' }} />}
+        {s.pulse && <span style={{ position: 'absolute', inset: 0, borderRadius: '50%', background: s.dot, animation: 'ron-badge-pulse 1.9s var(--ease-out) 3' }} />}
       </span>
       {children}
     </span>
@@ -88,7 +88,7 @@ function MetricStat({ value, unit, caption, size = 'lg', accentUnit = true, styl
       <div style={{ fontFamily: 'var(--font-display)', fontWeight: 'var(--w-bold)', fontSize: fs,
         lineHeight: 'var(--lh-solid)', letterSpacing: 'var(--track-hero)', color: 'var(--text)',
         fontVariantNumeric: 'tabular-nums', display: 'flex', alignItems: 'baseline' }}>
-        <span>{value}</span>{unit != null && <span style={{ color: accentUnit ? 'var(--accent)' : 'inherit' }}>{unit}</span>}
+        <span style={{ whiteSpace:'nowrap' }}>{value}</span>{unit != null && <span style={{ color: accentUnit ? 'var(--accent)' : 'inherit' }}>{unit}</span>}
       </div>
       {caption && <div style={{ fontFamily: 'var(--font-text)', fontSize: 'var(--fs-caption)', lineHeight: 'var(--lh-snug)',
         color: 'var(--text-muted)', letterSpacing: '0.02em', marginTop: '0.7em', maxWidth: '22ch' }}>{caption}</div>}

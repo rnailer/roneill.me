@@ -107,110 +107,33 @@ function Capabilities(){
   );
 }
 
-/* one process box — constructs itself once on enter: edge draws, motif draws
-   Establish -> Extend -> Resolve, then the label rises. s.draw is the motif's
-   ordered stroke list (path / circle / line), staggered via --reveal-delay. */
-function ProcessBox({ s }){
-  const { useReveal } = window.RonMotion;
-  const { ref, revealed } = useReveal();
-  const rev = revealed ? ' is-revealed' : '';
-  return (
-    <article ref={ref} className={'construct'+rev}
-      style={{ borderRadius:2, display:'flex', flexDirection:'column', position:'relative' }}>
-      {/* box edge draws first */}
-      <svg className={'construct-edge draw'+rev} viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"
-        style={{ position:'absolute', inset:0, width:'100%', height:'100%', color:FR, pointerEvents:'none', zIndex:2 }}>
-        <rect pathLength="1" x="0.5" y="0.5" width="99" height="99" fill="none" stroke="currentColor" strokeWidth="0.3" style={{ ['--reveal-delay']:'0ms' }} />
-      </svg>
-      <figure className="checker halftone" style={{ margin:0, position:'relative', aspectRatio:'16/10', display:'grid', placeItems:'center' }}>
-        <Corners inset={9} c={FR2} />
-        {/* motif: Establish -> Extend -> Resolve */}
-        <svg className={'construct-art draw'+rev} viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" aria-hidden="true"
-          style={{ width:'40%', color:'rgba(236,234,228,0.9)' }}>
-          {s.draw.map((p,i)=>{
-            const st = { ['--reveal-delay']:p.delay+'ms' };
-            if (p.t==='circle') return <circle key={i} pathLength="1" cx={p.cx} cy={p.cy} r={p.r} style={st} />;
-            if (p.t==='line')   return <line key={i} pathLength="1" x1={p.x1} y1={p.y1} x2={p.x2} y2={p.y2} style={st} />;
-            return <path key={i} pathLength="1" d={p.d} style={st} />;
-          })}
-        </svg>
-        {/* figure/text separator draws */}
-        <svg className={'construct-edge draw'+rev} viewBox="0 0 100 2" preserveAspectRatio="none" aria-hidden="true"
-          style={{ position:'absolute', left:0, right:0, bottom:0, width:'100%', height:'2px', color:FR, pointerEvents:'none' }}>
-          <line pathLength="1" x1="0" y1="1" x2="100" y2="1" stroke="currentColor" strokeWidth="1" style={{ ['--reveal-delay']:'120ms' }} />
-        </svg>
-      </figure>
-      {/* label rises last */}
-      <div className="construct-label"
-        style={{ padding:'clamp(1.2rem,2.2vw,1.7rem)', display:'flex', flexDirection:'column', flex:1, ['--reveal-delay']:'720ms' }}>
-        <h3 className="disp" style={{ margin:'0 0 0.7rem', fontWeight:800, fontSize:'clamp(1.5rem,2.6vw,2.1rem)', lineHeight:0.95, letterSpacing:'-0.03em', color:'var(--paper)', textTransform:'lowercase' }}>{accentLast(s.title)}</h3>
-        <p style={{ margin:'0 0 1.3rem', fontSize:'clamp(13px,1.1vw,15px)', lineHeight:1.5, color:'var(--grey-400)', textWrap:'pretty', maxWidth:'34ch' }}>{s.blurb}</p>
-        <ul style={{ listStyle:'none', margin:'auto 0 0', padding:0, display:'flex', flexDirection:'column', gap:9, borderTop:`1px solid ${FR}`, paddingTop:'1.1rem' }}>
-          {s.skills.map((sk)=>(
-            <li key={sk} className="cap" style={{ display:'flex', alignItems:'center', gap:10, fontSize:'clamp(11px,0.95vw,12.5px)', color:'var(--text-faint)', letterSpacing:'0.06em' }}>
-              <span style={{ color:'var(--orange)', fontSize:9 }}>✳</span>{sk}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </article>
-  );
-}
-
-/* the process, three framed stages, design to release */
+/* the results, three linked proof points */
 function Catalog(){
-  // Each motif's stroke list, ordered Establish -> Extend -> Resolve, shared
-  // construct rhythm: edge 0ms -> separator 120ms -> motif 300-620ms -> label 720ms.
-  const steps = [
-    { n:'01', motif:'cube-iso', title:'Product Design', blurb:'Turning fuzzy problems into interfaces people actually understand.',
-      skills:['UX / UI Design','User Research & Testing','IA & Structure','Prototyping'],
-      draw:[ // cube: front square -> 4 connectors -> back square
-        { t:'path', d:'M20 40 L60 40 L60 80 L20 80 Z', delay:300 },
-        { t:'path', d:'M20 40 L40 20', delay:360 },
-        { t:'path', d:'M60 40 L80 20', delay:420 },
-        { t:'path', d:'M60 80 L80 60', delay:480 },
-        { t:'path', d:'M20 80 L40 60', delay:540 },
-        { t:'path', d:'M40 20 L80 20 L80 60 L40 60 Z', delay:600 },
-      ] },
-    { n:'02', motif:'network', title:'Building with AI', blurb:'Shipping real features fast with AI-assisted engineering pipelines.',
-      skills:['Claude Code + Codex','MCP Servers','Prompt + Context Eng.','Agent Observability'],
-      draw:[ // network: hub -> 5 spokes -> 5 node dots
-        { t:'circle', cx:50, cy:50, r:7, delay:300 },
-        { t:'line', x1:50, y1:50, x2:50, y2:16, delay:350 },
-        { t:'line', x1:50, y1:50, x2:82, y2:40, delay:390 },
-        { t:'line', x1:50, y1:50, x2:70, y2:78, delay:430 },
-        { t:'line', x1:50, y1:50, x2:30, y2:78, delay:470 },
-        { t:'line', x1:50, y1:50, x2:18, y2:40, delay:510 },
-        { t:'circle', cx:50, cy:16, r:3.5, delay:540 },
-        { t:'circle', cx:82, cy:40, r:3.5, delay:560 },
-        { t:'circle', cx:70, cy:78, r:3.5, delay:580 },
-        { t:'circle', cx:30, cy:78, r:3.5, delay:600 },
-        { t:'circle', cx:18, cy:40, r:3.5, delay:620 },
-      ] },
-    { n:'03', motif:'target', title:'Release & Iterate', blurb:'Owning the launch, then sharpening it against real-world signal.',
-      skills:['Release Ownership','Cross-Team Coordination','Monitoring & Looker','Iterate on Feedback'],
-      draw:[ // target: outer ring -> mid ring + 4 crosshair arms -> bullseye
-        { t:'circle', cx:50, cy:50, r:38, delay:300 },
-        { t:'circle', cx:50, cy:50, r:22, delay:360 },
-        { t:'line', x1:50, y1:14, x2:50, y2:26, delay:400 },
-        { t:'line', x1:50, y1:74, x2:50, y2:86, delay:440 },
-        { t:'line', x1:14, y1:50, x2:26, y2:50, delay:480 },
-        { t:'line', x1:74, y1:50, x2:86, y2:50, delay:520 },
-        { t:'circle', cx:50, cy:50, r:5, delay:600 },
-      ] },
+  // Proof, not process: three results, each linked to the case study that backs it.
+  const proof = [
+    { v:'+64', u:'%', c:'Award acceptance in the Guided Tracker pilot at Fidelity', href:'case-studies/guided-tracker/index.html', link:'Guided Tracker' },
+    { v:'9', u:'', c:'Guided journeys built on the framework I designed', href:'case-studies/guided-tracker/index.html', link:'Guided Tracker' },
+    { v:'3', u:'', c:'Products of my own shipped solo with AI: Sonarchy, 3 Letter Daily and Exit\u00b70', href:'case-studies/treble-games/index.html', link:'Treble Games' },
   ];
   return (
     <section style={{ borderTop:`1px solid ${FR}`, padding:`clamp(2.5rem,5vw,4rem) ${EDGE}`, background:'var(--espresso-deep)', position:'relative' }}>
       <div className="grain" />
       <div style={{ position:'relative', zIndex:1 }}>
         <div style={{ display:'flex', alignItems:'baseline', gap:14, marginBottom:'clamp(2rem,4vw,3rem)', flexWrap:'wrap' }}>
-          <span className="cap" style={{ fontSize:12, color:'var(--orange)' }}>(03)</span>
-          <span className="cap" style={{ fontSize:12, color:'var(--grey-400)', letterSpacing:'0.08em' }}>The process, design to release</span>
+          <span className="cap" style={{ fontSize:12, color:'var(--orange)' }}>(02)</span>
+          <span className="cap" style={{ fontSize:12, color:'var(--grey-400)', letterSpacing:'0.08em' }}>The results, in numbers</span>
           <span style={{ flex:1, height:1, background:FR, minWidth:40 }} />
-          <span className="cap" style={{ fontSize:11, color:'var(--text-faint)' }}>03 stages // end to end</span>
+          <span className="cap" style={{ fontSize:11, color:'var(--text-faint)' }}>03 results // each linked</span>
         </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(260px,1fr))', gap:'clamp(0.9rem,1.6vw,1.4rem)', alignItems:'stretch' }}>
-          {steps.map((s)=> <ProcessBox key={s.n} s={s} />)}
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(240px,1fr))', gap:'clamp(0.9rem,1.6vw,1.4rem)' }}>
+          {proof.map((p)=>(
+            <a key={p.c} href={p.href} style={{ display:'flex', flexDirection:'column', textDecoration:'none', border:`1px solid ${FR}`, padding:'clamp(1.4rem,2.6vw,2rem)', position:'relative', minWidth:0 }}>
+              <Corners inset={9} c={FR2} />
+              <span className="disp" style={{ fontWeight:800, fontSize:'clamp(3rem,6vw,5rem)', lineHeight:0.9, letterSpacing:'-0.04em', color:'var(--paper)', whiteSpace:'nowrap' }}>{p.v}<span style={{ color:'var(--orange)' }}>{p.u}</span></span>
+              <span style={{ marginTop:'1rem', fontSize:'clamp(14px,1.1vw,16px)', lineHeight:1.5, color:'var(--text-muted)', maxWidth:'30ch', textWrap:'pretty' }}>{p.c}</span>
+              <span className="cap" style={{ marginTop:'auto', paddingTop:'1.4rem', fontSize:11, color:'var(--orange)', letterSpacing:'0.08em' }}>{p.link} →</span>
+            </a>
+          ))}
         </div>
       </div>
     </section>
@@ -230,7 +153,7 @@ function About(){
       <RevealGroup style={{ position:'relative', zIndex:1 }}>
         <Reveal>
           <div style={{ display:'flex', alignItems:'baseline', gap:14, marginBottom:'clamp(1.5rem,3vw,2.2rem)', flexWrap:'wrap' }}>
-            <span className="cap" style={{ fontSize:12, color:'var(--orange)' }}>(04)</span>
+            <span className="cap" style={{ fontSize:12, color:'var(--orange)' }}>(03)</span>
             <span className="cap" style={{ fontSize:12, color:'var(--grey-400)', letterSpacing:'0.08em' }}>About, my story</span>
             <span style={{ flex:1, height:1, background:FR, minWidth:40 }} />
             <span className="cap" style={{ fontSize:11, color:'var(--text-faint)' }}>{RCB.location} // since 2013</span>
@@ -254,8 +177,8 @@ function About(){
             <div className="cap" style={{ fontSize:11, color:'var(--text-faint)', letterSpacing:'0.12em', marginBottom:'1.2rem' }}>Experience</div>
             <ul style={{ listStyle:'none', margin:0, padding:0 }}>
               {A.timeline.map((e,i)=>(
-                <li key={i} style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', gap:16, padding:'1.05rem 0', borderTop:`1px solid ${FR}` }}>
-                  <span>
+                <li key={i} style={{ display:'flex', flexWrap:'wrap', justifyContent:'space-between', alignItems:'baseline', gap:'0.3rem 16px', padding:'1.05rem 0', borderTop:`1px solid ${FR}` }}>
+                  <span style={{ minWidth:0, overflowWrap:'anywhere' }}>
                     <span className="disp" style={{ display:'block', fontWeight:700, fontSize:'clamp(1rem,1.5vw,1.2rem)', letterSpacing:'-0.01em', color:'var(--paper)' }}>{e.org}</span>
                     <span style={{ fontSize:13, color:'var(--grey-400)' }}>{e.role}</span>
                   </span>
@@ -281,7 +204,7 @@ function Contact({ index = '04' }){
           <span className="cap" style={{ fontSize:12, letterSpacing:'0.08em' }}>({index}) // Let's build</span>
           <BMotif name="arrows-double" size={46} opacity={0.75} />
         </div>
-        <a href={'mailto:'+RCB.email} className="disp" style={{ display:'block', textDecoration:'none', fontWeight:800, fontSize:'clamp(2rem,9vw,8rem)', lineHeight:0.9, letterSpacing:'-0.05em', color:'var(--espresso)', textTransform:'lowercase', textWrap:'balance' }}>{RCB.email}</a>
+        <a href={'mailto:'+RCB.email} className="disp" style={{ display:'block', textDecoration:'none', fontWeight:800, fontSize:'clamp(2rem,9vw,8rem)', lineHeight:0.9, letterSpacing:'-0.05em', color:'var(--espresso)', textTransform:'lowercase', textWrap:'balance', overflowWrap:'anywhere', ...(RCB.email.length > 22 ? { fontSize:'clamp(1.6rem,5vw,4.5rem)' } : {}) }}>{RCB.email}</a>
         <div style={{ display:'flex', gap:14, flexWrap:'wrap', marginTop:'clamp(1.5rem,3vw,2rem)' }}>
           <a href={'https://'+RCB.linkedin} className="cap" style={{ fontSize:13, color:'var(--espresso)', textDecoration:'none', borderBottom:'2px solid var(--espresso)', paddingBottom:2 }}>LinkedIn →</a>
           <a href="cv.html" className="cap" style={{ fontSize:13, color:'var(--espresso)', textDecoration:'none', borderBottom:'2px solid var(--espresso)', paddingBottom:2 }}>Download CV →</a>

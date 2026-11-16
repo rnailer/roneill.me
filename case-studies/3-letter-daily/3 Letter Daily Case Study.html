@@ -245,6 +245,8 @@
     .cs-dot::after{ animation:none !important; }
     *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
   }
+  /* phones: drop the Available pill so the nav fits (matches the shared case.css) */
+  @media (max-width: 512px){ .cs-avail { display: none !important; } }
 </style>
 
   <!-- ── Favicons + manifest (roneill.me) ─────────────────────── -->
@@ -288,7 +290,7 @@
         <a href="../../index.html#about" style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--paper);text-decoration:none">About</a>
         <a href="#contact" style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--paper);text-decoration:none">Contact</a>
         <a href="../../cv.html" style="font-family:var(--font-display);font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--paper);text-decoration:none">CV</a>
-        <span style="display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:var(--paper);border:1px solid var(--border-strong);border-radius:999px;padding:6px 13px 6px 11px">
+        <span class="cs-avail" style="display:inline-flex;align-items:center;gap:9px;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:var(--paper);border:1px solid var(--border-strong);border-radius:999px;padding:6px 13px 6px 11px">
           <span class="cs-dot" style="position:relative;width:8px;height:8px;border-radius:50%;background:var(--orange)"><span style="position:absolute;inset:0;border-radius:50%;background:var(--orange);animation:cs-pulse 1.9s cubic-bezier(0.22,1,0.36,1) infinite"></span></span>Available
         </span>
       </nav>

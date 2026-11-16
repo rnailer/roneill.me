@@ -10,12 +10,11 @@
 <style>
   html{scroll-behavior:smooth} body{margin:0;background:var(--espresso)}
   @keyframes ron-spin { to { transform: rotate(360deg) } }
-  @keyframes ron-cen-rot { from { transform: translate(-50%,-50%) rotate(0) } to { transform: translate(-50%,-50%) rotate(360deg) } }
   .ron-spin{ transform-origin:50% 50%; animation: ron-spin 90s linear infinite }
-  .ron-cen{ position:absolute; top:50%; left:50%; transform-origin:50% 50%; animation: ron-cen-rot 64s linear infinite }
-  @media (prefers-reduced-motion: reduce){ .ron-spin,.ron-cen{ animation:none !important } .ron-cen{ transform:translate(-50%,-50%) } }
+  .ron-cen{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) }
+  @media (prefers-reduced-motion: reduce){ .ron-spin{ animation:none !important } }
   @media (max-width: 700px){ .ron-mark{ position:relative !important; inset:auto !important; transform:none !important; margin:1.5rem auto 0.5rem; width:min(92vw,560px) !important; max-width:none !important } }
-  @media (max-width: 820px){ .about-grid{ grid-template-columns:1fr !important } }
+  @media (max-width: 820px){ .about-grid{ grid-template-columns:minmax(0,1fr) !important } }
   /* mobile work list: each item shows its own preview below the description; side rollover hidden */
   .work-item-preview{ display:none }
   @media (max-width: 512px){
@@ -23,6 +22,7 @@
     .work-grid{ grid-template-columns:1fr !important }
     .work-rail{ display:none !important }
     .work-item-preview{ display:block; margin-top:1.25rem }
+    .work-cs{ display:none }
   }
 </style>
 
@@ -71,7 +71,7 @@ const { useState } = React;
 function OrbitMark(){
   const symbols = ['orbit','sphere','starburst','compass'];
   const [idx,setIdx] = useState(0);
-  React.useEffect(()=>{ const t=setInterval(()=>setIdx(v=>(v+1)%symbols.length), 4200); return ()=>clearInterval(t); }, []);
+  React.useEffect(()=>{ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; const t=setInterval(()=>setIdx(v=>(v+1)%symbols.length), 4200); return ()=>clearInterval(t); }, []);
   const ring = "PRODUCT DESIGN · BUILDING WITH AI · DATA VISUALISATION · DESIGN SYSTEMS · RAPID PROTOTYPING · ";
   return (
     <div className="ron-mark" style={{ position:'absolute', right:'3%', top:'40%', transform:'translateY(-50%)', width:'min(58vh,560px)', maxWidth:'46vw', aspectRatio:'1', zIndex:1 }}>
@@ -104,6 +104,8 @@ function Hero(){
         <Decode as="h1" className="disp" accent={false} text={"richard\no'neill"}
           style={{ fontWeight:800, fontSize:'clamp(3rem,11vw,11rem)', lineHeight:0.82, letterSpacing:'-0.05em', color:'var(--paper)', margin:0, textTransform:'lowercase' }} />
         <p style={{ fontFamily:'var(--font-text)', fontSize:'var(--fs-body-lg)', lineHeight:'var(--lh-body)', color:'rgba(236,234,228,0.9)', maxWidth:'42ch', margin:'clamp(1rem,2vw,1.5rem) 0 0' }}>{RC.positioning}</p>
+        <p style={{ fontFamily:'var(--font-text)', fontSize:'var(--fs-body)', lineHeight:'var(--lh-body)', color:'var(--espresso)', maxWidth:'52ch', margin:'0.6rem 0 0' }}>{RC.proof}</p>
+        <a href={RC.proofLink.href} className="cap" style={{ display:'inline-block', marginTop:'1rem', fontSize:13, color:'var(--espresso)', textDecoration:'none', borderBottom:'2px solid var(--espresso)', paddingBottom:2, letterSpacing:'0.06em' }}>{RC.proofLink.label} →</a>
       </div>
     </header>
   );
@@ -149,7 +151,7 @@ function PreviewCard({ e }){
   return (
     <div className="checker halftone" style={{ position:'relative', overflow:'hidden', aspectRatio:'4/5', border:`1px solid ${FR}`, display:'grid', placeItems:'center' }}>
       <span className="disp" style={{ position:'absolute', left:18, top:14, fontWeight:800, fontSize:'clamp(2.5rem,5vw,4rem)', lineHeight:0.8, letterSpacing:'-0.04em', color:'var(--orange)', zIndex:3 }}>{e.index}</span>
-      <DeviceFrame shot={e.shot} />
+      {e.shot ? <DeviceFrame shot={e.shot} /> : <img src={'/assets/motifs/'+(e.motif||'orbit')+'.svg'} alt="" style={{ width:'46%', filter:'invert(1)', opacity:0.85, position:'relative', zIndex:2 }} />}
       <Handles />
       <Corners c={FR2} inset={9} />
       <span className="cap" style={{ position:'absolute', left:18, bottom:16, fontSize:11, color:'var(--grey-400)', letterSpacing:'0.06em', zIndex:3 }}>{e.cover} // {e.href ? 'view case study →' : 'gated PDF'}</span>
@@ -190,10 +192,10 @@ function Work(){
                 <div style={{ display:'flex', alignItems:'baseline', gap:14, marginBottom:12 }}>
                   <span className="disp" style={{ fontWeight:800, fontSize: child ? 'clamp(0.95rem,1.4vw,1.2rem)' : 'clamp(1.1rem,1.8vw,1.5rem)', color:'var(--orange)' }}>{w.index}</span>
                   <span className="cap" style={{ fontSize:11, color:'var(--text-faint)', letterSpacing:'0.08em' }}>{w.client} // {w.year}</span>
-                  <span className="cap" style={{ marginLeft:'auto', fontSize:10, color:on?'var(--orange)':'var(--text-faint)', letterSpacing:'0.06em', whiteSpace:'nowrap' }}>{w.link.gated ? 'Gated PDF' : 'Case study'}</span>
-                  <span style={{ color:'var(--orange)', fontWeight:700, opacity:on?1:0, transform:on?'translateX(0)':'translateX(-8px)', transition:'all var(--dur) var(--ease-out)' }}>→</span>
+                  <span className="cap work-cs" style={{ marginLeft:'auto', fontSize:10, color:on?'var(--orange)':'var(--text-faint)', letterSpacing:'0.06em', whiteSpace:'nowrap', transition:'color 150ms ease' }}>{w.link.gated ? 'Gated PDF' : 'Case study'}</span>
+                  <span style={{ color:'var(--orange)', fontWeight:700, opacity:on?1:0, transform:on?'translateX(0)':'translateX(-8px)', transition:'opacity 150ms ease, transform 150ms var(--ease-out)' }}>→</span>
                 </div>
-                <h2 className="disp" style={{ fontWeight:on?700:600, fontSize: child ? 'clamp(1.3rem,2.9vw,2.4rem)' : 'clamp(1.6rem,3.6vw,3rem)', lineHeight:0.98, letterSpacing:'-0.035em', color:on?'var(--paper)':'var(--text-faint)', margin:0, textTransform:'lowercase', maxWidth:'18ch', transition:'color var(--dur) var(--ease-out)' }}>{accentLast(w.headline)}</h2>
+                <h2 className="disp" style={{ fontWeight:700, fontSize: child ? 'clamp(1.3rem,2.9vw,2.4rem)' : 'clamp(1.6rem,3.6vw,3rem)', lineHeight:0.98, letterSpacing:'-0.035em', color:'var(--paper)', margin:0, textTransform:'lowercase', maxWidth:'18ch' }}>{accentLast(w.headline)}</h2>
                 <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginTop:16 }}>{w.tags.map(t=> <Tag key={t}>{t}</Tag>)}</div>
                 <div className="work-item-preview"><PreviewCard e={w} /></div>
               </a>
@@ -203,8 +205,8 @@ function Work(){
         </div>
         <div className="work-rail" style={{ position:'sticky', top:'calc(var(--nav-h) + 24px)' }}>
           <ProjectPreview e={e} />
-          <div style={{ display:'flex', gap:'clamp(1.5rem,3vw,2.5rem)', marginTop:'var(--space-5)' }}>
-            {e.metrics.map((m,k)=> <MetricStat key={k} value={m.value} unit={m.unit} caption={m.caption} size="md" />)}
+          <div style={{ display:'flex', flexWrap:'wrap', gap:'1.25rem clamp(1.5rem,3vw,2.5rem)', marginTop:'var(--space-5)' }}>
+            {e.metrics.map((m,k)=> <MetricStat key={k} value={m.value} unit={m.unit} caption={m.caption} size="md" style={{ minWidth:0 }} />)}
           </div>
         </div>
       </div>
@@ -216,7 +218,7 @@ function App(){
   return (
     <div style={{ background:'var(--espresso)', color:'var(--paper)', position:'relative' }}>
       <div className="grain fixed" />
-      <TopBar/><Hero/><Work/><Catalog/><About/><Contact index="05"/>
+      <TopBar/><Hero/><Work/><Catalog/><About/><Contact index="04"/>
     </div>
   );
 }
