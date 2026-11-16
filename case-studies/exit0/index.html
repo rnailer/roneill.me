@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Exit·0, Case Study · roneill.me</title>
+<meta name="description" content="Exit·0 is a free Mac and iPhone app that tells you when Claude Code finishes, breaks or needs you. Designed by Richard O'Neill, built with Claude Code.">
+<meta name="theme-color" content="#1A1310">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://roneill.me/case-studies/exit0/">
+<meta property="og:title" content="Exit·0 · A small machine that tells me when Claude Code is done">
+<meta property="og:description" content="A free Mac and iPhone app that tells you when Claude Code finishes, breaks or needs you. Designed by Richard O'Neill, built with Claude Code.">
+<meta property="og:image" content="https://roneill.me/og-image.png">
+<meta property="og:site_name" content="roneill.me">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/tokens/motion.css">
+<script defer src="/motion-observe.js"></script>
+<style>
+  /* roneill.me tokens (same as sibling case studies) */
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Jersey+10&display=swap');
+  /* Fonts: the site's shared TBJ Ultra Centric files in /assets/fonts */
+  @font-face { font-family:'TBJ Ultra Centric'; src:url('/assets/fonts/tbj-ultra-centric-medium.woff2') format('woff2'); font-weight:500; font-display:swap; }
+  @font-face { font-family:'TBJ Ultra Centric'; src:url('/assets/fonts/tbj-ultra-centric-semibold.woff2') format('woff2'); font-weight:600; font-display:swap; }
+  @font-face { font-family:'TBJ Ultra Centric'; src:url('/assets/fonts/tbj-ultra-centric-bold.woff2') format('woff2'); font-weight:700; font-display:swap; }
+  @font-face { font-family:'TBJ Ultra Centric'; src:url('/assets/fonts/tbj-ultra-centric-extrabold.woff2') format('woff2'); font-weight:800; font-display:swap; }
+
+  :root{
+    --paper:#ECEAE4; --espresso:#1A1310; --orange:#EE5622;
+    --grey-600:#6B675F; --grey-400:#A8A39A;
+    --espresso-soft:#241A16; --espresso-deep:#120D0B;
+    --line-on-dark:rgba(236,234,228,0.14); --line-on-dark-strong:rgba(236,234,228,0.30);
+    --bg:var(--espresso); --bg-elevated:var(--espresso-soft); --bg-sunken:var(--espresso-deep);
+    --text:var(--paper); --text-muted:#C4BFB5; --text-faint:var(--grey-400);
+    --border:var(--line-on-dark); --border-faint:rgba(236,234,228,0.08); --border-strong:var(--line-on-dark-strong);
+    --font-display:'TBJ Ultra Centric', system-ui, sans-serif;
+    --font-text:'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --pad-x:clamp(1.5rem,4vw,4rem);
+    /* Exit·0 brand, used only inside product panels */
+    --x-ink:#0E0E0E; --x-chassis:#2B2C2F; --x-panel:#3A3C41; --x-side:#202124; --x-inset:#1E1F22;
+    --x-screen:#0F130F; --x-acid:#C8F03C; --x-acid-deep:#6F8A12; --x-white:#F4F3EE; --x-dim:#9A9CA1; --x-broke:#FF5A4F;
+  }
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+  body{ margin:0; background:var(--bg); color:var(--text); font-family:var(--font-text); font-size:1.0625rem; line-height:1.6;
+    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+  ::selection{ background:var(--orange); color:var(--paper); }
+  a{ color:var(--orange); text-decoration:none; }
+  img{ max-width:100%; display:block; }
+  h1,h2,h3{ font-family:var(--font-display); margin:0; }
+  :focus-visible{ outline:2px solid var(--orange); outline-offset:3px; }
+  strong{ color:var(--paper); font-weight:600; }
+
+  /* header */
+  .top{ position:sticky; top:0; z-index:40; background:color-mix(in srgb, var(--espresso) 82%, transparent);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border-bottom:1px solid var(--border); }
+  .top-in{ max-width:1600px; margin:0 auto; padding:0 var(--pad-x); height:72px; display:flex; align-items:center; justify-content:space-between; }
+  .logo{ font-family:var(--font-display); font-weight:800; font-size:24px; letter-spacing:-0.05em; color:var(--paper); }
+  .nav{ display:flex; align-items:center; gap:clamp(1rem,2.5vw,2rem); }
+  .nav a{ font-family:var(--font-display); font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--paper); }
+  .avail{ display:inline-flex; align-items:center; gap:9px; font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.1em;
+    border:1px solid var(--border-strong); border-radius:999px; padding:6px 13px 6px 11px; }
+  .cs-dot{ position:relative; width:8px; height:8px; border-radius:50%; background:var(--orange); }
+  .cs-dot::after{ content:""; position:absolute; inset:0; border-radius:50%; background:var(--orange); animation:cs-pulse 1.9s cubic-bezier(.22,1,.36,1) infinite; }
+  @keyframes cs-pulse{ 0%{transform:scale(1);opacity:.55} 70%{transform:scale(2.6);opacity:0} 100%{opacity:0} }
+  @media (max-width:560px){ .nav a.hide-sm{ display:none; } }
+
+  /* hero */
+  .hero{ max-width:1600px; margin:0 auto; padding:clamp(2.5rem,5vw,4.5rem) var(--pad-x) clamp(1.5rem,3vw,2.5rem); }
+  .eyebrow{ font-family:ui-monospace,Menlo,monospace; font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); }
+  .eyebrow b{ color:var(--orange); font-weight:600; }
+  .num{ font-family:var(--font-display); font-weight:800; font-size:clamp(1.1rem,2vw,1.4rem); color:var(--orange); letter-spacing:.04em; margin-top:.4em; }
+  h1{ font-weight:800; font-size:clamp(2.6rem,6.4vw,5.5rem); line-height:.98; letter-spacing:-0.03em; margin:.35em 0 0; max-width:17ch; text-wrap:balance; }
+  h1 em{ font-style:normal; color:var(--orange); }
+  .lede{ font-size:1.1875rem; line-height:1.6; color:var(--text-muted); max-width:62ch; margin:clamp(1.4rem,3vw,2rem) 0 0; text-wrap:pretty; }
+  .meta{ display:flex; flex-wrap:wrap; gap:clamp(1.5rem,4vw,3.5rem); margin:clamp(1.8rem,4vw,2.6rem) 0 0; }
+  .meta dt{ font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.16em; color:var(--text-faint); }
+  .meta dd{ margin:6px 0 0; font-family:var(--font-display); font-weight:600; font-size:1.0625rem; letter-spacing:-0.01em; color:var(--paper); }
+  .meta dd.hot, .meta dd a{ color:var(--orange); }
+
+  /* Exit·0 cover panel */
+  .x-cover{ position:relative; overflow:hidden; margin-top:clamp(1.6rem,3.5vw,3rem); border-radius:4px; background:var(--x-chassis);
+    border:3px solid var(--x-ink); padding:clamp(1.4rem,4vw,3.2rem); display:grid; grid-template-columns:1fr 1.1fr; gap:clamp(1.2rem,4vw,3.5rem); align-items:center; }
+  .x-cover::after{ content:""; position:absolute; inset:0; pointer-events:none; opacity:.12; mix-blend-mode:screen;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"); }
+  .x-lockup{ display:flex; align-items:center; gap:14px; }
+  .x-word{ font-family:'Jersey 10',monospace; font-size:clamp(44px,6vw,72px); line-height:.8; color:var(--x-acid); }
+  .dymo{ display:inline-block; background:var(--x-ink); color:#F4F2EC; font-family:'Space Mono',monospace; font-weight:700; font-size:11px;
+    letter-spacing:.16em; padding:3px 9px; border-radius:2px; box-shadow:1px 2px 1px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.22);
+    text-shadow:0 1px 0 rgba(0,0,0,.5); text-transform:uppercase; }
+  .dymo.acid{ background:var(--x-acid); color:#18200A; text-shadow:none; }
+  .x-tag{ font-family:'Jersey 10',monospace; color:var(--x-white); font-size:clamp(30px,4vw,48px); line-height:.9; margin:.6em 0 .35em; }
+  .x-tag span{ display:block; color:var(--x-acid); }
+  .x-small{ font-family:'Space Mono',monospace; font-size:clamp(11px,1.2vw,13px); color:var(--x-dim); letter-spacing:.06em; text-transform:uppercase; }
+  .bezel{ background:var(--x-panel); border:3px solid var(--x-ink); border-radius:10px; padding:14px;
+    box-shadow:0 6px 0 var(--x-side), inset 2px 2px 0 rgba(255,255,255,.18), inset -2px -3px 0 rgba(0,0,0,.4); }
+  .screen{ position:relative; overflow:hidden; background:var(--x-screen); border-radius:6px; padding:14px 16px 16px;
+    box-shadow:inset 3px 4px 4px rgba(0,0,0,.75), inset -1px -1px 0 rgba(255,255,255,.1); }
+  .scr-row{ display:flex; justify-content:space-between; font-family:'Space Mono',monospace; font-weight:700; font-size:11px; color:var(--x-dim); letter-spacing:.08em; }
+  .led{ display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--x-acid); box-shadow:0 0 10px var(--x-acid); margin-right:8px; vertical-align:middle; }
+  .scr-main{ display:flex; align-items:center; gap:18px; margin-top:14px; }
+  .scr-head{ font-family:'Jersey 10',monospace; font-size:clamp(40px,5vw,58px); line-height:.8; color:var(--x-white); }
+  .scr-head span{ display:block; color:var(--x-acid); }
+  .scr-detail{ font-family:'Space Mono',monospace; font-size:12px; color:var(--x-dim); margin-top:12px; }
+  .mascot{ flex:none; image-rendering:pixelated; }
+  .scan{ position:absolute; left:0; right:0; height:4px; background:var(--x-acid); opacity:.25; top:-4px; animation:scan 2.4s linear infinite; }
+  @keyframes scan{ to{ top:100%; } }
+  @media (max-width:760px){ .x-cover{ grid-template-columns:1fr; } }
+
+  /* doc layout */
+  .wrap{ max-width:1600px; margin:0 auto; padding:0 var(--pad-x); }
+  .cs-doc{ display:grid; grid-template-columns:200px minmax(0,1fr); gap:clamp(2rem,5vw,5rem); padding:clamp(2rem,4vw,3.5rem) 0 0; }
+  .cs-rail{ position:sticky; top:100px; align-self:start; }
+  .rail-h{ font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.16em; color:var(--text-faint); margin-bottom:.8rem; }
+  .cs-rail ol{ list-style:none; margin:0; padding:0; }
+  .cs-rail a{ display:block; padding:9px 0; font-size:.9375rem; color:var(--text-faint); border-top:1px solid var(--border-faint); }
+  .cs-rail a:hover, .cs-rail a.on{ color:var(--paper); }
+  section{ padding:clamp(2.5rem,5vw,4.5rem) 0; border-top:1px solid var(--border); }
+  section:first-child{ padding-top:0; border-top:0; }
+  .label{ display:flex; align-items:baseline; gap:14px; margin-bottom:24px; }
+  .label span:first-child{ font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.16em; color:var(--text-muted); }
+  .label span:last-child{ flex:1; height:1px; background:var(--border); }
+  h2{ font-weight:700; font-size:clamp(1.7rem,3.4vw,2.7rem); line-height:1.05; letter-spacing:-0.025em; margin:0 0 .8em; max-width:22ch; text-wrap:balance; }
+  p{ font-size:1.0625rem; line-height:1.68; color:var(--text-muted); max-width:66ch; margin:0 0 1.1em; text-wrap:pretty; }
+  p.q{ color:var(--paper); font-style:italic; }
+  .link{ border-bottom:1px solid color-mix(in srgb, var(--orange) 45%, transparent); padding-bottom:1px; }
+  .cap{ font-family:'Space Mono',monospace; font-size:12px; line-height:1.45; color:var(--text-muted); margin:.9rem 0 0; }
+  .box{ border:1px solid var(--border); border-radius:4px; padding:clamp(1.4rem,3vw,2rem); margin:1.8rem 0; background:var(--bg-elevated); }
+  .box-h{ font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.16em; color:var(--text-faint); margin-bottom:1.2rem; }
+  .bet{ border-left:2px solid var(--orange); padding:.4rem 0 .4rem 1.4rem; margin:clamp(1.8rem,4vw,2.6rem) 0 0; }
+  .bet p{ font-family:var(--font-display); font-weight:500; font-size:clamp(1.375rem,2vw,1.875rem); line-height:1.25; letter-spacing:-0.01em; color:var(--paper); margin:.6em 0 0; max-width:40ch; }
+
+  /* state table */
+  .states{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+  .st{ background:var(--x-screen); border:2px solid var(--x-ink); border-radius:6px; padding:14px; }
+  .st .h{ font-family:'Jersey 10',monospace; font-size:28px; line-height:.85; color:var(--x-white); }
+  .st .h span{ display:block; color:var(--x-acid); }
+  .st.bad .h span{ color:var(--x-broke); }
+  .st .w{ font-family:'Space Mono',monospace; font-size:11px; color:var(--x-dim); margin-top:10px; line-height:1.45; }
+  .st .w b{ color:var(--x-white); font-weight:700; }
+  @media (max-width:900px){ .states{ grid-template-columns:1fr 1fr; } }
+
+  /* terminal */
+  .term{ background:#0B0807; border:1px solid var(--border-strong); border-radius:8px; overflow:hidden; margin:1.6rem 0; }
+  .term-bar{ display:flex; gap:7px; padding:11px 14px; border-bottom:1px solid var(--border); }
+  .term-bar i{ width:11px; height:11px; border-radius:50%; background:var(--grey-600); opacity:.6; }
+  .term pre{ margin:0; padding:18px 20px 20px; font-family:'Space Mono',monospace; font-size:13.5px; line-height:1.7; color:var(--paper); white-space:pre-wrap; }
+  .term .p{ color:var(--orange); }
+  .term .c{ color:var(--grey-400); }
+  .split{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(1.2rem,3vw,2rem); margin-top:1.6rem; }
+  .split > div{ border-top:2px solid var(--paper); padding-top:1.1rem; }
+  .who{ font-family:ui-monospace,monospace; font-size:12px; color:var(--orange); letter-spacing:.06em; }
+  .split h3, .dec h3{ font-weight:600; font-size:1.1875rem; letter-spacing:-0.01em; margin:.5em 0 0; color:var(--paper); }
+  .split p, .dec p{ font-size:.9375rem; line-height:1.6; margin:.6em 0 0; }
+
+  /* tape counter */
+  .tape{ margin-top:1.4rem; }
+  .tape-track{ position:relative; height:46px; border-radius:3px; background:var(--bg-sunken); }
+  .tape-fill{ position:absolute; inset:0; background:linear-gradient(90deg, color-mix(in srgb, var(--orange) 28%, transparent), color-mix(in srgb, var(--orange) 8%, transparent)); border-radius:3px; }
+  .tick{ position:absolute; top:0; bottom:0; width:2px; background:var(--orange); }
+  .tick span{ position:absolute; top:52px; left:50%; transform:translateX(-50%); font-family:'Space Mono',monospace; font-size:11px; color:var(--text-muted); white-space:nowrap; text-align:center; line-height:1.3; }
+  .tick span b{ display:block; color:var(--paper); font-weight:700; }
+  .tape-legend{ display:flex; justify-content:space-between; margin-top:64px; font-family:'Space Mono',monospace; font-size:11px; color:var(--text-faint); }
+  @media (max-width:700px){ .tick.minor span{ display:none; } }
+
+  /* stats */
+  .stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(1.5rem,4vw,3rem); }
+  .stat .n{ font-family:var(--font-display); font-weight:800; font-size:clamp(2.4rem,5vw,4rem); line-height:.9; letter-spacing:-0.04em; color:var(--paper); }
+  .stat .n span{ color:var(--orange); }
+  .stat .l{ font-size:.8125rem; line-height:1.45; color:var(--text-muted); margin-top:.9em; max-width:22ch; }
+  @media (max-width:900px){ .stats{ grid-template-columns:1fr 1fr; } }
+
+  /* design images */
+  .faces{ display:flex; flex-wrap:wrap; gap:clamp(.8rem,2vw,1.4rem); background:var(--x-chassis); border:3px solid var(--x-ink); border-radius:4px; padding:clamp(1.2rem,3vw,2rem); margin-top:1.6rem; }
+  .faces figure{ margin:0; display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .faces figcaption{ font-family:'Space Mono',monospace; font-size:11px; color:var(--x-dim); letter-spacing:.08em; text-transform:uppercase; }
+  .gallery{ display:grid; grid-template-columns:.8fr 1.2fr; gap:clamp(1rem,2.5vw,2rem); margin-top:1.6rem; align-items:start; }
+  .shot{ background:var(--bg-elevated); border:1px solid var(--border); border-radius:8px; padding:clamp(1rem,2.4vw,1.8rem); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1rem; }
+  .shot img{ width:auto; max-height:520px; }
+  .shot.strips img{ width:100%; max-width:520px; height:auto; }
+  .phones{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(.8rem,2vw,1.4rem); margin-top:clamp(1rem,2.5vw,2rem); }
+  .phones figure{ margin:0; }
+  .phones img{ width:100%; height:auto; border-radius:14px; background:var(--bg-sunken); }
+  .phones figcaption{ font-family:'Space Mono',monospace; font-size:11.5px; color:var(--text-muted); margin-top:.6rem; text-align:center; }
+  @media (max-width:760px){ .gallery{ grid-template-columns:1fr; } .phones{ grid-template-columns:1fr 1fr; } }
+
+  /* flow */
+  .flow{ display:flex; flex-wrap:wrap; align-items:stretch; gap:8px; }
+  .node{ flex:1 1 130px; border:1px solid var(--border-strong); border-radius:4px; padding:12px 14px; background:var(--bg-sunken); }
+  .node b{ display:block; font-family:var(--font-display); font-weight:600; font-size:.95rem; color:var(--paper); letter-spacing:-0.01em; }
+  .node span{ display:block; font-size:.8125rem; color:var(--text-muted); line-height:1.4; margin-top:4px; }
+  .arrow{ align-self:center; color:var(--orange); font-family:var(--font-display); }
+  .node.end{ border-color:var(--orange); }
+  @media (max-width:760px){ .arrow{ transform:rotate(90deg); width:100%; text-align:center; } .node{ flex-basis:100%; } }
+
+  /* decisions */
+  .dec{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(1.4rem,3vw,2.5rem) clamp(2rem,4vw,4rem); }
+  .dec > div{ border-top:2px solid var(--paper); padding-top:1.1rem; }
+  .ba{ display:flex; align-items:center; gap:10px; margin-top:.8rem; font-family:'Space Mono',monospace; font-size:12.5px; }
+  .ba s{ color:var(--text-faint); }
+  .ba b{ color:var(--orange); font-weight:700; }
+  .faults{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:clamp(2rem,4vw,3rem); }
+  .fault{ border:1px solid var(--border); border-radius:4px; padding:16px; background:var(--bg-elevated); }
+  .fault .t{ font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--x-broke); }
+  .fault h3{ font-weight:600; font-size:1.05rem; color:var(--paper); margin:.45em 0 0; letter-spacing:-0.01em; }
+  .fault p{ font-size:.875rem; line-height:1.55; margin:.5em 0 0; }
+  @media (max-width:900px){ .dec, .split, .faults{ grid-template-columns:1fr; } }
+
+  /* now */
+  .now{ background:var(--bg-elevated); border:1px solid var(--border); border-radius:4px; padding:clamp(1.8rem,5vw,4rem); }
+  .ledger{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(1.5rem,4vw,3rem); margin:0 0 clamp(2rem,4vw,3rem); }
+  .ledger h3{ font-weight:600; font-size:12px; font-family:var(--font-text); text-transform:uppercase; letter-spacing:.16em; color:var(--text-faint); margin-bottom:.9rem; }
+  .ledger ul{ list-style:none; margin:0; padding:0; }
+  .ledger li{ padding:10px 0; border-top:1px solid var(--border-faint); font-size:.9375rem; line-height:1.5; color:var(--text-muted); display:flex; gap:12px; }
+  .ledger li::before{ content:"+"; color:var(--orange); font-family:'Space Mono',monospace; font-weight:700; }
+  .ledger .open li::before{ content:"·"; color:var(--text-faint); }
+  .ledger li b{ color:var(--paper); font-weight:600; }
+  .ask{ font-family:var(--font-display); font-weight:700; font-size:clamp(1.6rem,3.4vw,2.6rem); line-height:1.08; letter-spacing:-0.025em; color:var(--paper); max-width:24ch; margin:0 0 .5em; }
+  .ask span{ color:var(--orange); }
+  .ctas{ display:flex; flex-wrap:wrap; gap:12px; margin-top:1.6rem; }
+  .btn{ display:inline-flex; align-items:center; gap:10px; font-family:var(--font-display); font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.06em;
+    padding:14px 20px; border-radius:999px; border:1px solid var(--border-strong); color:var(--paper); min-height:44px; }
+  .btn.primary{ background:var(--orange); border-color:var(--orange); color:var(--espresso); }
+  .btn:hover{ border-color:var(--orange); }
+  .btn.primary:hover{ background:#D6431A; }
+  @media (max-width:760px){ .ledger{ grid-template-columns:1fr; } }
+
+  /* next + footer */
+  .next{ display:flex; justify-content:space-between; align-items:baseline; gap:20px; padding:clamp(2rem,5vw,3.5rem) 0; border-top:1px solid var(--border); margin-top:clamp(2rem,4vw,3rem); flex-wrap:wrap; }
+  .next .k{ font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.16em; color:var(--text-muted); }
+  .next .t{ font-family:var(--font-display); font-weight:700; font-size:clamp(2.25rem,4.6vw,4rem); letter-spacing:-0.025em; color:var(--paper); margin-top:.3em; }
+  .next .a{ font-family:var(--font-display); font-size:clamp(1.75rem,3vw,2.75rem); color:var(--orange); }
+  .tm{ font-size:.75rem; color:var(--text-faint); max-width:70ch; margin:0 0 2rem; }
+  footer{ background:var(--orange); color:var(--espresso); padding:clamp(3rem,7vw,6rem) 0; }
+  footer .in{ max-width:1600px; margin:0 auto; padding:0 var(--pad-x); }
+  footer .k{ font-family:var(--font-display); font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:.08em; }
+  footer .mail{ display:block; margin-top:clamp(1.5rem,4vw,2.5rem); font-family:var(--font-display); font-weight:800; font-size:clamp(2rem,9vw,8rem); line-height:.9; letter-spacing:-0.05em; color:var(--espresso); }
+  footer .links{ display:flex; gap:14px; flex-wrap:wrap; margin-top:clamp(1.5rem,3vw,2rem); }
+  footer .links a{ font-family:var(--font-display); font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--espresso); border-bottom:2px solid var(--espresso); padding-bottom:2px; }
+  footer .base{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-top:clamp(2.5rem,6vw,4rem); padding-top:2rem; border-top:2px solid var(--espresso);
+    font-family:var(--font-display); font-weight:700; font-size:12px; text-transform:uppercase; letter-spacing:.06em; }
+  footer .base .logo{ color:var(--espresso); text-transform:none; font-size:24px; font-weight:800; letter-spacing:-0.05em; }
+
+  .imgfail{ display:flex; align-items:center; justify-content:center; min-height:120px; width:100%; border:1px dashed var(--border-strong); border-radius:6px; font-family:'Space Mono',monospace; font-size:11px; color:var(--text-faint); text-align:center; padding:1rem; }
+  @media (max-width:900px){ .cs-doc{ grid-template-columns:1fr; } .cs-rail{ display:none; } }
+  @media (prefers-reduced-motion:reduce){
+    html{ scroll-behavior:auto; }
+    .cs-dot::after, .scan{ animation:none !important; display:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top"><div class="top-in">
+  <a class="logo" href="../../index.html">ron</a>
+  <nav class="nav">
+    <a href="../../index.html#work">Work</a>
+    <a class="hide-sm" href="../../index.html#about">About</a>
+    <a href="#contact">Contact</a>
+    <a class="hide-sm" href="../../cv.html">CV</a>
+    <span class="avail"><span class="cs-dot"></span>Available</span>
+  </nav>
+</div></div>
+
+<header class="hero">
+  <div class="eyebrow">Case study <b>[ 04.4 ]</b></div>
+  <div class="num">04.4</div>
+  <h1 data-rise data-rise-total="600" class="tw-pending">A small machine that tells me when Claude Code is <em>done</em></h1>
+  <p class="lede"><strong>Exit·0</strong> is a free Mac and iPhone app that taps you on the shoulder when Claude Code finishes, breaks or needs you. I built it for one person: me. I designed it, Claude Code wrote every line, and it now sits on my desk all day. <strong>It's finished and it's out.</strong> What I don't know yet is whether it's useful to anyone else.</p>
+  <dl class="meta">
+    <div><dt>Studio</dt><dd>Treble Games</dd></div>
+    <div><dt>Year</dt><dd>2026</dd></div>
+    <div><dt>First commit to v1</dt><dd class="hot">16h 58m</dd></div>
+    <div><dt>Type</dt><dd>Mac + iPhone · Native Swift</dd></div>
+    <div><dt>Role</dt><dd>Designer · Product · AI-directed build</dd></div>
+    <div><dt>Try it</dt><dd><a href="https://www.exit0.buzz/">exit0.buzz ↗</a></dd></div>
+  </dl>
+
+  <div class="x-cover" role="img" aria-label="The Exit·0 device screen after a run: DONE. GO LOOK. refactor auth flow, 4m 12s.">
+    <div>
+      <div class="x-lockup"><canvas class="mascot" data-face="happy" data-scale="4" width="64" height="64"></canvas><div class="x-word">EXIT·0</div></div>
+      <div style="margin-top:12px"><span class="dymo">Model 0.0.1</span></div>
+      <div class="x-tag">go make a tea.<span>it'll tell you.</span></div>
+      <div class="x-small">Done · Needs you · Broke · Crashed</div>
+    </div>
+    <div class="bezel"><div class="screen">
+      <div class="scan" aria-hidden="true"></div>
+      <div class="scr-row"><span><span class="led"></span>LIVE&nbsp; TERMINAL 03</span><span>RUN 0042</span></div>
+      <div class="scr-main">
+        <canvas class="mascot" id="heroMascot" data-face="happy" data-scale="6" width="96" height="96"></canvas>
+        <div><div class="scr-head">DONE.<span>GO LOOK.</span></div><div class="scr-detail">refactor auth flow · 4m 12s</div></div>
+      </div>
+    </div></div>
+  </div>
+</header>
+
+<div class="wrap"><div class="cs-doc">
+  <aside class="cs-rail">
+    <div class="rail-h">Sections</div>
+    <ol>
+      <li><a href="#c-origin">Origin</a></li>
+      <li><a href="#c-problem">Problem</a></li>
+      <li><a href="#c-approach">Approach</a></li>
+      <li><a href="#c-design">Design</a></li>
+      <li><a href="#c-build">Build</a></li>
+      <li><a href="#c-decisions">Decisions</a></li>
+      <li><a href="#c-now">Where it is now</a></li>
+    </ol>
+  </aside>
+
+  <main>
+    <section id="c-origin">
+      <div class="label"><span>Origin</span><span></span></div>
+      <h2>The terminal doesn't tap you on the shoulder</h2>
+      <p>I give Claude Code a job, switch to Figma, and come back to find it finished twenty minutes ago. Or worse, it's been sitting on a permission question the whole time, waiting for me.</p>
+      <p>So I wanted something that would tell me: on the desk when I'm there, on my phone when I'm not. My first go was in Replit, and I ran out of credits. I started again as a <strong>native Mac and iPhone app</strong>, with Claude Code doing the building and me doing everything else.</p>
+    </section>
+
+    <section id="c-problem">
+      <div class="label"><span>Problem</span><span></span></div>
+      <h2>Four moments that matter, two places I might be</h2>
+      <p>A run ending isn't one event. Finished, stuck on a question, broken, or crashed on Claude's side all need different amounts of my attention. And a plain notification is the easiest thing in the world to ignore.</p>
+      <p class="q">How do you get someone's attention at the right moment without adding to the noise?</p>
+      <div class="box">
+        <div class="box-h">Four states, four sounds</div>
+        <div class="states">
+          <div class="st"><div class="h">DONE.<span>GO LOOK.</span></div><div class="w"><b>Fanfare.</b> Task and how long it took.</div></div>
+          <div class="st"><div class="h">OI.<span>NEEDS YOU.</span></div><div class="w"><b>Alarm.</b> The only one that gets through quiet hours.</div></div>
+          <div class="st bad"><div class="h">IT BROKE.<span>GO FIX.</span></div><div class="w"><b>Buzz.</b> The command and its exit code.</div></div>
+          <div class="st bad"><div class="h">CRASHED.<span>NOT YOUR FAULT.</span></div><div class="w"><b>Power-down.</b> The API error in plain words.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="c-approach">
+      <div class="label"><span>Approach</span><span></span></div>
+      <h2>One file of rules, six milestones, zero lines by hand</h2>
+      <p>I'm a designer, not a Swift developer. So I didn't try to own the code. I owned the decisions and the checks. The project has a <strong>CLAUDE.md</strong> file that Claude Code reads at the start of every session, and it sets out who does what:</p>
+      <div class="term" aria-label="Excerpt from the project's CLAUDE.md file">
+        <div class="term-bar" aria-hidden="true"><i></i><i></i><i></i></div>
+<pre><span class="p">$</span> cat CLAUDE.md
+
+Richard is the product manager and designer.
+He is not a developer.
+
+Explain every decision in plain English, no jargon.
+Only ask me about product, design or copy.
+One question at a time.
+Click-by-click steps when I have to do something.
+Build in milestone order. Don't start the next until I've tried the last.
+Never hand Richard a build you haven't built.</pre>
+      </div>
+      <p>Each milestone, from setup to polish, ended with checks I could do myself, in plain English. Things like: <em>quit Exit·0, run Claude again, and when the run finishes Exit·0 should start by itself and the banner should still appear.</em> Nothing moved on until I'd ticked them off.</p>
+
+      <div class="split">
+        <div><span class="who">ME</span><h3>Design, testing, judgement</h3><p>Six rounds in Figma, testing every milestone, the clicks only I could do (developer account, push key, permissions) and the product calls, each logged with a date.</p></div>
+        <div><span class="who">CLAUDE CODE</span><h3>Everything else</h3><p>The Swift for both apps, tests, builds, and a decision log. When the idle app was using 8 to 12% of my iMac's CPU, it profiled it, found three causes and got it to about 2.5%.</p></div>
+      </div>
+
+      <div class="box">
+        <div class="box-h">Tape counter · first commit to v1 · 20 to 21 Oct 2026</div>
+        <div class="tape" aria-label="Timeline: first commit 07:27, M0 setup 08:33, M1 09:25, push test 10:28, M2 device 14:26, M3 phone 15:20, M4 lock screen 15:52, design round 5 18:12, round 6 21:20, last commit 00:25.">
+          <div class="tape-track"><div class="tape-fill"></div>
+            <!-- position = minutes since 07:27 / 1018 -->
+            <div class="tick" style="left:0%"><span style="transform:none;left:0"><b>07:27</b>first commit</span></div>
+            <div class="tick minor" style="left:10.8%"><span><b>09:25</b>M1 hears Claude</span></div>
+            <div class="tick minor" style="left:28.5%"><span><b>14:26</b>M2 device</span></div>
+            <div class="tick minor" style="left:41.6%"><span><b>15:52</b>M4 lock screen</span></div>
+            <div class="tick minor" style="left:68.8%"><span><b>21:20</b>round 6</span></div>
+            <div class="tick" style="left:99.8%"><span style="transform:none;left:auto;right:0"><b>00:25</b>last commit</span></div>
+          </div>
+          <div class="tape-legend"><span>REC</span><span>79 COMMITS · 16H 58M</span></div>
+        </div>
+      </div>
+
+      <div class="bet"><div class="box-h" style="margin:0">The bet</div><p>If I own the decisions and the checks, I don't need to own the code.</p></div>
+    </section>
+
+    <section id="c-design">
+      <div class="label"><span>Design</span><span></span></div>
+      <h2>A thing on the desk, not another notification</h2>
+      <p>Exit·0 is a small dark pixel machine with a screen, a run list and a floppy drive. A white CRT mascot has a face for every state. When a run finishes, it hops, and a floppy drops out of the drive labelled with the project and how long it took.</p>
+      <div class="faces" aria-label="The mascot's faces: happy, working, shocked, angry, dead, sleepy.">
+        <figure><canvas class="mascot" data-face="happy" data-scale="5" width="80" height="80"></canvas><figcaption>Idle</figcaption></figure>
+        <figure><canvas class="mascot" data-face="working" data-scale="5" width="80" height="80"></canvas><figcaption>Running</figcaption></figure>
+        <figure><canvas class="mascot" data-face="shocked" data-scale="5" width="80" height="80"></canvas><figcaption>Needs you</figcaption></figure>
+        <figure><canvas class="mascot" data-face="angry" data-scale="5" data-body="broke" width="80" height="80"></canvas><figcaption>Broke</figcaption></figure>
+        <figure><canvas class="mascot" data-face="dead" data-scale="5" width="80" height="80"></canvas><figcaption>Crashed</figcaption></figure>
+        <figure><canvas class="mascot" data-face="sleepy" data-scale="5" width="80" height="80"></canvas><figcaption>Muted</figcaption></figure>
+      </div>
+      <p style="margin-top:1.6rem">The copy has written rules, enforced by a test in the code: real numbers over adjectives, no fake urgency, name failures plainly, and no em dashes anywhere.</p>
+
+      <div class="gallery">
+        <div class="shot"><img src="img/device-case@2x.webp" alt="The Exit·0 Mac device, round 4: screen, run list, pads, keys and floppy drive." loading="lazy" width="255" height="434"></div>
+        <div class="shot strips">
+          <img src="img/strip-done@2x.webp" alt="The compact strip after a run finished: DONE. GO LOOK., auth flow, 4m 12s." loading="lazy" width="507" height="117">
+          <img src="img/strip-fail@2x.webp" alt="The compact strip after a failure: IT BROKE. GO FIX., pnpm build, exit 1." loading="lazy" width="503" height="117">
+          <p class="cap" style="text-align:center;margin:0">The compact strip floats above every window and never takes focus.</p>
+        </div>
+      </div>
+      <div class="phones">
+        <figure><img src="img/lock-running.webp" width="393" height="192" alt="Lock screen card, running: treblegames, 12m 04s, GRINDING." loading="lazy"><figcaption>Lock screen · running</figcaption></figure>
+        <figure><img src="img/lock-done.webp" width="393" height="192" alt="Lock screen card, done: treblegames, DONE 4m 12s." loading="lazy"><figcaption>Lock screen · done</figcaption></figure>
+        <figure><img src="img/lock-broke.webp" width="393" height="192" alt="Lock screen card, broke: treblegames, IT BROKE in red, pnpm build, exit 1." loading="lazy"><figcaption>Lock screen · broke</figcaption></figure>
+      </div>
+      <p class="cap">Away from the desk, the phone gets a push and a lock screen card that counts the run up and flips to the result.</p>
+    </section>
+
+    <section id="c-build">
+      <div class="label"><span>Build</span><span></span></div>
+      <h2>Hooks in, pushes out, no accounts</h2>
+      <p>Claude Code has hooks: small commands it runs at moments like "a run started" or "I need permission". Exit·0 installs its own in one click, and they never make Claude wait.</p>
+      <div class="box">
+        <div class="box-h">How an event travels</div>
+        <div class="flow">
+          <div class="node"><b>Claude Code hook</b><span>fires on start, stop, failure, question</span></div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="node"><b>Tiny helper</b><span>hands it to the app on your own Mac, nothing else</span></div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="node"><b>State machine</b><span>works out which of the four moments this is</span></div>
+          <div class="arrow" aria-hidden="true">→</div>
+          <div class="node end"><b>Desk or phone</b><span>at the desk: device and sound. Away: push and lock screen</span></div>
+        </div>
+      </div>
+      <p>The Mac and phone find each other through your own iCloud, so there's no sign-up and no pairing code. Your prompt text never leaves the Mac, only a 40-character title. No analytics. Turn the hooks off and Exit·0 removes only its own entries, and keeps a dated backup of your settings.</p>
+      <p>The first version sent pushes with my personal Apple key, which only works for me. To let anyone else use it, I added <strong>a small push relay on Vercel</strong>, so testers' Macs can reach their phones without an Apple developer account.</p>
+    </section>
+
+    <section id="c-decisions">
+      <div class="label"><span>Decisions</span><span></span></div>
+      <h2>The calls came from using it, not looking at it</h2>
+      <div class="dec">
+        <div><span class="who">01</span><h3>One run list, not two</h3><p>The Mac and phone lists looked the same but held different things. Now the Mac owns one list and the phone mirrors it.</p><div class="ba"><s>two setlists</s><span>→</span><b>RUNNING | FINISHED</b></div></div>
+        <div><span class="who">02</span><h3>Write lengths like a terminal</h3><p>4:12 reads like a time of day. Run lengths are now written the way a developer reads them. Finish times stay as clock times.</p><div class="ba"><s>4:12</s><span>→</span><b>4m 12s</b></div></div>
+        <div><span class="who">03</span><h3>Dim what does nothing</h3><p>The SEEN IT key was always lit, so pressing it with nothing on screen did nothing. It now dims until there's something to acknowledge.</p><div class="ba"><s>always lit</s><span>→</span><b>lit when useful</b></div></div>
+        <div><span class="who">04</span><h3>Broke means the run gave up</h3><p>Claude runs failing commands all the time and carries on. A run only counts as Broke if it stops within two minutes of a failure.</p><div class="ba"><s>any failed command</s><span>→</span><b>a failure it didn't recover from</b></div></div>
+      </div>
+      <div class="faults">
+        <div class="fault"><div class="t">Fault</div><h3>The test push was slow</h3><p>The Mac only checked iCloud every 15 minutes. Now 15 seconds, and setup asks "is the Mac awake?" after 45.</p></div>
+        <div class="fault"><div class="t">Fault</div><h3>The phone lost its background</h3><p>One layer painted flat black over the chassis grey. Fixed, with proper gutters on bigger phones.</p></div>
+        <div class="fault"><div class="t">Fault</div><h3>It broke on an empty search</h3><p>Not a code bug. The rule was wrong, which is how decision 04 happened.</p></div>
+      </div>
+      <p class="cap" style="margin-top:1.4rem">The full build log, with every round and fault, is on <a class="link" href="https://www.exit0.buzz/how-it-was-made/">exit0.buzz/how-it-was-made</a>.</p>
+    </section>
+
+    <section id="c-now">
+      <div class="label"><span>Where it is now</span><span></span></div>
+      <div class="now">
+        <div class="ledger">
+          <div>
+            <h3>Done</h3>
+            <ul>
+              <li><span><b>Mac app 1.0.2</b>, notarised and free to download</span></li>
+              <li><span><b>iPhone app</b> in public beta on TestFlight</span></li>
+              <li><span><b>Push relay</b> live, so it works for people who aren't me</span></li>
+              <li><span><b>exit0.buzz</b> with setup notes and a privacy page</span></li>
+              <li><span>It does its job for me on <b>every run, every day</b></span></li>
+            </ul>
+          </div>
+          <div class="open">
+            <h3>Not done</h3>
+            <ul>
+              <li><span><b>An audience.</b> Launch posts on LinkedIn, X and Instagram reached a small following</span></li>
+              <li><span>Now posting where Claude Code users actually are: Reddit and developer communities</span></li>
+              <li><span>The failure log on the phone</span></li>
+              <li><span>Whatever the first testers tell me to turn off</span></li>
+            </ul>
+          </div>
+        </div>
+        <p class="ask">Run it for a week, then tell me what you <span>turned off.</span></p>
+        <p>Not what you liked. What you muted, set to fails only, hid or stopped looking at. That's where the design is wrong, and it's the feedback I can't get from using it myself.</p>
+        <div class="ctas">
+          <a class="btn primary" href="https://www.exit0.buzz/download/">Download for Mac →</a>
+          <a class="btn" href="https://testflight.apple.com/join/tH8MMJST">iPhone beta ↗</a>
+          <a class="btn" href="https://www.exit0.buzz/how-it-was-made/">Read the build log ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <a class="next" href="../guided-tracker/index.html">
+      <div><div class="k">Next project</div><div class="t">Fidelity</div></div>
+      <span class="a">→</span>
+    </a>
+    <p class="tm">Exit·0 works with Claude Code. Claude and Claude Code are trademarks of Anthropic, PBC. Exit·0 is an independent project and isn't affiliated with or endorsed by Anthropic.</p>
+  </main>
+</div></div>
+
+<footer id="contact"><div class="in">
+  <span class="k">// Let's build</span>
+  <a class="mail" href="mailto:hello@roneill.me">hello@roneill.me</a>
+  <div class="links"><a href="https://linkedin.com/in/roneillme">LinkedIn →</a><a href="../../cv.html">Download CV →</a></div>
+  <div class="base"><span class="logo">ron</span><span>// Dublin // 2026</span><span style="letter-spacing:.3em">+ + +</span></div>
+</div></footer>
+
+<script>
+/* Exit·0 pixel mascot, drawn from the maps in DESIGN.md */
+(function(){
+  var BODY=["..KKKKKKKKKKKK..",".KCCCCCCCCCCCCK.","KCKKKKKKKKKKKKCK","KCKSSSSSSSSSSKCK","KCKSSSSSSSSSSKCK","KCKSSSSSSSSSSKCK","KCKSSSSSSSSSSKCK","KCKSSSSSSSSSSKCK","KCKSSSSSSSSSSKCK","KCKSSSSSSSSSSKCK","KCKKKKKKKKKKKKCK","KCCCCCCCCCCCCCCK","KCCKKKKKKKKCCDCK","KCCCCCCCCCCCCCCK",".KKKKKKKKKKKKKK.","..KK........KK.."];
+  var F={
+    happy:["..........",".EE....EE.",".EE....EE.","..........","..M....M..","...MMMM...",".........."],
+    blink:["..........","..........","..........",".EE....EE.","..M....M..","...MMMM...",".........."],
+    wink:["..........",".EE.......",".EE....EEE","..........","..M....M..","...MMMM...",".........."],
+    working:["..........","..EE...EE.","..EE...EE.","..........","...MMMM...","..........",".........."],
+    shocked:[".EE....EE.",".EE....EE.","..........","....MM....","...M..M...","....MM....",".........."],
+    angry:["..........",".E......E.","..EE..EE..","..........","...MMMM...","..M....M..",".........."],
+    sleepy:["..........","..........",".EEE..EEE.","..........","....MM....","..........",".........."],
+    dead:[".E.E..E.E.","..E....E..",".E.E..E.E.","..........","...MMMM...","..........",".........."]
+  };
+  function draw(cv,face){
+    var s=+cv.dataset.scale||4, broke=cv.dataset.body==="broke", ctx=cv.getContext('2d');
+    var col={K:'#0E0E0E',C:broke?'#FF5A4F':'#F4F3EE',S:'#0F130F',D:'#C8F03C',E:broke?'#F4F3EE':'#C8F03C',M:broke?'#F4F3EE':'#C8F03C'};
+    ctx.clearRect(0,0,cv.width,cv.height);
+    var rows=BODY.map(function(r){return r.split('');});
+    (F[face]||F.happy).forEach(function(r,y){ r.split('').forEach(function(ch,x){ if(ch!=='.') rows[y+3][x+3]=ch; }); });
+    rows.forEach(function(r,y){ r.forEach(function(ch,x){ if(col[ch]){ ctx.fillStyle=col[ch]; ctx.fillRect(x*s,y*s,s,s); } }); });
+  }
+  var cvs=document.querySelectorAll('canvas.mascot');
+  cvs.forEach(function(cv){ var s=+cv.dataset.scale||4; cv.width=16*s; cv.height=16*s; draw(cv,cv.dataset.face); });
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var hero=document.getElementById('heroMascot');
+  if(hero && !reduce){
+    var seq=[['happy',1800],['blink',150],['happy',150],['blink',100],['happy',1600],['wink',900]], i=0;
+    (function step(){ draw(hero,seq[i][0]); var t=seq[i][1]; i=(i+1)%seq.length; setTimeout(step,t); })();
+  }
+  document.querySelectorAll('img').forEach(function(img){ img.addEventListener('error',function(){ var d=document.createElement('div'); d.className='imgfail'; d.textContent=img.alt; img.replaceWith(d); }); if(img.complete && !img.naturalWidth && img.src) img.dispatchEvent(new Event('error')); });
+})();
+</script>
+</body>
+</html>

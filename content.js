@@ -147,6 +147,25 @@ window.RON_CONTENT = {
       href: "case-studies/lonan/index.html",
       link: { label: "View case study", kind: "case", gated: false },
     },
+    {
+      index: "04.4",
+      parent: "04",
+      client: "Exit·0",
+      year: "2026 to now",
+      lead: false,
+      headline: "a mac + iphone app for one person's itch, now looking for testers",
+      tags: ["Native app", "AI build", "Shipped"],
+      metrics: [
+        { value: "16h 58m", unit: "", caption: "First commit to v1" },
+        { value: "0", unit: "", caption: "Lines of code typed by hand" },
+      ],
+      summary: "A free Mac and iPhone app that tells you when Claude Code finishes, breaks or needs you. I designed it and owned every product call; Claude Code wrote every line. Mac app notarised, iPhone app in public beta.",
+      cover: "Exit·0 · Mac + iPhone app",
+      motif: "target",
+      shot: { kind: "mark", src: "assets/marks/exit0.svg" },
+      href: "case-studies/exit0/index.html",
+      link: { label: "View case study", kind: "case", gated: false },
+    },
   ],
 
   about: {
