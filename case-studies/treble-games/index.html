@@ -40,7 +40,7 @@
   }
   [data-theme="blackout"] {
     --bg:var(--espresso); --bg-elevated:var(--espresso-soft); --bg-sunken:var(--espresso-deep); --bg-invert:var(--paper);
-    --text:var(--paper); --text-muted:var(--grey-400); --text-faint:var(--grey-600); --text-invert:var(--espresso);
+    --text:var(--paper); --text-muted:#C4BFB5; --text-faint:var(--grey-400); --text-invert:var(--espresso);
     --accent:var(--orange); --accent-press:var(--orange-press); --link:var(--orange); --on-accent:var(--espresso);
     --border:var(--line-on-dark); --border-faint:rgba(236,234,228,0.08); --border-strong:var(--line-on-dark-strong);
     --field:var(--espresso-soft); --field-border:var(--line-on-dark-strong); --motif:rgba(236,234,228,0.22);
@@ -79,6 +79,8 @@
     .cs-work { grid-template-columns: 1fr !important; }
   }
   html { scroll-behavior: smooth; }
+  /* phones: drop the Available pill so the nav fits (matches the shared case.css) */
+  @media (max-width: 512px){ .cs-dot { display: none !important; } }
 </style>
 
   <!-- ── Favicons + manifest (roneill.me) ─────────────────────── -->
@@ -92,19 +94,19 @@
   <!-- ── Open Graph / Twitter ─────────────────────────────────── -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://roneill.me/case-studies/treble-games/">
-  <meta property="og:title" content="Treble Games Studio — Richard O'Neill">
+  <meta property="og:title" content="Treble Games Studio, Richard O'Neill">
   <meta property="og:description" content="An R&D lab that ships real games, built with AI, design and code.">
   <meta property="og:image" content="https://roneill.me/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Richard O'Neill — Product designer bridging design, code and AI.">
+  <meta property="og:image:alt" content="Richard O'Neill, product designer bridging design, code and AI.">
   <meta property="og:locale" content="en_IE">
   <meta property="og:site_name" content="roneill.me">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Treble Games Studio — Richard O'Neill">
+  <meta name="twitter:title" content="Treble Games Studio, Richard O'Neill">
   <meta name="twitter:description" content="An R&D lab that ships real games, built with AI, design and code.">
   <meta name="twitter:image" content="https://roneill.me/og-image.png">
-  <meta name="twitter:image:alt" content="Richard O'Neill — Product designer bridging design, code and AI.">
+  <meta name="twitter:image:alt" content="Richard O'Neill, product designer bridging design, code and AI.">
   <!-- Motion: shared reveal tokens + dormant IntersectionObserver driver -->
   <link rel="stylesheet" href="/tokens/motion.css">
   <script defer src="/motion-observe.js"></script>
@@ -133,7 +135,7 @@
     <div style="font-family:ui-monospace,Menlo,monospace;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted)">Case study <b style="color:var(--orange);font-weight:600">[ 04 ]</b></div>
     <div style="font-family:var(--font-display);font-weight:800;font-size:clamp(1.1rem,2vw,1.4rem);color:var(--orange);letter-spacing:0.04em;margin-top:0.4em">04</div>
     <h1 data-rise class="tw-pending" style="font-family:var(--font-display);font-weight:800;font-size:clamp(2.6rem,6.4vw,5.5rem);line-height:0.98;letter-spacing:-0.03em;margin:0.35em 0 0;max-width:15ch;text-wrap:balance">An R&amp;D lab that ships games</h1>
-    <p style="font-size:1.1875rem;line-height:1.6;color:var(--text-muted);max-width:62ch;margin:clamp(1.4rem,3vw,2rem) 0 0;text-wrap:pretty">Treble Games is my independent studio, where I build with AI outside my day job. It exists for one reason: to keep my hands on the tools. It's where I build <strong style="color:var(--paper);font-weight:600">AI-made games and apps end to end</strong>, and test the newest AI workflows and stacks. The games are real and live: <a href="https://sonarchy.com" style="color:var(--orange)">Sonarchy</a> and <a href="https://www.3letterdaily.com/" style="color:var(--orange)">3 Letter Daily</a>. They're also the excuse.</p>
+    <p style="font-size:1.1875rem;line-height:1.6;color:var(--text-muted);max-width:62ch;margin:clamp(1.4rem,3vw,2rem) 0 0;text-wrap:pretty">Treble Games is my independent studio, where I build with AI outside my day job. It exists for one reason: to keep my hands on the tools. It's where I build <strong style="color:var(--paper);font-weight:600">AI-made games and apps end to end</strong>, and test the newest AI workflows and stacks. The games are real and live: <a href="https://sonarchy.com" style="color:var(--orange)">Sonarchy</a> and <a href="https://www.3letterdaily.com/" style="color:var(--orange)">3 Letter Daily</a>. They're also the excuse. A third, <a href="../lonan/index.html" style="color:var(--orange)">Lonán</a>, is in testing before anything is built.</p>
     <dl style="display:flex;flex-wrap:wrap;gap:clamp(1.5rem,4vw,3.5rem);margin:clamp(1.8rem,4vw,2.6rem) 0 0">
       <div><dt style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-faint)">Studio</dt><dd style="margin:6px 0 0;font-family:var(--font-display);font-weight:600;font-size:1.0625rem;letter-spacing:-0.01em;color:var(--paper)"><a href="https://treblegames.ie" style="color:inherit">Treble Games · treblegames.ie ↗</a></dd></div>
       <div><dt style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-faint)">Founded</dt><dd style="margin:6px 0 0;font-family:var(--font-display);font-weight:600;font-size:1.0625rem;letter-spacing:-0.01em;color:var(--paper)">2026</dd></div>
@@ -202,8 +204,8 @@
         <!-- THE WORK -->
         <section id="c-work" style="padding:clamp(2.5rem,5vw,4.5rem) 0;border-top:1px solid var(--border)">
           <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:24px"><span style="font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:0.16em;color:var(--text-muted)">03, The work</span><span style="flex:1;height:1px;background:var(--border)"></span></div>
-          <h2 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.7rem);line-height:1.05;letter-spacing:-0.025em;margin:0 0 0.8em;max-width:22ch;text-wrap:balance">Two products. Both real. Both shipped solo.</h2>
-          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:0 0 clamp(1.8rem,4vw,2.6rem);text-wrap:pretty">The studio is judged on what comes out of it, not what it intends. Two products carry the thesis so far.</p>
+          <h2 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.7rem);line-height:1.05;letter-spacing:-0.025em;margin:0 0 0.8em;max-width:22ch;text-wrap:balance">Two products live. A third in testing.</h2>
+          <p style="font-size:1.0625rem;line-height:1.68;color:var(--text-muted);max-width:66ch;margin:0 0 clamp(1.8rem,4vw,2.6rem);text-wrap:pretty">The studio is judged on what comes out of it, not what it intends. Two products carry the thesis so far, and a third is being tested before it's built.</p>
 
           <!-- 3 Letter Daily -->
           <article class="cs-work" style="display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem);align-items:center;margin-bottom:clamp(2rem,4vw,3.2rem)">
@@ -225,6 +227,17 @@
               <p style="font-size:0.9375rem;line-height:1.6;color:var(--text-muted);margin:0;text-wrap:pretty">It's where the studio tests realtime multiplayer, the YouTube API, mobile-native wrapping and a design system from scratch. It started as a family game, three generations arguing over one speaker, and that's still the customer: a small room of people who disagree about music. Not a venture-scale market, and that's deliberate.</p>
             </div>
             <figure style="margin:0;order:1"><a href="../sonarchy/Sonarchy Case Study.html" aria-label="Read the Sonarchy case study" style="display:block"><img src="img/og-sonarchy.png" alt="Sonarchy, the music category game" style="display:block;width:100%;height:auto;border:1px solid var(--border);border-radius:4px"></a></figure>
+          </article>
+
+          <!-- Lonán -->
+          <article class="cs-work" style="display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(1.5rem,4vw,3rem);align-items:center;margin-top:clamp(2rem,4vw,3.2rem)">
+            <figure style="margin:0;order:0"><a href="../lonan/index.html" aria-label="Read the Lonán case study" style="display:block"><img src="img/og-lonan.webp" width="960" height="540" alt="Lonán the blackbird flying over the painted glen" style="display:block;width:100%;height:auto;border:1px solid var(--border);border-radius:4px"></a></figure>
+            <div>
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:0.7rem"><span style="font-family:ui-monospace,monospace;font-size:12px;color:var(--orange)">PRODUCT 03</span><span style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-faint);border:1px solid var(--border);border-radius:999px;padding:3px 10px">In testing</span></div>
+              <h3 style="font-family:var(--font-display);font-weight:700;font-size:clamp(1.5rem,2.6vw,2.1rem);letter-spacing:-0.02em;margin:0 0 0.5em;color:var(--paper)">Lonán</h3>
+              <p style="font-size:1.0625rem;line-height:1.65;color:var(--text-muted);margin:0 0 1em;text-wrap:pretty">A gentle practice companion for children aged 6 to 12. Their blackbird hatches, grows and explores a painted Irish glen the more they play, and nothing is lost on the days they don't.</p>
+              <p style="font-size:0.9375rem;line-height:1.6;color:var(--text-muted);margin:0;text-wrap:pretty">Built the other way round from Sonarchy: rules first, then the world, then a 32 second film, a playable demo and a landing page that asks for a refundable deposit. All of it made to be thrown away, so the idea can be tested with parents and teachers before any app code is written.</p>
+            </div>
           </article>
 
           <!-- stats -->

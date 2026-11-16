@@ -73,8 +73,8 @@
   --bg-invert:    var(--paper);
 
   --text:         var(--paper);
-  --text-muted:   var(--grey-400);
-  --text-faint:   var(--grey-600);
+  --text-muted:   #C4BFB5;           /* brightened 2026-11: body copy, 10:1 on espresso */
+  --text-faint:   var(--grey-400);   /* brightened 2026-11: labels, 7.3:1 (was grey-600, 3.3:1) */
   --text-invert:  var(--espresso);
 
   --accent:       var(--orange);

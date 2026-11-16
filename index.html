@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Richard O'Neill — design engineer</title>
+<title>Richard O'Neill, design engineer</title>
 <link rel="stylesheet" href="../../styles.css">
 <link rel="stylesheet" href="brutal.css">
 <style>
@@ -37,19 +37,19 @@
   <!-- ── Open Graph / Twitter ─────────────────────────────────── -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://roneill.me/">
-  <meta property="og:title" content="Richard O'Neill — Product Designer">
+  <meta property="og:title" content="Richard O'Neill, Product Designer">
   <meta property="og:description" content="Product designer bridging design, code and AI. Based in Dublin, Ireland.">
   <meta property="og:image" content="https://roneill.me/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Richard O'Neill — Product designer bridging design, code and AI.">
+  <meta property="og:image:alt" content="Richard O'Neill, product designer bridging design, code and AI.">
   <meta property="og:locale" content="en_IE">
   <meta property="og:site_name" content="roneill.me">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Richard O'Neill — Product Designer">
+  <meta name="twitter:title" content="Richard O'Neill, Product Designer">
   <meta name="twitter:description" content="Product designer bridging design, code and AI. Based in Dublin, Ireland.">
   <meta name="twitter:image" content="https://roneill.me/og-image.png">
-  <meta name="twitter:image:alt" content="Richard O'Neill — Product designer bridging design, code and AI.">
+  <meta name="twitter:image:alt" content="Richard O'Neill, product designer bridging design, code and AI.">
 </head>
 <body data-theme="blackout">
 <div id="root"></div>
@@ -174,22 +174,25 @@ function Work(){
         <span className="cap" style={{ fontSize:12, color:'var(--orange)' }}>(01)</span>
         <span className="cap" style={{ fontSize:12, color:'var(--grey-400)', letterSpacing:'0.08em' }}>Selected work</span>
         <span style={{ flex:1, height:1, background:FR }} />
-        <span className="cap" style={{ fontSize:11, color:FR2 }}>{String(RC.work.length).padStart(2,'0')} / projects</span>
+        <span className="cap" style={{ fontSize:11, color:'var(--text-faint)' }}>{String(RC.work.filter(w=>!w.parent).length).padStart(2,'0')} / projects</span>
       </div>
       <div className="work-grid" style={{ display:'grid', gridTemplateColumns:'minmax(0,1.25fr) minmax(0,0.75fr)', gap:'clamp(1.5rem,5vw,4.5rem)', alignItems:'start' }}>
         <div>
           {RC.work.map((w,i)=>{
             const on = active===i;
+            const child = !!w.parent;   /* nested under a parent studio row: indented, hairline rule on the left */
             return (
-              <a key={w.index} href={w.href || '#'} onMouseEnter={()=>setActive(i)}
-                style={{ display:'block', textDecoration:'none', padding:'clamp(1.5rem,3vw,2.25rem) 0', borderTop:`1px solid ${FR}` }}>
+              <a key={w.index} href={w.href || '#'} onMouseEnter={()=>setActive(i)} className={child ? 'work-child' : undefined}
+                style={child
+                  ? { display:'block', textDecoration:'none', padding:'clamp(1.1rem,2.4vw,1.75rem) 0 clamp(1.1rem,2.4vw,1.75rem) clamp(1rem,2.2vw,1.75rem)', marginLeft:'clamp(0.75rem,2.6vw,2.25rem)', borderTop:`1px solid ${FR}`, borderLeft:`1px solid ${FR}` }
+                  : { display:'block', textDecoration:'none', padding:'clamp(1.5rem,3vw,2.25rem) 0', borderTop:`1px solid ${FR}` }}>
                 <div style={{ display:'flex', alignItems:'baseline', gap:14, marginBottom:12 }}>
-                  <span className="disp" style={{ fontWeight:800, fontSize:'clamp(1.1rem,1.8vw,1.5rem)', color:'var(--orange)' }}>{w.index}</span>
-                  <span className="cap" style={{ fontSize:11, color:FR2, letterSpacing:'0.08em' }}>— {w.client} // {w.year}</span>
-                  <span className="cap" style={{ marginLeft:'auto', fontSize:10, color:on?'var(--orange)':FR2, letterSpacing:'0.06em' }}>{w.link.gated ? 'Gated PDF' : 'Case study'}</span>
+                  <span className="disp" style={{ fontWeight:800, fontSize: child ? 'clamp(0.95rem,1.4vw,1.2rem)' : 'clamp(1.1rem,1.8vw,1.5rem)', color:'var(--orange)' }}>{w.index}</span>
+                  <span className="cap" style={{ fontSize:11, color:'var(--text-faint)', letterSpacing:'0.08em' }}>{w.client} // {w.year}</span>
+                  <span className="cap" style={{ marginLeft:'auto', fontSize:10, color:on?'var(--orange)':'var(--text-faint)', letterSpacing:'0.06em', whiteSpace:'nowrap' }}>{w.link.gated ? 'Gated PDF' : 'Case study'}</span>
                   <span style={{ color:'var(--orange)', fontWeight:700, opacity:on?1:0, transform:on?'translateX(0)':'translateX(-8px)', transition:'all var(--dur) var(--ease-out)' }}>→</span>
                 </div>
-                <h2 className="disp" style={{ fontWeight:on?700:600, fontSize:'clamp(1.6rem,3.6vw,3rem)', lineHeight:0.98, letterSpacing:'-0.035em', color:on?'var(--paper)':'var(--grey-600)', margin:0, textTransform:'lowercase', maxWidth:'18ch', transition:'color var(--dur) var(--ease-out)' }}>{accentLast(w.headline)}</h2>
+                <h2 className="disp" style={{ fontWeight:on?700:600, fontSize: child ? 'clamp(1.3rem,2.9vw,2.4rem)' : 'clamp(1.6rem,3.6vw,3rem)', lineHeight:0.98, letterSpacing:'-0.035em', color:on?'var(--paper)':'var(--text-faint)', margin:0, textTransform:'lowercase', maxWidth:'18ch', transition:'color var(--dur) var(--ease-out)' }}>{accentLast(w.headline)}</h2>
                 <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginTop:16 }}>{w.tags.map(t=> <Tag key={t}>{t}</Tag>)}</div>
                 <div className="work-item-preview"><PreviewCard e={w} /></div>
               </a>

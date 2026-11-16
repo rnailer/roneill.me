@@ -147,7 +147,7 @@ function ProcessBox({ s }){
         <p style={{ margin:'0 0 1.3rem', fontSize:'clamp(13px,1.1vw,15px)', lineHeight:1.5, color:'var(--grey-400)', textWrap:'pretty', maxWidth:'34ch' }}>{s.blurb}</p>
         <ul style={{ listStyle:'none', margin:'auto 0 0', padding:0, display:'flex', flexDirection:'column', gap:9, borderTop:`1px solid ${FR}`, paddingTop:'1.1rem' }}>
           {s.skills.map((sk)=>(
-            <li key={sk} className="cap" style={{ display:'flex', alignItems:'center', gap:10, fontSize:'clamp(11px,0.95vw,12.5px)', color:FR2, letterSpacing:'0.06em' }}>
+            <li key={sk} className="cap" style={{ display:'flex', alignItems:'center', gap:10, fontSize:'clamp(11px,0.95vw,12.5px)', color:'var(--text-faint)', letterSpacing:'0.06em' }}>
               <span style={{ color:'var(--orange)', fontSize:9 }}>✳</span>{sk}
             </li>
           ))}
@@ -207,7 +207,7 @@ function Catalog(){
           <span className="cap" style={{ fontSize:12, color:'var(--orange)' }}>(03)</span>
           <span className="cap" style={{ fontSize:12, color:'var(--grey-400)', letterSpacing:'0.08em' }}>The process, design to release</span>
           <span style={{ flex:1, height:1, background:FR, minWidth:40 }} />
-          <span className="cap" style={{ fontSize:11, color:FR2 }}>03 stages // end to end</span>
+          <span className="cap" style={{ fontSize:11, color:'var(--text-faint)' }}>03 stages // end to end</span>
         </div>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(260px,1fr))', gap:'clamp(0.9rem,1.6vw,1.4rem)', alignItems:'stretch' }}>
           {steps.map((s)=> <ProcessBox key={s.n} s={s} />)}
@@ -233,7 +233,7 @@ function About(){
             <span className="cap" style={{ fontSize:12, color:'var(--orange)' }}>(04)</span>
             <span className="cap" style={{ fontSize:12, color:'var(--grey-400)', letterSpacing:'0.08em' }}>About, my story</span>
             <span style={{ flex:1, height:1, background:FR, minWidth:40 }} />
-            <span className="cap" style={{ fontSize:11, color:FR2 }}>{RCB.location} // since 2013</span>
+            <span className="cap" style={{ fontSize:11, color:'var(--text-faint)' }}>{RCB.location} // since 2013</span>
           </div>
         </Reveal>
         <Reveal as="h2" className="disp" style={{ margin:'0 0 clamp(2rem,5vw,3.5rem)', fontWeight:800, fontSize:'clamp(3rem,11vw,9rem)', lineHeight:0.82, letterSpacing:'-0.05em', color:'var(--paper)', textTransform:'lowercase' }}>{accentLast('About')}</Reveal>
@@ -251,7 +251,7 @@ function About(){
             <a href="cv.html" className="cap" style={{ display:'inline-flex', alignItems:'center', gap:9, marginTop:'clamp(1.8rem,3vw,2.4rem)', fontSize:13, color:'var(--paper)', textDecoration:'none', border:`1px solid ${FR2}`, borderRadius:999, padding:'10px 20px', letterSpacing:'0.06em' }}>View CV →</a>
           </div>
           <div>
-            <div className="cap" style={{ fontSize:11, color:FR2, letterSpacing:'0.12em', marginBottom:'1.2rem' }}>Experience</div>
+            <div className="cap" style={{ fontSize:11, color:'var(--text-faint)', letterSpacing:'0.12em', marginBottom:'1.2rem' }}>Experience</div>
             <ul style={{ listStyle:'none', margin:0, padding:0 }}>
               {A.timeline.map((e,i)=>(
                 <li key={i} style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', gap:16, padding:'1.05rem 0', borderTop:`1px solid ${FR}` }}>
@@ -259,7 +259,7 @@ function About(){
                     <span className="disp" style={{ display:'block', fontWeight:700, fontSize:'clamp(1rem,1.5vw,1.2rem)', letterSpacing:'-0.01em', color:'var(--paper)' }}>{e.org}</span>
                     <span style={{ fontSize:13, color:'var(--grey-400)' }}>{e.role}</span>
                   </span>
-                  <span className="cap" style={{ fontSize:11, color:FR2, letterSpacing:'0.06em', whiteSpace:'nowrap' }}>{e.years}</span>
+                  <span className="cap" style={{ fontSize:11, color:'var(--text-faint)', letterSpacing:'0.06em', whiteSpace:'nowrap' }}>{e.years}</span>
                 </li>
               ))}
             </ul>
