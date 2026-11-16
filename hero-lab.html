@@ -37,6 +37,7 @@
   .lab-picker button[aria-pressed="true"]{ background:#fff; color:#000; box-shadow:0 1px 3px rgba(0,0,0,0.18) }
   .lab-picker button:focus-visible{ outline:2px solid #0a64ff; outline-offset:1px }
   @media print{ .lab-picker{ display:none } }
+  @media (max-width: 700px){ .card-lab{ grid-template-columns:1fr !important } .card-lab > div:last-child{ position:relative !important; top:auto !important; order:-1 } }
 </style>
 
   <!-- ── Favicons + manifest (roneill.me) ─────────────────────── -->
@@ -75,7 +76,7 @@
 <script type="text/babel" src="brutal.jsx"></script>
 <script type="text/babel" src="motion.jsx"></script>
 <script type="text/babel">
-const { DISP, EDGE, Reg, TopBar } = window.RonBrutal;
+const { DISP, EDGE, FR, FR2, Reg, TopBar, Handles, Corners } = window.RonBrutal;
 const { Decode } = window.RonMotion;
 const RC = window.RON_CONTENT;
 const { useState, useEffect, useRef } = React;
@@ -88,6 +89,7 @@ const CELL = matchMedia('(max-width: 700px)').matches ? 3 : 4;
 
 const VARIANTS = [
   { id:'orbit',    label:'Orbit (live)' },
+  { id:'draft',    label:'Draft' },
   { id:'signal',   label:'Signal' },
   { id:'artifact', label:'Artifact' },
 ];
@@ -151,6 +153,7 @@ function GLMark({ engine, opts, caption }){
 }
 
 function Mark({ v }){
+  if (v === 'draft')    return <GLMark key="d" engine="HeroCad" opts={{ shapes:['sphere','orbit','starburst','compass'], period:4.2, guides:true }} />;
   if (v === 'signal')   return <GLMark key="s" engine="HeroSignal" opts={{ cell:CELL, period:4.2 }} />;
   if (v === 'artifact') return <GLMark key="a" engine="HeroArtifact" opts={{ cell:CELL, src:ARTIFACT_SRC }} caption="[ mesh: tripo h3.1 via artlist // 1 prompt ]" />;
   return <OrbitMark/>;
@@ -178,6 +181,55 @@ function Hero({ v }){
   );
 }
 
+/* ── Work preview card with a CAD render per project (lab only) ── */
+const CARD_SHAPE = { '01':'stairs', '02':'bars', '03':'target', '04':'stack', '04.1':'cassette', '04.2':'tiles', '04.3':'orbit', '04.4':'door', '05':'rings' };
+function CadCard({ e }){
+  const ref = useRef(null), api = useRef(null);
+  const [live,setLive] = useState(false);
+  useEffect(()=>{
+    const canvas = ref.current; let dead = false;
+    const start = ()=>{ api.current = window.HeroCad.mount(canvas, { autoplay:false, start:CARD_SHAPE[e.index], guides:true, spin:0.25, morph:0.7, onReady:()=>!dead && setLive(true) }); };
+    if (window.HeroCad) start(); else addEventListener('HeroCad:ready', start, { once:true });
+    return ()=>{ dead = true; api.current && api.current.destroy(); };
+  }, []);
+  useEffect(()=>{ api.current && api.current.show(CARD_SHAPE[e.index]); }, [e.index]);
+  return (
+    <div className="checker halftone" style={{ position:'relative', overflow:'hidden', aspectRatio:'4/5', border:`1px solid ${FR}`, display:'grid', placeItems:'center' }}>
+      <span className="disp" style={{ position:'absolute', left:18, top:14, fontWeight:800, fontSize:'clamp(2.5rem,5vw,4rem)', lineHeight:0.8, letterSpacing:'-0.04em', color:'var(--orange)', zIndex:3 }}>{e.index}</span>
+      <canvas ref={ref} aria-hidden="true" style={{ position:'absolute', inset:'12% 6% 14%', width:'88%', height:'74%', zIndex:2, opacity: live?1:0, transition:'opacity 600ms var(--ease-out)' }}/>
+      <Handles />
+      <Corners c={FR2} inset={9} />
+      <span className="cap" style={{ position:'absolute', left:18, bottom:16, fontSize:11, color:'var(--grey-400)', letterSpacing:'0.06em', zIndex:3 }}>{e.cover} // fig. {CARD_SHAPE[e.index]}</span>
+    </div>
+  );
+}
+function CardLab(){
+  const [active,setActive] = useState(4);
+  const e = RC.work[active];
+  return (
+    <section style={{ padding:`clamp(2.5rem,5vw,4rem) ${EDGE} 8rem`, borderTop:`1px solid ${FR}` }}>
+      <div style={{ display:'flex', alignItems:'baseline', gap:14, marginBottom:'clamp(1.5rem,4vw,3rem)' }}>
+        <span className="cap" style={{ fontSize:12, color:'var(--orange)' }}>(lab)</span>
+        <span className="cap" style={{ fontSize:12, color:'var(--grey-400)', letterSpacing:'0.08em' }}>Preview card, CAD render per project</span>
+        <span style={{ flex:1, height:1, background:FR }} />
+      </div>
+      <div className="card-lab" style={{ display:'grid', gridTemplateColumns:'minmax(0,1.25fr) minmax(0,0.75fr)', gap:'clamp(1.5rem,5vw,4.5rem)', alignItems:'start' }}>
+        <div>
+          {RC.work.map((w,i)=>(
+            <button key={w.index} onMouseEnter={()=>setActive(i)} onFocus={()=>setActive(i)} onClick={()=>setActive(i)}
+              style={{ all:'unset', boxSizing:'border-box', cursor:'pointer', display:'flex', alignItems:'baseline', gap:14, width:'100%', padding:'0.9rem 0', borderTop:`1px solid ${FR}` }}>
+              <span className="disp" style={{ fontWeight:800, fontSize:'clamp(1rem,1.6vw,1.3rem)', color:'var(--orange)', minWidth:'3.2em' }}>{w.index}</span>
+              <span className="disp" style={{ fontWeight:700, fontSize:'clamp(1rem,2vw,1.6rem)', color: active===i ? 'var(--paper)' : 'var(--grey-400)', textTransform:'lowercase', transition:'color 150ms ease' }}>{w.client}</span>
+              <span className="cap" style={{ marginLeft:'auto', fontSize:10, color:'var(--text-faint)' }}>{CARD_SHAPE[w.index]}</span>
+            </button>
+          ))}
+        </div>
+        <div style={{ position:'sticky', top:'calc(var(--nav-h) + 24px)' }}><CadCard e={e} /></div>
+      </div>
+    </section>
+  );
+}
+
 function Picker({ v, set }){
   useEffect(()=>{
     const onKey = e=>{
@@ -197,12 +249,12 @@ function Picker({ v, set }){
 
 function Lab(){
   const initial = new URLSearchParams(location.search).get('v');
-  const [v,setV] = useState(VARIANTS.some(x=>x.id===initial) ? initial : 'signal');
+  const [v,setV] = useState(VARIANTS.some(x=>x.id===initial) ? initial : 'draft');
   const set = id=>{ setV(id); const u = new URL(location.href); u.searchParams.set('v', id); history.replaceState(null,'',u); };
   return (
     <div style={{ background:'var(--espresso)', color:'var(--paper)', position:'relative', minHeight:'100vh' }}>
       <TopBar/><Hero v={v}/>
-      <div style={{ height:'40vh' }}/>
+      <CardLab/>
       <Picker v={v} set={set}/>
     </div>
   );
@@ -211,6 +263,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(<Lab/>);
 </script>
 <script type="module">
   // Effects load outside Babel, after the React page. Each announces itself.
+  import('./lab/cad.js').then(()=>dispatchEvent(new Event('HeroCad:ready')));
   import('./lab/hero-signal.js').then(()=>dispatchEvent(new Event('HeroSignal:ready')));
   import('./lab/hero-artifact.js').then(()=>dispatchEvent(new Event('HeroArtifact:ready')));
 </script>
