@@ -1,0 +1,218 @@
+<!-- lab: not linked from the site. @dsCard group="Portfolio Site" viewport="1440x900" name="Home — V1 · Index (name + editorial list)" subtitle="Brutalist + UI frames + grain. Giant name hero, editorial numbered work list with framed preview." -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hero lab · roneill.me</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../../styles.css">
+<link rel="stylesheet" href="brutal.css">
+<style>
+  html{scroll-behavior:smooth} body{margin:0;background:var(--espresso)}
+  @keyframes ron-spin { to { transform: rotate(360deg) } }
+  .ron-spin{ transform-origin:50% 50%; animation: ron-spin 90s linear infinite }
+  .ron-cen{ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) }
+  @media (prefers-reduced-motion: reduce){ .ron-spin{ animation:none !important } }
+  @media (max-width: 700px){ .ron-mark{ position:relative !important; inset:auto !important; transform:none !important; margin:1.5rem auto 0.5rem; width:min(92vw,560px) !important; max-width:none !important } }
+  @media (max-width: 820px){ .about-grid{ grid-template-columns:minmax(0,1fr) !important } }
+  /* mobile work list: each item shows its own preview below the description; side rollover hidden */
+  .work-item-preview{ display:none }
+  @media (max-width: 512px){
+    .topbar-avail{ display:none !important }
+    .work-grid{ grid-template-columns:1fr !important }
+    .work-rail{ display:none !important }
+    .work-item-preview{ display:block; margin-top:1.25rem }
+    .work-cs{ display:none }
+  }
+
+  /* ── hero lab ── */
+  .lab-mark canvas{ position:absolute; inset:9%; width:82%; height:82%; image-rendering:pixelated; image-rendering:crisp-edges; opacity:0; transition:opacity 700ms var(--ease-out) }
+  .lab-mark canvas.is-ready{ opacity:1 }
+  .lab-mark .lab-fallback{ opacity:0.95; transition:opacity 500ms var(--ease-out) }
+  .lab-mark.is-live .lab-fallback{ opacity:0 }
+  .lab-caption{ position:absolute; left:50%; bottom:-0.4rem; transform:translateX(-50%); white-space:nowrap; font-size:10px; letter-spacing:0.1em; color:rgba(26,19,16,0.6) }
+  .lab-picker{ position:fixed; left:50%; bottom:16px; transform:translateX(-50%); z-index:100; display:flex; gap:2px; padding:3px; background:#d9d9d9; border-radius:999px; font:500 13px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif; box-shadow:0 2px 10px rgba(0,0,0,0.25) }
+  .lab-picker button{ white-space:nowrap; appearance:none; border:0; background:transparent; color:#333; padding:8px 14px; border-radius:999px; cursor:pointer; font:inherit }
+  .lab-picker button[aria-pressed="true"]{ background:#fff; color:#000; box-shadow:0 1px 3px rgba(0,0,0,0.18) }
+  .lab-picker button:focus-visible{ outline:2px solid #0a64ff; outline-offset:1px }
+  @media print{ .lab-picker{ display:none } }
+</style>
+
+  <!-- ── Favicons + manifest (roneill.me) ─────────────────────── -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#EE5622">
+
+  <!-- ── Open Graph / Twitter ─────────────────────────────────── -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://roneill.me/">
+  <meta property="og:title" content="Richard O'Neill, Product Designer">
+  <meta property="og:description" content="Product designer bridging design, code and AI. Based in Dublin, Ireland.">
+  <meta property="og:image" content="https://roneill.me/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Richard O'Neill, product designer bridging design, code and AI.">
+  <meta property="og:locale" content="en_IE">
+  <meta property="og:site_name" content="roneill.me">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Richard O'Neill, Product Designer">
+  <meta name="twitter:description" content="Product designer bridging design, code and AI. Based in Dublin, Ireland.">
+  <meta name="twitter:image" content="https://roneill.me/og-image.png">
+  <meta name="twitter:image:alt" content="Richard O'Neill, product designer bridging design, code and AI.">
+</head>
+<body data-theme="blackout">
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="content.js"></script>
+<script src="image-slot.js"></script>
+<script type="text/babel" src="atoms.jsx"></script>
+<script type="text/babel" src="brutal.jsx"></script>
+<script type="text/babel" src="motion.jsx"></script>
+<script type="text/babel">
+const { DISP, EDGE, Reg, TopBar } = window.RonBrutal;
+const { Decode } = window.RonMotion;
+const RC = window.RON_CONTENT;
+const { useState, useEffect, useRef } = React;
+
+/* Tripo H3.1 output from Artlist. Drop the downloaded GLB at lab/artifact.glb. */
+const ARTIFACT_SRC = 'lab/artifact.glb';
+
+/* dither cell in CSS px: chunkier on desktop, finer on the smaller phone mark */
+const CELL = matchMedia('(max-width: 700px)').matches ? 3 : 4;
+
+const VARIANTS = [
+  { id:'orbit',    label:'Orbit (live)' },
+  { id:'signal',   label:'Signal' },
+  { id:'artifact', label:'Artifact' },
+];
+
+const RING = "PRODUCT DESIGN · BUILDING WITH AI · DATA VISUALISATION · DESIGN SYSTEMS · RAPID PROTOTYPING · ";
+function Ring(){
+  return (
+    <svg viewBox="0 0 400 400" className="ron-spin" style={{ position:'absolute', inset:0, width:'100%', height:'100%' }}>
+      <defs><path id="ringT" d="M44,200 a156,156 0 1,1 312,0 a156,156 0 1,1 -312,0" fill="none"/></defs>
+      <text fontFamily="var(--font-display)" fontSize="12.5" fontWeight="700" fill="rgba(255,255,255,0.92)">
+        <textPath href="#ringT" startOffset="0" textLength="968" lengthAdjust="spacing">{RING}</textPath>
+      </text>
+    </svg>
+  );
+}
+const markBox = { position:'absolute', right:'3%', top:'40%', transform:'translateY(-50%)', width:'min(58vh,560px)', maxWidth:'46vw', aspectRatio:'1', zIndex:1 };
+
+/* Live site version, unchanged */
+function OrbitMark(){
+  const symbols = ['orbit','sphere','starburst','compass'];
+  const [idx,setIdx] = useState(0);
+  useEffect(()=>{ if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; const t=setInterval(()=>setIdx(v=>(v+1)%symbols.length), 4200); return ()=>clearInterval(t); }, []);
+  return (
+    <div className="ron-mark" aria-hidden="true" style={markBox}>
+      <Ring/>
+      {symbols.map((s,i)=>(
+        <img key={s} src={`assets/motifs/${s}.svg`} alt="" className="ron-cen"
+          style={{ width:'92%', height:'92%', filter:'invert(1)', opacity: i===idx?0.95:0, transition:'opacity 1300ms ease' }}/>
+      ))}
+    </div>
+  );
+}
+
+/* WebGL mark: canvas over a static motif fallback. The fallback stays if
+   WebGL is missing, the module fails, or the context is lost. */
+function GLMark({ engine, opts, caption }){
+  const ref = useRef(null);
+  const [live,setLive] = useState(false);
+  useEffect(()=>{
+    const canvas = ref.current; let api = null, dead = false;
+    const fallback = ()=>{ setLive(false); canvas.classList.remove('is-ready'); };
+    canvas.addEventListener('herofallback', fallback);
+    const start = ()=>{
+      const mod = window[engine];
+      if (!mod) return;
+      Promise.resolve(mod.mount(canvas, { ...opts, onReady:()=>{ if(!dead){ canvas.classList.add('is-ready'); setLive(true); } } }))
+        .then(a=>{ api = a; if (dead) a && a.destroy(); })
+        .catch(err=>{ console.warn('[hero-lab]', err); fallback(); });
+    };
+    if (window[engine]) start(); else window.addEventListener(engine+':ready', start, { once:true });
+    return ()=>{ dead = true; api && api.destroy(); canvas.removeEventListener('herofallback', fallback); };
+  }, [engine]);
+  return (
+    <div className={'ron-mark lab-mark' + (live ? ' is-live' : '')} aria-hidden="true" style={markBox}>
+      <Ring/>
+      <img className="ron-cen lab-fallback" src="assets/motifs/sphere.svg" alt="" style={{ width:'92%', height:'92%', filter:'invert(1)' }}/>
+      <canvas ref={ref} role="presentation"/>
+      {caption && <span className="cap lab-caption">{caption}</span>}
+    </div>
+  );
+}
+
+function Mark({ v }){
+  if (v === 'signal')   return <GLMark key="s" engine="HeroSignal" opts={{ cell:CELL, period:4.2 }} />;
+  if (v === 'artifact') return <GLMark key="a" engine="HeroArtifact" opts={{ cell:CELL, src:ARTIFACT_SRC }} caption="[ mesh: tripo h3.1 via artlist // 1 prompt ]" />;
+  return <OrbitMark/>;
+}
+
+function Hero({ v }){
+  const ink = 'rgba(26,19,16,0.55)';
+  return (
+    <header style={{ position:'relative', background:'var(--orange)', minHeight:'calc(100vh - var(--nav-h))', padding:`clamp(2rem,4vw,3.5rem) ${EDGE} clamp(2.5rem,5vw,4rem)`, overflow:'hidden', display:'flex', flexDirection:'column' }}>
+      <div className="grain" style={{ zIndex:0, mixBlendMode:'multiply', opacity:0.5 }}/>
+      <Reg style={{ top:18, left:18, zIndex:3 }} c={'rgba(26,19,16,0.4)'} /><Reg style={{ top:18, right:18, zIndex:3 }} c={'rgba(26,19,16,0.4)'} />
+      <div style={{ position:'relative', zIndex:3, display:'flex', justifyContent:'space-between', flexWrap:'wrap', gap:14 }}>
+        <span className="cap" style={{ fontSize:11, color:ink, letterSpacing:'0.1em' }}>[ product designer // building with ai ]</span>
+        <span className="cap" style={{ fontSize:11, color:ink }}>{RC.coords}</span>
+      </div>
+      <Mark v={v}/>
+      <div style={{ marginTop:'auto', textAlign:'left', position:'relative', zIndex:4, width:'100%' }}>
+        <Decode as="h1" className="disp" accent={false} text={"richard\no'neill"}
+          style={{ fontWeight:800, fontSize:'clamp(3rem,11vw,11rem)', lineHeight:0.82, letterSpacing:'-0.05em', color:'var(--paper)', margin:0, textTransform:'lowercase' }} />
+        <p style={{ fontFamily:'var(--font-text)', fontSize:'var(--fs-body-lg)', lineHeight:'var(--lh-body)', color:'rgba(236,234,228,0.9)', maxWidth:'42ch', margin:'clamp(1rem,2vw,1.5rem) 0 0' }}>{RC.positioning}</p>
+        <p style={{ fontFamily:'var(--font-text)', fontSize:'var(--fs-body)', lineHeight:'var(--lh-body)', color:'var(--espresso)', maxWidth:'72ch', textWrap:'balance', margin:'0.6rem 0 0' }}>{RC.proof}</p>
+        <a href={RC.proofLink.href} className="cap" style={{ display:'inline-block', marginTop:'1rem', fontSize:13, color:'var(--espresso)', textDecoration:'none', borderBottom:'2px solid var(--espresso)', paddingBottom:2, letterSpacing:'0.06em' }}>{RC.proofLink.label} →</a>
+      </div>
+    </header>
+  );
+}
+
+function Picker({ v, set }){
+  useEffect(()=>{
+    const onKey = e=>{
+      if (e.target.closest('input,textarea,[contenteditable]')) return;
+      if (e.key!=='ArrowLeft' && e.key!=='ArrowRight') return;
+      const i = VARIANTS.findIndex(x=>x.id===v);
+      set(VARIANTS[(i + (e.key==='ArrowRight'?1:-1) + VARIANTS.length) % VARIANTS.length].id);
+    };
+    addEventListener('keydown', onKey); return ()=>removeEventListener('keydown', onKey);
+  }, [v]);
+  return (
+    <nav className="lab-picker" aria-label="Hero variant">
+      {VARIANTS.map(x=> <button key={x.id} aria-pressed={x.id===v} onClick={()=>set(x.id)}>{x.label}</button>)}
+    </nav>
+  );
+}
+
+function Lab(){
+  const initial = new URLSearchParams(location.search).get('v');
+  const [v,setV] = useState(VARIANTS.some(x=>x.id===initial) ? initial : 'signal');
+  const set = id=>{ setV(id); const u = new URL(location.href); u.searchParams.set('v', id); history.replaceState(null,'',u); };
+  return (
+    <div style={{ background:'var(--espresso)', color:'var(--paper)', position:'relative', minHeight:'100vh' }}>
+      <TopBar/><Hero v={v}/>
+      <div style={{ height:'40vh' }}/>
+      <Picker v={v} set={set}/>
+    </div>
+  );
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<Lab/>);
+</script>
+<script type="module">
+  // Effects load outside Babel, after the React page. Each announces itself.
+  import('./lab/hero-signal.js').then(()=>dispatchEvent(new Event('HeroSignal:ready')));
+  import('./lab/hero-artifact.js').then(()=>dispatchEvent(new Event('HeroArtifact:ready')));
+</script>
+</body>
+</html>
