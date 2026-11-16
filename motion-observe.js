@@ -116,7 +116,10 @@
     h1.setAttribute("aria-label", (h1.textContent || "").replace(/\s+/g, " ").trim());
     h1.textContent = "";
 
-    var STAGGER = 22, DUR = 450;
+    // optional data-rise-total="ms": cap the whole stagger for long titles
+    // (pages without it keep the original 22ms per character)
+    var total = parseInt(h1.getAttribute("data-rise-total"), 10);
+    var STAGGER = total > 0 ? Math.min(22, total / items.length) : 22, DUR = 450;
     var spans = [];
     var word = null;
     function flushWord() { if (word) { h1.appendChild(word); word = null; } }
