@@ -143,7 +143,7 @@ window.RON_CONTENT = {
       summary: "A practice companion for children aged 6 to 12, where a blackbird grows as they play and nothing is lost on the days they don't. Before building the app I made the pieces to test it: rules, a painted glen, a 32 second film, a playable demo and a landing page asking for a refundable deposit.",
       cover: "Lonán · practice companion",
       motif: "orbit",
-      shot: { kind: "mark", src: "assets/shots/lonan.webp", big: true },
+      shot: { kind: "mark", src: "assets/marks/lonan.svg" },
       href: "case-studies/lonan/index.html",
       link: { label: "View case study", kind: "case", gated: false },
     },
