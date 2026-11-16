@@ -37,7 +37,7 @@
   .lab-picker button[aria-pressed="true"]{ background:#fff; color:#000; box-shadow:0 1px 3px rgba(0,0,0,0.18) }
   .lab-picker button:focus-visible{ outline:2px solid #0a64ff; outline-offset:1px }
   @media print{ .lab-picker{ display:none } }
-  @media (max-width: 700px){ .card-lab{ grid-template-columns:1fr !important } .card-lab > div:last-child{ position:relative !important; top:auto !important; order:-1 } }
+  @media (max-width: 700px){ .card-lab{ grid-template-columns:1fr !important } .card-lab > div:last-child{ position:relative !important; top:auto !important; order:-1 } .shape-grid{ grid-template-columns:repeat(3,minmax(0,1fr)) !important } }
 </style>
 
   <!-- ── Favicons + manifest (roneill.me) ─────────────────────── -->
@@ -152,14 +152,14 @@ function GLMark({ engine, opts, caption }){
   );
 }
 
-function Mark({ v }){
-  if (v === 'draft')    return <GLMark key="d" engine="HeroCad" opts={{ shapes:['sphere','orbit','starburst','compass'], period:4.2, guides:true }} />;
+function Mark({ v, shapes }){
+  if (v === 'draft')    return <GLMark key={'d'+shapes.join()} engine="HeroCad" opts={{ shapes, period:4.2, guides:true }} />;
   if (v === 'signal')   return <GLMark key="s" engine="HeroSignal" opts={{ cell:CELL, period:4.2 }} />;
   if (v === 'artifact') return <GLMark key="a" engine="HeroArtifact" opts={{ cell:CELL, src:ARTIFACT_SRC }} caption="[ mesh: tripo h3.1 via artlist // 1 prompt ]" />;
   return <OrbitMark/>;
 }
 
-function Hero({ v }){
+function Hero({ v, shapes }){
   const ink = 'rgba(26,19,16,0.55)';
   return (
     <header style={{ position:'relative', background:'var(--orange)', minHeight:'calc(100vh - var(--nav-h))', padding:`clamp(2rem,4vw,3.5rem) ${EDGE} clamp(2.5rem,5vw,4rem)`, overflow:'hidden', display:'flex', flexDirection:'column' }}>
@@ -169,7 +169,7 @@ function Hero({ v }){
         <span className="cap" style={{ fontSize:11, color:ink, letterSpacing:'0.1em' }}>[ product designer // building with ai ]</span>
         <span className="cap" style={{ fontSize:11, color:ink }}>{RC.coords}</span>
       </div>
-      <Mark v={v}/>
+      <Mark v={v} shapes={shapes}/>
       <div style={{ marginTop:'auto', textAlign:'left', position:'relative', zIndex:4, width:'100%' }}>
         <Decode as="h1" className="disp" accent={false} text={"richard\no'neill"}
           style={{ fontWeight:800, fontSize:'clamp(3rem,11vw,11rem)', lineHeight:0.82, letterSpacing:'-0.05em', color:'var(--paper)', margin:0, textTransform:'lowercase' }} />
@@ -181,7 +181,78 @@ function Hero({ v }){
   );
 }
 
+/* ── Shape library: click to choose which shapes the Draft hero cycles ── */
+const LIBRARY = [
+  { group:'site motifs', items:['orbit','starburst','sphere','compass'] },
+  { group:'ux / design', items:['cursor','pen','layers','component','toggle','device'] },
+];
+function ShapeTile({ name, on, onToggle }){
+  const ref = useRef(null), api = useRef(null);
+  useEffect(()=>{
+    const start = ()=>{ api.current = window.HeroCad.mount(ref.current, { autoplay:false, start:name, guides:false, spin:0.4, playing:false }); };
+    if (window.HeroCad) start(); else addEventListener('HeroCad:ready', start, { once:true });
+    return ()=>api.current && api.current.destroy();
+  }, []);
+  return (
+    <button onClick={onToggle} aria-pressed={on} onMouseEnter={()=>api.current && api.current.play(true)} onMouseLeave={()=>api.current && api.current.play(false)} style={{ all:'unset', boxSizing:'border-box', cursor:'pointer', position:'relative', aspectRatio:'1', background:'var(--orange)', border:`1.5px solid ${on ? 'var(--paper)' : 'transparent'}`, outlineOffset:2 }}>
+      <canvas ref={ref} aria-hidden="true" style={{ position:'absolute', inset:'8%', width:'84%', height:'84%' }}/>
+      <span className="cap" style={{ position:'absolute', left:10, bottom:8, fontSize:10, letterSpacing:'0.08em', color: on ? 'var(--paper)' : 'rgba(26,19,16,0.6)' }}>{on ? '● ' : ''}{name}</span>
+    </button>
+  );
+}
+function ShapeLibrary({ shapes, setShapes }){
+  const toggle = n => setShapes(shapes.includes(n) ? shapes.filter(x=>x!==n) : [...shapes, n]);
+  return (
+    <section style={{ padding:`clamp(2.5rem,5vw,4rem) ${EDGE}`, borderTop:`1px solid ${FR}` }}>
+      <div style={{ display:'flex', alignItems:'baseline', gap:14, marginBottom:'1.5rem', flexWrap:'wrap' }}>
+        <span className="cap" style={{ fontSize:12, color:'var(--orange)' }}>(lab)</span>
+        <span className="cap" style={{ fontSize:12, color:'var(--grey-400)', letterSpacing:'0.08em' }}>Shape library // click to add or remove from the hero cycle</span>
+        <span style={{ flex:1, height:1, background:FR }} />
+        <span className="cap" style={{ fontSize:11, color:'var(--text-faint)' }}>cycle: {shapes.join(' → ') || 'none'}</span>
+      </div>
+      {LIBRARY.map(g=>(
+        <div key={g.group} style={{ marginBottom:'1.5rem' }}>
+          <div className="cap" style={{ fontSize:11, color:'var(--text-faint)', margin:'0 0 0.6rem' }}>{g.group}</div>
+          <div className="shape-grid" style={{ display:'grid', gridTemplateColumns:'repeat(6, minmax(0,1fr))', gap:10 }}>
+            {g.items.map(n=> <ShapeTile key={n} name={n} on={shapes.includes(n)} onToggle={()=>toggle(n)} />)}
+          </div>
+        </div>
+      ))}
+    </section>
+  );
+}
+
 /* ── Work preview card with a CAD render per project (lab only) ── */
+const CARD_MARK = { '01':'assets/marks/guided-tracker.svg', '02':'assets/shots/vm-dashboard.svg', '04':'assets/marks/treble-games.svg', '04.1':'assets/marks/sonarchy.svg', '04.2':'assets/marks/three-letter-daily.svg', '04.3':'assets/marks/lonan.svg', '04.4':'assets/marks/exit0.svg', '05':'assets/marks/spoken-for.svg' };
+function CardFrame({ e, label, children }){
+  return (
+    <div className="checker halftone" style={{ position:'relative', overflow:'hidden', aspectRatio:'4/5', border:`1px solid ${FR}`, display:'grid', placeItems:'center' }}>
+      <span className="disp" style={{ position:'absolute', left:18, top:14, fontWeight:800, fontSize:'clamp(2.5rem,5vw,4rem)', lineHeight:0.8, letterSpacing:'-0.04em', color:'var(--orange)', zIndex:3 }}>{e.index}</span>
+      {children}
+      <Handles />
+      <Corners c={FR2} inset={9} />
+      <span className="cap" style={{ position:'absolute', left:18, bottom:16, fontSize:11, color:'var(--grey-400)', letterSpacing:'0.06em', zIndex:3 }}>{e.cover} // {label}</span>
+    </div>
+  );
+}
+function MarkCard({ e }){
+  const ref = useRef(null), api = useRef(null), want = useRef(CARD_MARK[e.index]);
+  const [live,setLive] = useState(false);
+  want.current = CARD_MARK[e.index];
+  useEffect(()=>{
+    let dead = false;
+    const start = ()=>{ Promise.resolve(window.HeroMarks.mount(ref.current, { src:want.current, onReady:()=>!dead && setLive(true) }))
+      .then(a=>{ api.current = a; if (dead) a && a.destroy(); }).catch(err=>console.warn('[hero-lab]', err)); };
+    if (window.HeroMarks) start(); else addEventListener('HeroMarks:ready', start, { once:true });
+    return ()=>{ dead = true; api.current && api.current.destroy(); };
+  }, []);
+  useEffect(()=>{ api.current && api.current.show(CARD_MARK[e.index]); }, [e.index]);
+  return (
+    <CardFrame e={e} label="exploded mark">
+      <canvas ref={ref} aria-hidden="true" style={{ position:'absolute', inset:'10% 4% 12%', width:'92%', height:'78%', zIndex:2, opacity: live?1:0, transition:'opacity 600ms var(--ease-out)' }}/>
+    </CardFrame>
+  );
+}
 const CARD_SHAPE = { '01':'stairs', '02':'bars', '03':'target', '04':'stack', '04.1':'cassette', '04.2':'tiles', '04.3':'orbit', '04.4':'door', '05':'rings' };
 function CadCard({ e }){
   const ref = useRef(null), api = useRef(null);
@@ -194,24 +265,23 @@ function CadCard({ e }){
   }, []);
   useEffect(()=>{ api.current && api.current.show(CARD_SHAPE[e.index]); }, [e.index]);
   return (
-    <div className="checker halftone" style={{ position:'relative', overflow:'hidden', aspectRatio:'4/5', border:`1px solid ${FR}`, display:'grid', placeItems:'center' }}>
-      <span className="disp" style={{ position:'absolute', left:18, top:14, fontWeight:800, fontSize:'clamp(2.5rem,5vw,4rem)', lineHeight:0.8, letterSpacing:'-0.04em', color:'var(--orange)', zIndex:3 }}>{e.index}</span>
+    <CardFrame e={e} label={'fig. ' + CARD_SHAPE[e.index]}>
       <canvas ref={ref} aria-hidden="true" style={{ position:'absolute', inset:'12% 6% 14%', width:'88%', height:'74%', zIndex:2, opacity: live?1:0, transition:'opacity 600ms var(--ease-out)' }}/>
-      <Handles />
-      <Corners c={FR2} inset={9} />
-      <span className="cap" style={{ position:'absolute', left:18, bottom:16, fontSize:11, color:'var(--grey-400)', letterSpacing:'0.06em', zIndex:3 }}>{e.cover} // fig. {CARD_SHAPE[e.index]}</span>
-    </div>
+    </CardFrame>
   );
 }
 function CardLab(){
   const [active,setActive] = useState(4);
+  const [mode,setMode] = useState('mark');
   const e = RC.work[active];
+  const useMark = mode==='mark' && CARD_MARK[e.index];
   return (
     <section style={{ padding:`clamp(2.5rem,5vw,4rem) ${EDGE} 8rem`, borderTop:`1px solid ${FR}` }}>
       <div style={{ display:'flex', alignItems:'baseline', gap:14, marginBottom:'clamp(1.5rem,4vw,3rem)' }}>
         <span className="cap" style={{ fontSize:12, color:'var(--orange)' }}>(lab)</span>
         <span className="cap" style={{ fontSize:12, color:'var(--grey-400)', letterSpacing:'0.08em' }}>Preview card, CAD render per project</span>
         <span style={{ flex:1, height:1, background:FR }} />
+        {['mark','shape'].map(m=> <button key={m} onClick={()=>setMode(m)} aria-pressed={mode===m} className="cap" style={{ all:'unset', cursor:'pointer', fontSize:11, letterSpacing:'0.08em', padding:'4px 10px', border:`1px solid ${mode===m ? 'var(--orange)' : FR}`, color: mode===m ? 'var(--orange)' : 'var(--grey-400)' }}>{m === 'mark' ? 'project mark' : 'generic shape'}</button>)}
       </div>
       <div className="card-lab" style={{ display:'grid', gridTemplateColumns:'minmax(0,1.25fr) minmax(0,0.75fr)', gap:'clamp(1.5rem,5vw,4.5rem)', alignItems:'start' }}>
         <div>
@@ -220,11 +290,11 @@ function CardLab(){
               style={{ all:'unset', boxSizing:'border-box', cursor:'pointer', display:'flex', alignItems:'baseline', gap:14, width:'100%', padding:'0.9rem 0', borderTop:`1px solid ${FR}` }}>
               <span className="disp" style={{ fontWeight:800, fontSize:'clamp(1rem,1.6vw,1.3rem)', color:'var(--orange)', minWidth:'3.2em' }}>{w.index}</span>
               <span className="disp" style={{ fontWeight:700, fontSize:'clamp(1rem,2vw,1.6rem)', color: active===i ? 'var(--paper)' : 'var(--grey-400)', textTransform:'lowercase', transition:'color 150ms ease' }}>{w.client}</span>
-              <span className="cap" style={{ marginLeft:'auto', fontSize:10, color:'var(--text-faint)' }}>{CARD_SHAPE[w.index]}</span>
+              <span className="cap" style={{ marginLeft:'auto', fontSize:10, color:'var(--text-faint)' }}>{mode==='mark' && CARD_MARK[w.index] ? 'mark' : CARD_SHAPE[w.index]}</span>
             </button>
           ))}
         </div>
-        <div style={{ position:'sticky', top:'calc(var(--nav-h) + 24px)' }}><CadCard e={e} /></div>
+        <div style={{ position:'sticky', top:'calc(var(--nav-h) + 24px)' }}>{useMark ? <MarkCard e={e} /> : <CadCard key="cad" e={e} />}</div>
       </div>
     </section>
   );
@@ -251,9 +321,13 @@ function Lab(){
   const initial = new URLSearchParams(location.search).get('v');
   const [v,setV] = useState(VARIANTS.some(x=>x.id===initial) ? initial : 'draft');
   const set = id=>{ setV(id); const u = new URL(location.href); u.searchParams.set('v', id); history.replaceState(null,'',u); };
+  const initShapes = (new URLSearchParams(location.search).get('shapes') || 'starburst,orbit,cursor,layers').split(',').filter(Boolean);
+  const [shapes,setShapesRaw] = useState(initShapes);
+  const setShapes = list=>{ setShapesRaw(list); const u = new URL(location.href); u.searchParams.set('shapes', list.join(',')); history.replaceState(null,'',u); if (list.length && v!=='draft') set('draft'); };
   return (
     <div style={{ background:'var(--espresso)', color:'var(--paper)', position:'relative', minHeight:'100vh' }}>
-      <TopBar/><Hero v={v}/>
+      <TopBar/><Hero v={v} shapes={shapes.length ? shapes : ['orbit']}/>
+      <ShapeLibrary shapes={shapes} setShapes={setShapes}/>
       <CardLab/>
       <Picker v={v} set={set}/>
     </div>
@@ -263,6 +337,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(<Lab/>);
 </script>
 <script type="module">
   // Effects load outside Babel, after the React page. Each announces itself.
+  import('./lab/marks.js').then(()=>dispatchEvent(new Event('HeroMarks:ready')));
   import('./lab/cad.js').then(()=>dispatchEvent(new Event('HeroCad:ready')));
   import('./lab/hero-signal.js').then(()=>dispatchEvent(new Event('HeroSignal:ready')));
   import('./lab/hero-artifact.js').then(()=>dispatchEvent(new Event('HeroArtifact:ready')));

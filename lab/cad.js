@@ -8,6 +8,7 @@ import { cssColor, reducedMotion, gatedLoop, easedPointer } from './dither-core.
 export const SHAPES = {
   sphere: 0, orbit: 1, starburst: 2, compass: 3, tiles: 4, cassette: 5,
   rings: 6, bars: 7, stairs: 8, target: 9, door: 10, stack: 11,
+  cursor: 12, pen: 13, layers: 14, component: 15, toggle: 16, device: 17,
 };
 
 const VS = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }`;
@@ -40,7 +41,69 @@ float sdFrame(vec3 p, vec3 b, float e){
     length(max(vec3(q.x, q.y, p.z), 0.0)) + min(max(q.x, max(q.y, p.z)), 0.0));
 }
 
+float sdTri(vec2 p, vec2 p0, vec2 p1, vec2 p2){
+  vec2 e0 = p1 - p0, e1 = p2 - p1, e2 = p0 - p2, v0 = p - p0, v1 = p - p1, v2 = p - p2;
+  vec2 q0 = v0 - e0 * clamp(dot(v0, e0) / dot(e0, e0), 0.0, 1.0);
+  vec2 q1 = v1 - e1 * clamp(dot(v1, e1) / dot(e1, e1), 0.0, 1.0);
+  vec2 q2 = v2 - e2 * clamp(dot(v2, e2) / dot(e2, e2), 0.0, 1.0);
+  float s = sign(e0.x * e2.y - e0.y * e2.x);
+  vec2 d = min(min(vec2(dot(q0, q0), s * (v0.x * e0.y - v0.y * e0.x)), vec2(dot(q1, q1), s * (v1.x * e1.y - v1.y * e1.x))), vec2(dot(q2, q2), s * (v2.x * e2.y - v2.y * e2.x)));
+  return -sqrt(d.x) * sign(d.y);
+}
+float sdBox2(vec2 p, vec2 b){ vec2 d = abs(p) - b; return length(max(d, 0.0)) + min(max(d.x, d.y), 0.0); }
+float extrude(float d2, float z, float h){ vec2 w = vec2(d2, abs(z) - h); return min(max(w.x, w.y), 0.0) + length(max(w, 0.0)); }
+
+float shapeUX(vec3 p, float i){
+  if (i < 12.5) {                                  // cursor
+    vec2 q = p.xy;
+    float d = sdTri(q, vec2(-0.32, 0.66), vec2(-0.32, -0.22), vec2(0.3, 0.1));
+    vec2 s = q - vec2(-0.02, -0.24); s *= rot(0.5);
+    d = min(d, sdBox2(s, vec2(0.075, 0.3)));
+    return extrude(d + 0.015, p.z, 0.07) - 0.015;
+  }
+  if (i < 13.5) {                                  // pen nib
+    vec2 q = p.xy * rot(-0.65);
+    float d = min(sdTri(q, vec2(0.0, -0.78), vec2(-0.36, 0.06), vec2(0.36, 0.06)), sdBox2(q - vec2(0.0, 0.2), vec2(0.36, 0.16)));
+    d = max(d, -(length(q - vec2(0.0, -0.12)) - 0.08));
+    d = max(d, -sdBox2(q - vec2(0.0, -0.46), vec2(0.014, 0.3)));
+    d = min(d, sdBox2(q - vec2(0.0, 0.56), vec2(0.3, 0.07)));
+    return extrude(d, p.z, 0.06);
+  }
+  if (i < 14.5) {                                  // layers: three UI panels stacked
+    float d = 1e5;
+    for (int k = 0; k < 3; k++) { float f = float(k) - 1.0;
+      d = min(d, sdRBox(p - vec3(f * 0.08, f * 0.3, -f * 0.08), vec3(0.62, 0.022, 0.44), 0.02)); }
+    vec3 t = p - vec3(0.08, 0.33, 0.0);              // UI blocks on the top panel
+    d = min(d, sdBox(t - vec3(-0.18, 0.0, -0.22), vec3(0.3, 0.02, 0.06)));
+    d = min(d, sdBox(t - vec3(-0.1, 0.0, 0.0), vec3(0.38, 0.02, 0.1)));
+    return min(d, sdCylY(t - vec3(0.38, 0.0, 0.24), 0.1, 0.03));
+  }
+  if (i < 15.5) {                                  // component: four diamonds
+    vec2 q = abs(p.xy);
+    q = (q.x > q.y) ? q - vec2(0.4, 0.0) : q - vec2(0.0, 0.4);
+    q *= rot(0.785398);
+    return extrude(sdBox2(q, vec2(0.2)) + 0.02, p.z, 0.08) - 0.02;
+  }
+  if (i < 16.5) {                                  // toggle: track outline + sliding knob
+    float k = (smoothstep(-0.35, 0.35, sin(uTime * 1.3)) - 0.5) * 0.68;
+    vec2 q = p.xy;
+    float cap = length(vec2(max(abs(q.x) - 0.34, 0.0), q.y)) - 0.34;
+    float d = extrude(abs(cap) - 0.035, p.z, 0.07);
+    return min(d, sdSphere(p - vec3(k, 0.0, 0.0), 0.24));
+  }
+  // device: phone with UI cards on screen
+  float d = sdRBox(p, vec3(0.44, 0.86, 0.05), 0.1);
+  d = max(d, -sdBox(p - vec3(0.0, 0.0, 0.05), vec3(0.38, 0.78, 0.022)));
+  vec3 s = p - vec3(0.0, 0.0, 0.035);
+  d = min(d, sdRBox(s - vec3(0.0, 0.62, 0.0), vec3(0.09, 0.025, 0.015), 0.015));
+  d = min(d, sdRBox(s - vec3(0.0, 0.3, 0.0), vec3(0.3, 0.16, 0.012), 0.012));
+  d = min(d, sdRBox(s - vec3(0.0, -0.06, 0.0), vec3(0.3, 0.12, 0.012), 0.012));
+  d = min(d, sdRBox(s - vec3(0.0, -0.58, 0.0), vec3(0.24, 0.07, 0.014), 0.06));
+  return d;
+}
+
 float shape(vec3 p, float i){
+  if (i > 11.5) return shapeUX(p, i);
   if (i < 0.5) return sdSphere(p, 0.78);
   if (i < 1.5) {                                   // orbit
     vec3 q = p; q.xy *= rot(0.42);
@@ -106,6 +169,11 @@ float shape(vec3 p, float i){
   return min(d, sdTorus(p - vec3(0.0, 0.42, 0.0), vec2(0.32, 0.07)));
 }
 
+float roundness(float i){
+  // sphere, orbit, starburst, compass, rings, target, stack, toggle
+  if (i < 3.5 || abs(i - 6.0) < 0.5 || abs(i - 9.0) < 0.5 || abs(i - 11.0) < 0.5 || abs(i - 16.0) < 0.5) return 1.0;
+  return 0.0;
+}
 vec3 obj(vec3 p){
   p.xz *= rot(uTime * uSpin + uMouse.x * 0.9);
   p.yz *= rot(0.32 + uMouse.y * 0.6);
@@ -137,12 +205,18 @@ void main(){
   // mask by hit afterwards.
   float hit = 1.0 - step(0.004, d);
   vec3 p = ro + rd * t, n = normal(p), q = obj(p);
+  // Round shapes get globe lines (latitude + meridians); flat, boxy shapes
+  // get a planar grid on each face, so flat faces don't show a radial fan.
   float lat = isoline(q.y * 9.0, uLW);
   float mer = isoline(atan(q.z, q.x) * 2.546, uLW);             // 16 meridians
+  vec3 no = abs(obj(n));
+  float grid = max(max(isoline(q.x * 7.0, uLW) * step(no.x, 0.7), isoline(q.y * 7.0, uLW) * step(no.y, 0.7)), isoline(q.z * 7.0, uLW) * step(no.z, 0.7));
+  float round = mix(roundness(uFrom), roundness(uTo), uMix);
+  float contour = mix(grid, max(lat, mer), round);
   float crease = smoothstep(0.35, 0.8, length(fwidth(n)));
   float depth = smoothstep(0.02, 0.05, fwidth(t) / max(t, 0.001));
   float rim = 1.0 - smoothstep(0.0, 0.11 * uLW, dot(n, -rd));
-  float a = hit * max(max(lat, mer) * 0.42, max(max(crease, depth), rim));
+  float a = hit * max(contour * 0.42, max(max(crease, depth), rim));
   // Silhouette: the ray passed close to the surface without hitting it.
   float w = tMin * px / F * uLW;
   a = max(a, (1.0 - hit) * (1.0 - smoothstep(w * 0.4, w * 1.4, minD)));
@@ -177,7 +251,7 @@ const ease = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
  */
 export function mount(canvas, {
   shapes = ['sphere', 'orbit', 'starburst', 'compass'], autoplay = true, start, period = 4.2,
-  color = '--paper', guides = true, spin = 0.35, morph = 0.9, onReady,
+  color = '--paper', guides = true, spin = 0.35, morph = 0.9, playing = true, onReady,
 } = {}) {
   const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: false, antialias: false, powerPreference: 'low-power' });
   if (!gl || !gl.getExtension('OES_standard_derivatives')) return null;
@@ -206,7 +280,10 @@ export function mount(canvas, {
     to = next; mixT = 0; mixStart = clock;
   };
 
+  let drawn = false;
   const draw = (t, dt) => {
+    if (!playing && drawn) return;                   // idle tiles: one still frame, no GPU work
+    drawn = true;
     clock = t;
     const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
     if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
@@ -232,6 +309,7 @@ export function mount(canvas, {
   const lost = e => { e.preventDefault(); stop(); canvas.dispatchEvent(new CustomEvent('herofallback')); };
   canvas.addEventListener('webglcontextlost', lost);
   return {
+    play(on) { playing = on; },
     show(name) { show(name); if (still) { mixT = 1; from = to; draw(1.2, 0); } },
     destroy() { stop(); ptr.destroy(); canvas.removeEventListener('webglcontextlost', lost); gl.getExtension('WEBGL_lose_context')?.loseContext(); },
   };
