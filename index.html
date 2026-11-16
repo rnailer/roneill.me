@@ -180,11 +180,12 @@ function Work(){
         <div>
           {RC.work.map((w,i)=>{
             const on = active===i;
-            const child = !!w.parent;   /* nested under a parent studio row: indented, hairline rule on the left */
+            const child = !!w.parent;   /* nested under a parent studio row: rows share one faintly lit panel */
+            const firstChild = child && !(RC.work[i-1] && RC.work[i-1].parent);
             return (
               <a key={w.index} href={w.href || '#'} onMouseEnter={()=>setActive(i)} className={child ? 'work-child' : undefined}
                 style={child
-                  ? { display:'block', textDecoration:'none', padding:'clamp(1.1rem,2.4vw,1.75rem) 0 clamp(1.1rem,2.4vw,1.75rem) clamp(1rem,2.2vw,1.75rem)', marginLeft:'clamp(0.75rem,2.6vw,2.25rem)', borderTop:`1px solid ${FR}`, borderLeft:`1px solid ${FR}` }
+                  ? { display:'block', textDecoration:'none', padding:'clamp(1.1rem,2.4vw,1.75rem) clamp(1rem,2.4vw,2rem)', background:'rgba(236,234,228,0.035)', borderTop: firstChild ? `1px solid ${FR}` : '1px solid rgba(236,234,228,0.10)' }
                   : { display:'block', textDecoration:'none', padding:'clamp(1.5rem,3vw,2.25rem) 0', borderTop:`1px solid ${FR}` }}>
                 <div style={{ display:'flex', alignItems:'baseline', gap:14, marginBottom:12 }}>
                   <span className="disp" style={{ fontWeight:800, fontSize: child ? 'clamp(0.95rem,1.4vw,1.2rem)' : 'clamp(1.1rem,1.8vw,1.5rem)', color:'var(--orange)' }}>{w.index}</span>
