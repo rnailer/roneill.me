@@ -31,9 +31,9 @@
   background-image: radial-gradient(rgba(236,234,228,0.10) 0.8px, transparent 0.9px);
   background-size: 6px 6px; mix-blend-mode: screen; }
 
-/* film-grain texture overlay — drop <div class="grain"></div> in a section */
+/* film-grain overlay hook. The texture file was never added (it 404'd), so no
+   image is set: the site has always rendered without grain. Add one here later. */
 .grain { position:absolute; inset:0; pointer-events:none; z-index:3;
-  background-image: url(../../assets/textures/grain.png); background-size: 320px 320px;
   opacity: 0.55; mix-blend-mode: soft-light; }
 .grain.fixed { position:fixed; opacity:0.4; }
 
