@@ -169,6 +169,24 @@ window.RON_CONTENT = {
       href: "case-studies/exit0/index.html",
       link: { label: "View case study", kind: "case", gated: false },
     },
+    {
+      index: "05",
+      client: "Spoken For",
+      year: "2026 to now",
+      lead: false,
+      headline: "A wedding website studio where an AI asks the questions and I do the design",
+      tags: ["Founder project", "AI product", "Live"],
+      metrics: [
+        { value: "17", unit: "", caption: "Steps in the AI brief chat" },
+        { value: "3", unit: "", caption: "Designed proofs per couple, within 3 working days" },
+      ],
+      summary: "A wedding website studio where an AI asks the questions and I do the design. It started as a site for my brother's wedding. Now it's a test of whether AI-powered workflows can help one designer make simple, meaningful websites, quickly and for a fair price.",
+      cover: "Spoken For · wedding website studio",
+      motif: "compass",
+      shot: { kind: "mark", src: "assets/marks/spoken-for.svg" },
+      href: "case-studies/spoken-for/index.html",
+      link: { label: "View case study", kind: "case", gated: false },
+    },
   ],
 
   about: {

@@ -1,5 +1,14 @@
 {
   "redirects": [
-    { "source": "/case-studies/333-games/:path*", "destination": "/case-studies/treble-games/", "permanent": true }
+    {
+      "source": "/case-studies/333-games/:path*",
+      "destination": "/case-studies/treble-games/",
+      "permanent": true
+    },
+    {
+      "source": "/work/spoken-for",
+      "destination": "/case-studies/spoken-for/",
+      "permanent": true
+    }
   ]
 }

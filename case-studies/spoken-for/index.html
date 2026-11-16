@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en-IE" data-theme="blackout">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spoken For · Case study · Richard O'Neill</title>
+<meta name="description" content="Spoken For: a designer-led, AI-assisted wedding website studio. Brand, AI brief chat, design studio and client experience, built by Richard O'Neill.">
+<meta name="theme-color" content="#1A1310">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://roneill.me/case-studies/spoken-for/">
+<meta property="og:title" content="Spoken For · Case study · Richard O'Neill">
+<meta property="og:description" content="Spoken For: a designer-led, AI-assisted wedding website studio. Brand, AI brief chat, design studio and client experience, built by Richard O'Neill.">
+<!-- swap for case-studies/spoken-for/img/og.jpg (1200x630) once it exists -->
+<meta property="og:image" content="https://roneill.me/og-image.png">
+<meta property="og:locale" content="en_IE">
+<meta property="og:site_name" content="roneill.me">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<!-- shared site styles (tokens, fonts, motion) + shared case-study system -->
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/case.css">
+<!-- Spoken For showcase fonts only (SIL OFL). CS Amora is not used here: its licence lives in the
+     private Spoken For repo, so the wordmark is the outlined logo SVG and display falls back to Instrument Serif. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Nothing+You+Could+Do&display=swap">
+<script defer src="/motion-observe.js"></script>
+<style>
+  /* ---- page-local (Spoken For) ---- */
+  :root{
+    /* Spoken For brand: used only inside the showcase blocks (.sf-*, .lockups, .type-spec, .phone) */
+    --sf-bond:#F4F3EF; --sf-ink:#17223B; --sf-sugar:#A9BCD0; --sf-red:#E04A2F;
+    --sf-night:#0E1526; --sf-muted:#4A5568; --sf-line:#D5D9DE;
+    --sf-display:'Instrument Serif',Georgia,serif;
+    --sf-sans:'Albert Sans',system-ui,-apple-system,sans-serif;
+    --sf-hand:'Nothing You Could Do',cursive;
+  }
+  .hero h1 .stop{ color:var(--sf-red); }
+  .chapter .lede{ font-size:var(--fs-body-lg); line-height:1.5; color:var(--paper); max-width:60ch; margin:0 0 1.1em; text-wrap:pretty; }
+  .chapter h3{ font-family:var(--font-display); font-weight:600; font-size:var(--fs-body-lg); letter-spacing:-0.01em; color:var(--paper); margin:0 0 0.6em; }
+  .prose a, .chapter p a{ color:var(--paper); text-decoration-color:var(--orange); text-underline-offset:3px; }
+  .prose a:hover, .chapter p a:hover{ color:var(--orange); }
+  .chapter code{ font-family:ui-monospace,"SF Mono",Menlo,monospace; font-size:0.88em; color:var(--paper); }
+  .small{ font-size:var(--fs-body-sm); }
+  .muted{ color:var(--text-muted); }
+
+  /* honesty callout, in the site's pull style */
+  .note{ border-left:2px solid var(--orange); padding:0.3rem 0 0.3rem 1.3rem; margin:1.8rem 0; color:var(--paper); max-width:66ch; }
+
+  /* lists, cards, grids on the dark page */
+  ul.clean{ list-style:none; padding:0; margin:0; max-width:66ch; }
+  ul.clean li{ padding:0.8rem 0; border-top:1px solid var(--border); color:var(--text-muted); line-height:1.6; }
+  ul.clean li strong{ color:var(--paper); font-weight:600; }
+  .two{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(2rem,4vw,3.5rem); align-items:start; }
+  .three{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(0.9rem,2vw,1.4rem); }
+  .card{ background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius); padding:clamp(1.1rem,2.4vw,1.5rem); }
+  .card p{ color:var(--text-muted); margin:0; }
+  .card h3{ font-size:var(--fs-body); }
+  .num{ font-family:var(--font-display); font-weight:800; font-size:clamp(1.8rem,3vw,2.4rem); line-height:1; color:var(--orange); display:block; margin-bottom:0.5rem; }
+
+  /* figures: hidden until their image exists (data-asset names the file, see HANDOFF) */
+  .fig{ margin:clamp(1.6rem,3.5vw,2.4rem) 0 0; }
+  .fig img{ display:block; width:100%; height:auto; border-radius:var(--radius); border:1px solid var(--border); }
+  .fig figcaption{ font-size:var(--fs-caption); color:var(--text-muted); margin-top:0.7em; line-height:1.45; }
+  figure[data-asset][hidden]{ display:none; }
+
+  /* ---------- Spoken For brand showcase ---------- */
+  .sf-board{ background:var(--sf-bond); color:var(--sf-ink); border-radius:16px; padding:clamp(24px,5vw,48px); position:relative; overflow:hidden; margin-top:clamp(1.6rem,3.5vw,2.4rem); }
+  .sf-board::before{ content:""; position:absolute; inset:14px; border:1px solid var(--sf-ink); opacity:.5; border-radius:10px; pointer-events:none; }
+  .sf-board::after{ content:""; position:absolute; inset:18px; border:1px solid var(--sf-ink); opacity:.25; border-radius:8px; pointer-events:none; }
+  .sf-logo{ display:block; width:min(520px,100%); height:auto; color:var(--sf-ink); }
+  .sf-swash{ display:block; width:min(340px,70%); height:14px; margin:14px 0 0; }
+  .sf-hand{ font:400 22px/1.4 var(--sf-hand); color:var(--sf-ink); }
+  .sf-row{ display:grid; grid-template-columns:1.2fr 1fr; gap:40px; align-items:center; position:relative; z-index:1; }
+  .swatches{ display:grid; grid-template-columns:repeat(7,1fr); gap:10px; margin-top:32px; position:relative; z-index:1; }
+  .sw{ border-radius:10px; overflow:hidden; border:1px solid rgba(0,0,0,.08); background:#fff; font:400 12px/1.3 var(--sf-sans); }
+  .sw i{ display:block; height:72px; }
+  .sw span{ display:block; padding:8px 8px 10px; color:var(--sf-ink); overflow-wrap:anywhere; }
+  .sw span b{ display:block; font-weight:600; }
+  .postmark{ width:120px; height:120px; }
+  .stamp{ font:600 12px/1.4 var(--sf-sans); letter-spacing:.14em; text-transform:uppercase; color:var(--sf-red); border:2px solid var(--sf-red); padding:10px 14px; border-radius:6px; transform:rotate(-4deg); }
+  .lockups{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:16px; }
+  .lockup{ border-radius:12px; padding:24px; display:flex; align-items:center; justify-content:center; min-height:120px; font:400 30px/1 var(--sf-display); }
+  .lockup.rev{ background:var(--sf-ink); color:var(--sf-bond); }
+  .lockup.bond{ background:#fff; color:var(--sf-ink); border:1px solid var(--sf-line); }
+  .lockup.icon{ background:var(--sf-ink); color:var(--sf-bond); font-size:44px; }
+  .lockup .dot{ display:inline-block; width:.16em; height:.15em; background:var(--sf-red); border-radius:50%; margin-left:.03em; }
+  .lockup svg{ width:min(240px,90%); height:auto; }
+  .type-spec{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:16px; }
+  .type-spec div{ background:#fff; border:1px solid var(--sf-line); border-radius:12px; padding:20px; color:var(--sf-ink); }
+  .type-spec small{ display:block; font:600 11px/1 var(--sf-sans); letter-spacing:.1em; text-transform:uppercase; color:var(--sf-muted); margin-bottom:10px; }
+  .rejected{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+  .rejected span{ font-size:var(--fs-body-sm); padding:6px 12px; border-radius:999px; border:1px solid var(--border-strong); text-decoration:line-through; text-decoration-color:var(--orange); color:var(--text-muted); }
+
+  /* chat mock (brand showcase, decorative) */
+  .phone{ max-width:360px; margin:0 auto; background:var(--sf-bond); border-radius:36px; border:10px solid var(--sf-night); box-shadow:0 30px 60px -30px rgba(0,0,0,.6); overflow:hidden; font-family:var(--sf-sans); }
+  .phone-head{ display:flex; align-items:center; gap:10px; padding:16px 18px; border-bottom:1px solid var(--sf-line); background:#fff; }
+  .phone-head svg{ width:34px; height:34px; flex:none; }
+  .phone-head b{ font:600 15px/1.2 var(--sf-sans); color:var(--sf-ink); display:block; }
+  .phone-head small{ font-size:12px; color:var(--sf-muted); }
+  .progress{ height:3px; background:var(--sf-line); }
+  .progress i{ display:block; height:100%; width:58%; background:var(--sf-ink); }
+  .thread{ padding:18px 16px 22px; display:flex; flex-direction:column; gap:10px; font-size:15px; line-height:1.45; }
+  .msg{ max-width:86%; padding:12px 14px; border-radius:16px; }
+  .msg.ai{ background:#fff; color:var(--sf-ink); border:1px solid var(--sf-line); border-bottom-left-radius:6px; }
+  .msg.me{ background:var(--sf-ink); color:var(--sf-bond); align-self:flex-end; border-bottom-right-radius:6px; }
+  .msg.card-ink{ background:var(--sf-ink); color:var(--sf-bond); border:0; }
+  .chips{ display:flex; flex-wrap:wrap; gap:6px; }
+  .chip{ font-size:13px; padding:7px 12px; border-radius:16px; background:#fff; border:1px solid var(--sf-line); color:var(--sf-ink); }
+  .tiles{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .tile{ border-radius:16px; border:1px solid var(--sf-line); background:#fff; padding:14px 10px; text-align:center; color:var(--sf-ink); }
+  .tile .a{ font:400 26px/1 var(--sf-display); }
+  .tile .b{ font:500 22px/1 var(--sf-sans); letter-spacing:-.01em; }
+  .tile small{ display:block; margin-top:8px; font-size:11px; color:var(--sf-muted); }
+  .margin-note{ font:400 18px/1.3 var(--sf-hand); color:var(--sf-ink); transform:rotate(-2deg); padding:2px 6px; }
+
+  .steps{ counter-reset:s; list-style:none; padding:0; margin:0; columns:2; column-gap:32px; font-size:var(--fs-body-sm); color:var(--text-muted); }
+  .steps li{ counter-increment:s; break-inside:avoid; padding:8px 0 8px 36px; position:relative; border-bottom:1px solid var(--border); }
+  .steps li::before{ content:counter(s,decimal-leading-zero); position:absolute; left:0; top:9px; font:600 12px/1.6 ui-monospace,monospace; color:var(--orange); }
+
+  /* pipeline */
+  .pipe{ display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-top:clamp(1.4rem,3vw,2rem); }
+  .pipe div{ background:var(--bg-elevated); border:1px solid var(--border); border-radius:var(--radius); padding:18px; font-size:var(--fs-body-sm); line-height:1.55; color:var(--text-muted); }
+  .pipe b{ display:block; color:var(--paper); margin-bottom:6px; font-family:var(--font-display); font-weight:600; font-size:var(--fs-body); }
+  .who{ display:inline-block; font:600 11px/1 ui-monospace,monospace; letter-spacing:.08em; text-transform:uppercase; padding:5px 8px; border-radius:4px; margin-bottom:10px; }
+  .who.ai{ background:rgba(169,188,208,.16); color:#C9D6E4; }
+  .who.me{ background:rgba(238,86,34,.16); color:#F6A07F; }
+  .who.both{ background:rgba(236,234,228,.10); color:var(--paper); }
+
+  .proofs{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:clamp(1.6rem,3.5vw,2.4rem); }
+  .proofs .fig{ margin:0; }
+  .proofs .chosen img{ border:2px solid var(--sf-red); }
+
+  table{ width:100%; border-collapse:collapse; font-size:var(--fs-body-sm); }
+  th, td{ text-align:left; padding:12px 10px; border-bottom:1px solid var(--border); vertical-align:top; color:var(--text-muted); }
+  th{ font:var(--type-label); letter-spacing:var(--track-label); text-transform:uppercase; color:var(--text-faint); }
+  td.ok{ color:var(--paper); }
+
+  .status{ display:inline-flex; align-items:center; gap:8px; font-size:13px; padding:5px 11px; border-radius:999px; border:1px solid var(--border-strong); color:var(--paper); white-space:nowrap; }
+  .status i{ width:8px; height:8px; border-radius:50%; background:#3DBE74; }
+  .status.wait i{ background:#E7B416; }
+  .status.no i{ background:#8E897F; }
+
+  .cta{ text-align:center; }
+  .cta h2{ margin-left:auto; margin-right:auto; }
+  .btns{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:1.6rem; }
+  .btn{ display:inline-flex; align-items:center; min-height:44px; padding:12px 24px; border-radius:999px; font-family:var(--font-display); font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:.06em; text-decoration:none; border:1px solid var(--border-strong); color:var(--paper); }
+  .btn.primary{ background:var(--orange); border-color:var(--orange); color:var(--espresso); }
+  .btn:hover{ border-color:var(--orange); }
+  .btn.primary:hover{ background:var(--orange-press); }
+
+  @media (max-width:920px){
+    .two, .three{ grid-template-columns:1fr; }
+    .pipe{ grid-template-columns:1fr 1fr; }
+    .sf-row{ grid-template-columns:1fr; }
+    .swatches{ grid-template-columns:repeat(4,1fr); }
+    .lockups, .type-spec, .proofs{ grid-template-columns:1fr; }
+  }
+  @media (max-width:560px){ .pipe{ grid-template-columns:1fr; } .steps{ columns:1; } }
+</style>
+</head>
+<body>
+  <div class="bar"><div class="wrap bar-in">
+    <a href="../../index.html" class="mark">ron</a>
+    <nav class="topnav">
+      <a href="../../index.html#work" class="nav-link">Work</a>
+      <a href="../../index.html#about" class="nav-link">About</a>
+      <a href="#contact" class="nav-link">Contact</a>
+      <a href="../../cv.html" class="nav-link">CV</a>
+      <span class="avail"><span class="dot"></span>Available</span>
+    </nav>
+  </div></div>
+
+  <header class="hero"><div class="wrap">
+    <div class="kicker">Case study <b>[ 05 ]</b> · Founder project</div>
+    <div class="num-big">05</div>
+    <h1>Spoken For<span class="stop">.</span></h1>
+    <p class="summary">A wedding website studio where an AI asks the questions and I do the design. It started as a site for my brother's wedding. Now it's a test of whether AI-powered workflows can help one designer make simple, meaningful websites, quickly and for a fair price.</p>
+    <dl class="meta">
+      <div><dt>Role</dt><dd>Founder. Brand, product, UX, build</dd></div>
+      <div><dt>When</dt><dd>October to November 2026, ongoing</dd></div>
+      <div><dt>Stack</dt><dd>Next.js, Vercel AI SDK, Claude, Supabase, Artlist</dd></div>
+      <div><dt>Status</dt><dd>Live at <a href="https://spokenfor.wedding" style="color:inherit">spokenfor.wedding</a>, by invitation</dd></div>
+    </dl>
+    <figure class="fig" data-asset="hero-three-directions" style="max-width:760px">
+      <picture>
+        <source srcset="img/hero-three-directions.webp" type="image/webp">
+        <img src="img/hero-three-directions.jpg" width="1400" height="1394" alt="Three proof directions for Michael and Sheryl's wedding site: a painted bay with the couple, a photo-first version in a forest, and a type-only version with a floral strip.">
+      </picture>
+      <figcaption>Three directions for Michael and Sheryl's wedding. The painted one is live.</figcaption>
+    </figure>
+  </div></header>
+
+  <div class="wrap"><div class="doc">
+    <aside class="rail"><nav aria-label="Sections">
+      <div class="rh">Sections</div>
+      <ol>
+        <li><a href="#c1"><span class="mono">01</span> Where it started</a></li>
+        <li><a href="#c2"><span class="mono">02</span> The bet</a></li>
+        <li><a href="#c3"><span class="mono">03</span> Branding</a></li>
+        <li><a href="#c4"><span class="mono">04</span> The AI chat</a></li>
+        <li><a href="#c5"><span class="mono">05</span> The studio</a></li>
+        <li><a href="#c6"><span class="mono">06</span> Clients and guests</a></li>
+        <li><a href="#c7"><span class="mono">07</span> Where it is now</a></li>
+        <li><a href="#c8"><span class="mono">08</span> What's next</a></li>
+        <li><a href="#c9"><span class="mono">09</span> Notes to self</a></li>
+      </ol>
+    </nav></aside>
+
+    <main>
+      <!-- 01 ───────────────────────────────────────────── -->
+      <section class="chapter" id="c1">
+        <div class="chx"><span class="n">01</span><span class="l">Where it started</span><span class="r"></span></div>
+        <h2>It began with my brother's wedding</h2>
+        <div class="prose">
+          <p>My brother Mike is marrying Sheryl in Phuket in December 2026. They needed a website for guests travelling from Ireland and beyond, so I offered to make one.</p>
+          <p>The brief came over WhatsApp. I designed three concepts, each with its own artwork: Andaman Gouache, Jungle Linocut and Lantern Night. They chose Andaman Gouache, then asked for their own photo in place of the illustrated portrait. Mike didn't love how he looked drawn, which turned out to be a useful lesson in itself.</p>
+          <p>The site went live on their own domain, <a href="https://michaelandsheryl.com">michaelandsheryl.com</a>, with the schedule, travel and stay, dress colours, gift guidance and a guest photo upload.</p>
+        </div>
+        <p class="note">To be straight about it: my first client was family, the brief was a WhatsApp thread, and he didn't pay. It's a sample of one. What it gave me was a clear look at where the time and friction went, which is what the rest of this project is built on.</p>
+        <h3>What it taught me</h3>
+        <ul class="clean">
+          <li><strong>RSVPs over WhatsApp</strong> left the couple counting replies by hand. That's the case for RSVP by household, built in.</li>
+          <li><strong>Feedback over WhatsApp and email</strong> drifted. That's the case for a client area with structured rounds.</li>
+          <li><strong>Most of my time went on the first direction,</strong> not the build. A better brief up front should cut the back and forth.</li>
+          <li><strong>Couples mostly want their own photo.</strong> Illustration works best as a style choice, not the default.</li>
+        </ul>
+      </section>
+
+      <!-- 02 ───────────────────────────────────────────── -->
+      <section class="chapter" id="c2">
+        <div class="chx"><span class="n">02</span><span class="l">The bet</span><span class="r"></span></div>
+        <h2>Designer-led, AI-assisted</h2>
+        <div class="two">
+          <div>
+            <p class="lede">Free wedding site builders exist. They're good at forms and bad at feeling like anyone in particular.</p>
+            <div class="prose">
+              <p>Spoken For sits in between a template and a commission. A couple has a short chat, then gets three designed concepts within 3 working days, each with artwork made for their wedding. They pick one, send two rounds of changes, and their guests get a site with RSVPs, travel and gifts built in.</p>
+              <p>AI does the heavy lifting: collecting the brief, generating artwork, drafting layouts. I review and finish every site. The chat says so in its first message.</p>
+            </div>
+          </div>
+          <div>
+            <h3>Three things I'm trying to prove</h3>
+            <div class="card" style="margin-bottom:12px"><span class="num">1</span><p>Couples will pay about €295 for a designed site when free ones exist.</p></div>
+            <div class="card" style="margin-bottom:12px"><span class="num">2</span><p>I can deliver one in about 2 hours of my time, with AI doing most of the work.</p></div>
+            <div class="card"><span class="num">3</span><p>A good brief up front cuts the design back and forth.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 ───────────────────────────────────────────── -->
+      <section class="chapter" id="c3">
+        <div class="chx"><span class="n">03</span><span class="l">Branding</span><span class="r"></span></div>
+        <h2>In Your Words</h2>
+        <div class="two">
+          <p class="lede">The brand is a letter, not an invitation. Blue-black ink on bond paper, a plain double-rule border, a tapered ink swash and a red postmark that carries each couple's order number.</p>
+          <div class="prose"><p>Wedding brands drift towards script, gold and flourish. I wanted the opposite: something that feels like a person wrote to you. Letter conventions appear only at moments of address (the greeting, the reveal of three proofs, the sign-off). Payment, refunds and privacy stay in plain language.</p></div>
+        </div>
+
+        <div class="sf-board reveal">
+          <div class="sf-row">
+            <div>
+              <!-- outlined wordmark from the Spoken For repo (components/Logo.tsx), so it never depends on CS Amora -->
+              <svg class="sf-logo" viewBox="2 22 533 98" role="img" aria-label="Spoken For." fill="currentColor">
+                <path d="M4.5 79.2C4.5 91 15.8 100.8 34.4 100.8C49.9 100.8 61.9 92.6 61.9 79.1C61.9 54.4 19 60.7 19 45.6C19 39.8 25.3 37.4 31.1 37.4C39.2 37.4 45.3 42.1 47 48.9H59C56.2 34.6 45.5 26.2 31.2 26.2C18.4 26.2 7.3 33.2 7.3 46C7.3 56 14 61.1 22.1 64.5C12.8 63.7 4.5 68 4.5 79.2ZM25.3 65.8C37 70.1 50 71.8 50 79.9C50 85.3 43.8 89.6 33 89.6C19.2 89.6 8.3 83.9 8.3 75.3C8.3 67.7 16 64.8 25.3 65.8Z M72.4 50V118H83.4V90.2C85.7 96.6 91.3 100.8 98.6 100.8C110.3 100.8 119.5 90.2 119.5 74C119.5 58.2 110.3 49.2 101.6 49.2C85.3 49.2 89 81 83.4 86.9V50ZM108.3 74.9C108.3 84.7 103.7 94.1 93.3 94.1C90 94.1 85.6 93 83.4 89V87.8C89.6 82.8 87.7 58.4 98.6 58.4C105 58.4 108.3 66.7 108.3 74.9Z M127.5 75C127.5 90.5 137.2 100.8 152.2 100.8C167.2 100.8 176.9 90.5 176.9 75C176.9 59.5 167.2 49.2 152.2 49.2C137.2 49.2 127.5 59.5 127.5 75ZM138.7 75C138.7 66 143.7 59.9 152.2 59.9C160.7 59.9 165.7 66 165.7 75C165.7 84 160.7 90.1 152.2 90.1C143.7 90.1 138.7 84 138.7 75Z M234.6 100 217.1 71 224.2 66.1C234.7 58.9 231.9 49.2 225.2 49.2C220 49.2 214.5 55.2 207 65.4L201.4 69.3V25H190.4V74.6C189.8 84.6 179.9 87.5 179.9 94.4C179.9 97.8 182.3 100.8 187.9 100.8C193.8 100.8 201.4 97.4 201.4 83.4V81.7L208 77.2L221.8 100ZM208.4 64.4C215 56.4 219.3 51.8 221.7 51.8C223.6 51.8 222.4 54.7 215.9 59.2ZM185.5 98.7C183.1 98.7 181.3 96.8 181.3 93.9C181.3 88 188.4 85.7 190.4 78V89.6C190.4 95.7 188.5 98.7 185.5 98.7Z M265.3 93C257.8 93 252.4 89.4 249.6 84.2C259.6 70.2 280.5 78 280.5 63.7C280.5 54.4 271.9 49.2 261.8 49.2C247.9 49.2 236.2 59.1 236.2 75C236.2 90.1 246.4 100.8 261.2 100.8C272.5 100.8 282.9 94.7 284.6 81.3H284.1C280 89.4 272.9 93 265.3 93ZM249.2 83.4C248 80.9 247.4 78.1 247.4 75.1C247.4 65.7 253.7 59.4 262.8 59.4C270.1 59.4 274.1 63.4 274.1 67C274.1 74.4 256.9 72.2 249.2 83.4Z M292.6 100H303.6V70.1C307.3 61.3 313.2 54.4 319.5 54.4C326.4 54.4 327.6 62.6 327.6 69.1V74.6C327 84.6 317.1 87.5 317.1 94.4C317.1 97.8 319.5 100.8 325.1 100.8C331 100.8 338.6 97.4 338.6 83.4V66.1C338.6 55.1 333.3 49.2 325.1 49.2C314.7 49.2 307.3 58.7 303.6 68.7V50H292.6ZM322.7 98.7C320.3 98.7 318.5 96.8 318.5 93.9C318.5 88 325.6 85.7 327.6 78V89.6C327.6 95.7 325.7 98.7 322.7 98.7Z M388.1 44.5C388.1 40.6 390.7 38 394.6 38H394.9C395.5 47.4 381.8 68 398.7 68H417.2V57H399.2C389.9 57 396.6 46.7 396.1 38H423.2V27H394.6C385.7 27 376.6 30.4 376.6 47.4V100H388.1Z M425.2 75C425.2 90.5 434.9 100.8 449.9 100.8C464.9 100.8 474.6 90.5 474.6 75C474.6 59.5 464.9 49.2 449.9 49.2C434.9 49.2 425.2 59.5 425.2 75ZM436.4 75C436.4 66 441.4 59.9 449.9 59.9C458.4 59.9 463.4 66 463.4 75C463.4 84 458.4 90.1 449.9 90.1C441.4 90.1 436.4 84 436.4 75Z M517.1 50C503.2 50 500.2 77.6 498.1 77.6C494.7 77.6 501.8 63.7 501.8 56.2C501.8 51.7 499.4 49.2 494.8 49.2C490.4 49.2 484.6 51.6 484.6 62.6V100H495.6V60.4C495.6 54.3 496 51.8 497.8 51.8C499 51.8 500.1 53 500.1 56.2C500.1 64.6 493.2 78.9 497.6 78.9C502.6 78.9 500.9 60.6 513.5 60.6C514.6 60.6 515.8 60.7 517.1 61Z"/>
+                <path d="M527.3 90C530.8 89.8 532.9 92.5 532.7 95.9C532.5 99.1 530 101 526.7 101C523.4 100.9 521.4 98.5 521.6 95.4C521.8 92.4 524 90.2 527.3 90Z" fill="#E04A2F"/>
+              </svg>
+              <svg class="sf-swash" viewBox="0 0 340 14" aria-hidden="true"><path d="M2 9 C 80 3, 200 2, 338 6 C 220 7, 110 9, 2 9 Z" fill="#17223B"/></svg>
+              <p class="sf-hand" style="margin-top:28px">Dear Anna and Tom,<br>here are your three. Yours, Richard</p>
+            </div>
+            <div style="display:flex;gap:24px;align-items:center;justify-content:flex-end;flex-wrap:wrap">
+              <svg class="postmark" viewBox="0 0 120 120" role="img" aria-label="Postmark avatar">
+                <circle cx="60" cy="60" r="56" fill="#F4F3EF"/>
+                <circle cx="60" cy="60" r="50" fill="none" stroke="#E04A2F" stroke-width="3"/>
+                <circle cx="60" cy="60" r="42" fill="none" stroke="#E04A2F" stroke-width="1.5"/>
+                <path d="M60 30 L74 62 L60 90 L46 62 Z" fill="#17223B"/>
+                <circle cx="60" cy="60" r="4" fill="#F4F3EF"/>
+                <path d="M60 64 L60 88" stroke="#F4F3EF" stroke-width="1.5"/>
+              </svg>
+              <div class="stamp">Set by Spoken For<br>No. 0001</div>
+            </div>
+          </div>
+          <div class="swatches">
+            <div class="sw"><i style="background:#F4F3EF"></i><span><b>Bond</b>#F4F3EF</span></div>
+            <div class="sw"><i style="background:#17223B"></i><span><b>Blue-black</b>#17223B</span></div>
+            <div class="sw"><i style="background:#A9BCD0"></i><span><b>Sugar paper</b>#A9BCD0</span></div>
+            <div class="sw"><i style="background:#E04A2F"></i><span><b>Postmark red</b>#E04A2F</span></div>
+            <div class="sw"><i style="background:#0E1526"></i><span><b>Night</b>#0E1526</span></div>
+            <div class="sw"><i style="background:#4A5568"></i><span><b>Muted</b>#4A5568</span></div>
+            <div class="sw"><i style="background:#D5D9DE"></i><span><b>Line</b>#D5D9DE</span></div>
+          </div>
+        </div>
+
+        <div class="lockups">
+          <div class="lockup rev">Spoken For<span class="dot"></span></div>
+          <div class="lockup bond" style="flex-direction:column;line-height:1.05"><span>Spoken<br>For<span class="dot"></span></span></div>
+          <div class="lockup icon">S<span class="dot"></span></div>
+        </div>
+        <p class="small muted" style="margin-top:12px">Reversed lockup, stacked lockup for square spaces, and the app icon. The full stop is a single ink dot in postmark red, very slightly uneven, like a pen pressed once. Red is the only accent.</p>
+
+        <div class="type-spec">
+          <div><small>Display · CS Amora</small><span style="font:400 34px/1.1 var(--sf-display)">One weight, used with care</span></div>
+          <div><small>Text and UI · Albert Sans</small><span style="font:500 20px/1.3 var(--sf-sans)">Everything that has to be read or tapped.</span></div>
+          <div><small>Handwriting · notes from Richard only</small><span style="font:400 24px/1.3 var(--sf-hand)">Yours, Richard</span></div>
+        </div>
+
+        <div style="margin-top:clamp(2rem,4vw,3rem)">
+          <h3>What I said no to</h3>
+          <p class="small muted">Directions and details tried and dropped along the way. Each one read as wedding stationery, a clothing label, or decoration for its own sake.</p>
+          <div class="rejected">
+            <span>Emboss and deboss</span><span>Bouselle as lead face</span><span>The Afters</span><span>Cut to Measure</span><span>Stitch lines</span><span>Ornate corners</span><span>Mismatched quote marks</span>
+          </div>
+          <figure class="fig" data-asset="brand-boards" hidden><!-- img/brand-boards.jpg: Figma brand boards R3b to R6 --></figure>
+        </div>
+      </section>
+
+      <!-- 04 ───────────────────────────────────────────── -->
+      <section class="chapter" id="c4">
+        <div class="chx"><span class="n">04</span><span class="l">The AI chat</span><span class="r"></span></div>
+        <h2>The assistant asks. Richard designs.</h2>
+        <div class="two">
+          <div>
+            <p class="lede">The brief is the most important part of the job, so I built a chat that collects it on a phone in about ten minutes.</p>
+            <div class="prose"><p>It's a guided conversation, not a free-roaming bot. Claude words each question and fills a typed brief schema through tool calls (<code>next_step</code>, <code>save_answer</code>, <code>flag_for_richard</code>). It doesn't choose what to ask next, and it doesn't design anything.</p></div>
+            <h3 style="margin-top:28px">Rules I gave it</h3>
+            <ul class="clean small">
+              <li>Says it's an AI in its first message, and uses my name throughout.</li>
+              <li>One question per message. Every step can be skipped with "Not sure yet".</li>
+              <li>Taps for choices, free text for feelings.</li>
+              <li>Never asks for bank details, guest names or dietary information.</li>
+              <li>Never promises a design outcome, a price or a delivery time it can't keep.</li>
+              <li>Irish spelling, no wedding clichés, never assumes a bride and groom.</li>
+            </ul>
+          </div>
+          <div class="reveal">
+            <div class="phone" role="img" aria-label="Illustration of the Spoken For brief chat on a phone">
+              <div class="phone-head">
+                <svg viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" fill="#F4F3EF"/><circle cx="60" cy="60" r="50" fill="none" stroke="#E04A2F" stroke-width="5"/><circle cx="60" cy="60" r="40" fill="none" stroke="#E04A2F" stroke-width="2.5"/><path d="M60 30 L74 62 L60 90 L46 62 Z" fill="#17223B"/></svg>
+                <div><b>Spoken For</b><small>AI assistant · Your taste</small></div>
+              </div>
+              <div class="progress"><i></i></div>
+              <div class="thread">
+                <div class="msg ai">In your own words, how do you want the day to feel? A few words is plenty.</div>
+                <div class="msg me">Relaxed, like a long lunch with everyone we love.</div>
+                <div class="msg ai">Lovely. Next, some quick pairs. Tap the one you prefer, or "neither". There are no wrong answers.</div>
+                <div class="tiles">
+                  <div class="tile"><div class="a">Anna &amp; Tom</div><small>Classic serif</small></div>
+                  <div class="tile"><div class="b">Anna &amp; Tom</div><small>Modern sans</small></div>
+                </div>
+                <div class="chips"><span class="chip">Neither</span><span class="chip">Not sure</span></div>
+                <div class="msg ai card-ink">You lean classic, light and photo-led, with soft curves. Does that sound like you?</div>
+                <div class="margin-note">I'll take it from here. R.</div>
+              </div>
+            </div>
+            <p class="small muted" style="text-align:center;margin-top:16px">Illustrative couple. Real chat lines from the script.</p>
+          </div>
+        </div>
+
+        <div style="margin-top:clamp(2.5rem,5vw,4rem)">
+          <h3>The 17 steps</h3>
+          <p class="small muted">Grouped under six plain progress labels: About you · The day · Your taste · Photos · Practical · Check.</p>
+          <ol class="steps">
+            <li>Names</li><li>How the names appear</li><li>Email (so progress is saved)</li><li>Date</li><li>Venues</li>
+            <li>Shape of the day and rough times</li><li>Evening-only guests</li><li>How it should feel</li><li>What the artwork shows</li>
+            <li>Colours and dress code</li><li>Six taste pairs, then a playback</li><li>Photos (now or later)</li><li>Inspiration</li>
+            <li>RSVP questions and children</li><li>Gifts</li><li>Travel and stay</li><li>Deadline and password</li>
+          </ol>
+        </div>
+
+        <div style="margin-top:clamp(2.5rem,5vw,3.5rem)">
+          <h3>Design decisions that came from testing</h3>
+          <ul class="clean small">
+            <li><strong>Email second, not last,</strong> so an unfinished brief is still a lead and the other partner can pick it up.</li>
+            <li><strong>Taste tiles show the couple's own names,</strong> so they're judging their site, not a sample.</li>
+            <li><strong>Six pairs, each changing one thing only,</strong> with no timers, so every tap tells me something specific.</li>
+            <li><strong>The artwork question became two.</strong> A Greek harbour across the top reads as a wedding in Greece, even if that's only where they got engaged. So the main picture shows the venue or area, and personal things go into the small details.</li>
+            <li><strong>It ends with "Here's what we heard",</strong> a summary styled as a letter that the couple confirms before I design anything.</li>
+          </ul>
+          <figure class="fig" data-asset="chat-summary" hidden><!-- img/chat-summary.png: "Here's what we heard" summary on mobile --></figure>
+        </div>
+      </section>
+
+      <!-- 05 ───────────────────────────────────────────── -->
+      <section class="chapter" id="c5">
+        <div class="chx"><span class="n">05</span><span class="l">The studio</span><span class="r"></span></div>
+        <h2>From brief to three proofs</h2>
+        <p class="lede">Behind the chat is a workflow where AI produces the raw material and I make the decisions. The target is about two hours of my time per site.</p>
+        <div class="pipe">
+          <div><span class="who ai">AI</span><b>Brief</b>The chat fills a typed brief: names, day, feel, taste, colours, photos.</div>
+          <div><span class="who ai">AI</span><b>Artwork</b>Artwork generated for each concept through Artlist, a different style per direction, drawn from the venue, the area or what matters to them.</div>
+          <div><span class="who both">AI + me</span><b>Layout</b>Pages assembled from a section library, with at least six layouts per section, so no two sites share a shape.</div>
+          <div><span class="who me">Me</span><b>Review</b>I reject anything that looks generic, carry accents from the artwork through the page, and polish.</div>
+          <div><span class="who me">Me</span><b>Send</b>Three proofs go to the couple with a short note from me.</div>
+        </div>
+        <p class="note" style="margin-top:clamp(1.8rem,4vw,2.6rem)">I started by designing proofs in Figma. Editing them in the studio, closer to the real build, turned out to be quicker. So the studio became the main place I work, and Figma is for brand and new patterns.</p>
+        <div class="proofs" hidden>
+          <figure class="fig chosen" data-asset="proof-painted" hidden><!-- img/proof-a.jpg --><figcaption>Andaman Gouache. Chosen, then changed to lead with their photo.</figcaption></figure>
+          <figure class="fig" data-asset="proof-photo" hidden><!-- img/proof-b.jpg --><figcaption>Their photo, big, with the artwork as accents.</figcaption></figure>
+          <figure class="fig" data-asset="proof-type" hidden><!-- img/proof-c.jpg --><figcaption>Type-led, for couples who want no imagery at all.</figcaption></figure>
+        </div>
+        <figure class="fig" data-asset="studio-screen" hidden><!-- img/studio.jpg --><figcaption>Small decorative accents (bullets, dividers) are taken from each design's artwork and carried through the page.</figcaption></figure>
+      </section>
+
+      <!-- 06 ───────────────────────────────────────────── -->
+      <section class="chapter" id="c6">
+        <div class="chx"><span class="n">06</span><span class="l">Client and guest experience</span><span class="r"></span></div>
+        <h2>Clear rules for couples, easy for guests</h2>
+        <h3>The client area <span class="status wait" style="margin-left:8px;vertical-align:middle"><i></i>Designed, not yet built</span></h3>
+        <div class="prose"><p>A proof sheet with guardrails, modelled on the client area I use for branding work. It's designed for mobile and desktop, and I'll build it after the first five sites. Until then, proofs and changes go by email.</p></div>
+        <ul class="clean small">
+          <li><strong>A round is one list from both of you, sent once.</strong> I write back what I'll do before changing anything.</li>
+          <li><strong>Corrections are free and separate.</strong> Names, dates, times and wording never use up a round.</li>
+          <li><strong>The refund stays open until you choose a proof.</strong> If none fits, I offer one fresh design first, and the refund is just as easy to pick.</li>
+        </ul>
+        <figure class="fig" data-asset="client-area" hidden><!-- img/client-area.jpg: client area designs from Figma --></figure>
+        <div class="three" style="margin-top:clamp(2rem,4vw,3rem)">
+          <div class="card"><h3>Claim once, then it's yours</h3><p class="small">Guests enter the password from the invitation and their name. That ties their phone to their household and gives them a personal link they can recover by email.</p></div>
+          <div class="card"><h3>RSVP by household</h3><p class="small">Meal choice and dietary notes per person, exported for the venue. Day and evening guests only see their own details.</p></div>
+          <div class="card"><h3>Gifts without the middleman</h3><p class="small">Guests write a card, then pay the couple directly with the couple's own payment link. No money passes through Spoken For.</p></div>
+        </div>
+        <p class="small muted" style="margin-top:20px;max-width:66ch">I'm open about the trade-off: a shared password is light protection. The personal link and the rule that a reply is locked to that link close most of the gap.</p>
+      </section>
+
+      <!-- 07 ───────────────────────────────────────────── -->
+      <section class="chapter" id="c7">
+        <div class="chx"><span class="n">07</span><span class="l">Where it is now</span><span class="r"></span></div>
+        <h2>Live, early, and unproven</h2>
+        <div class="two">
+          <div>
+            <p class="lede">As of November 2026, Spoken For is live and taking couples by invitation. No couple has paid yet.</p>
+            <div class="prose"><p>The first four couples get their site free in return for honest feedback, a testimonial and permission to show their work. Payment isn't switched on until those are delivered, and I'll judge the idea on the numbers, not on how much I like it.</p></div>
+            <ul class="clean small" style="margin-top:20px">
+              <li><span class="status"><i></i>Live</span>&nbsp; Brand, landing page, AI brief chat</li>
+              <li><span class="status"><i></i>Live</span>&nbsp; First case study site (michaelandsheryl.com)</li>
+              <li><span class="status wait"><i></i>In progress</span>&nbsp; Couple site template, first free couples, partner outreach</li>
+              <li><span class="status no"><i></i>Later</span>&nbsp; Client area build, payments</li>
+            </ul>
+          </div>
+          <div>
+            <h3>How I'll know if it's working</h3>
+            <table>
+              <thead><tr><th>Measure</th><th>Healthy</th><th>Rethink</th></tr></thead>
+              <tbody>
+                <tr><td>Completed briefs that pay</td><td class="ok">3 in 10+</td><td>Under 3 in 10</td></tr>
+                <tr><td>Couples who pick a proof without a redo</td><td class="ok">7 in 10</td><td>Under 4 in 10</td></tr>
+                <tr><td>My hours per site by site 10</td><td class="ok">2 or under</td><td>Over 4</td></tr>
+                <tr><td>Change rounds used</td><td class="ok">2 or fewer</td><td>Regularly over 2</td></tr>
+                <tr><td>Refunds after concepts</td><td class="ok">1 in 10 or fewer</td><td>Over 2 in 10</td></tr>
+              </tbody>
+            </table>
+            <p class="small muted" style="margin-top:12px">I'll update this page with real numbers once the first couples are through.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 08 ───────────────────────────────────────────── -->
+      <section class="chapter" id="c8">
+        <div class="chx"><span class="n">08</span><span class="l">What's next</span><span class="r"></span></div>
+        <h2>Weddings first, small businesses next</h2>
+        <div class="two">
+          <p class="lede">Weddings are the workflow lab. They're a good category to start with: a fixed deadline, clear needs, and couples who care how things look.</p>
+          <div class="prose">
+            <p>Once around ten wedding sites are delivered, the same brief chat gets a new set of questions for small businesses: a sole trader, a clinic, a studio. Same idea, different category. A short conversation, a designer's eye, and a site that feels like it belongs to the person who runs it.</p>
+            <p>The aim isn't to build another drag-and-drop builder. It's to find out how much of a designer's judgement can be kept while AI does the repetitive work, and to keep the result simple, honest and meaningful.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 09 ───────────────────────────────────────────── -->
+      <section class="chapter" id="c9">
+        <div class="chx"><span class="n">09</span><span class="l">What I've learnt so far</span><span class="r"></span></div>
+        <h2>Notes to self</h2>
+        <ul class="clean">
+          <li><strong>Be honest about the AI.</strong> Saying it's an AI and naming the designer made the chat feel more trustworthy, not less.</li>
+          <li><strong>Constrain the model, not the couple.</strong> A fixed question order and a typed schema made the AI predictable. The couple still answers in their own words.</li>
+          <li><strong>Design the rules, not just the screens.</strong> What counts as a round, when a refund closes, and who sees a guest's reply mattered as much as any layout.</li>
+          <li><strong>Work where the work happens.</strong> Moving proofs out of Figma and into the studio saved more time than any prompt did.</li>
+          <li><strong>A family client is a start, not proof.</strong> The real test is strangers who pay.</li>
+        </ul>
+      </section>
+
+      <section class="chapter cta">
+        <h2>See it live</h2>
+        <p class="muted" style="margin:0 auto">The studio and the first case study site.</p>
+        <div class="btns">
+          <a class="btn primary" href="https://spokenfor.wedding">spokenfor.wedding</a>
+          <a class="btn" href="https://michaelandsheryl.com">michaelandsheryl.com</a>
+        </div>
+        <p class="small muted" style="margin:clamp(2rem,4vw,2.5rem) auto 0">Spoken For is a trading name of Treble Games Limited, registered in Ireland.</p>
+      </section>
+
+      <div class="next">
+        <a href="../guided-tracker/index.html">
+          <div><div class="eyebrow">Next project</div><div class="t">Fidelity</div></div>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </main>
+  </div></div>
+
+  <footer id="contact" class="contact">
+    <span class="creg" style="top:18px;left:18px"></span><span class="creg" style="top:18px;right:18px"></span>
+    <div class="wrap contact-in">
+      <div class="top"><span class="cap">// Let's build</span></div>
+      <a href="mailto:hello@roneill.me" class="email">hello@roneill.me</a>
+      <div class="clinks">
+        <a href="https://linkedin.com/in/roneill">LinkedIn →</a>
+        <a href="../../cv.html">Download CV →</a>
+      </div>
+      <div class="crow">
+        <span class="cmark">ron</span>
+        <span>// Dublin // 2026</span>
+        <span>53.3638° N · 6.2631° W</span>
+        <span class="plus">+ + +</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/case.js"></script>
+</body>
+</html>
