@@ -66,6 +66,15 @@
   .fig img{ display:block; width:100%; height:auto; border-radius:var(--radius); border:1px solid var(--border); }
   .fig figcaption{ font-size:var(--fs-caption); color:var(--text-muted); margin-top:0.7em; line-height:1.45; }
   figure[data-asset][hidden]{ display:none; }
+  /* hero: the capture sits on its own bond paper, centred on a full-width panel */
+  .cover-stage{ background:#F4F3EF; border-radius:var(--radius); padding:clamp(1.2rem,4vw,3rem); }
+  .cover-stage img{ border:0; border-radius:0; max-width:620px; margin:0 auto; }
+  .cover-stage + figcaption, .fig.cover figcaption{ margin-top:0.8em; }
+  /* Figma boards and screens keep their own light canvas; phone strips sit straight on the page */
+  .fig.board img{ border:0; }
+  .fig.phones img{ border:0; border-radius:0; max-width:820px; margin:0 auto; }
+  .fig.phone1 img{ border:0; border-radius:0; max-width:300px; margin:0 auto; }
+  .fig.phones figcaption, .fig.phone1 figcaption{ text-align:center; }
 
   /* ---------- Spoken For brand showcase ---------- */
   .sf-board{ background:var(--sf-bond); color:var(--sf-ink); border-radius:16px; padding:clamp(24px,5vw,48px); position:relative; overflow:hidden; margin-top:clamp(1.6rem,3.5vw,2.4rem); }
@@ -185,11 +194,11 @@
       <div><dt>Stack</dt><dd>Next.js, Vercel AI SDK, Claude, Supabase, Artlist</dd></div>
       <div><dt>Status</dt><dd>Live at <a href="https://spokenfor.wedding" style="color:inherit">spokenfor.wedding</a>, by invitation</dd></div>
     </dl>
-    <figure class="fig" data-asset="hero-three-directions" style="max-width:760px">
-      <picture>
+    <figure class="fig cover" data-asset="hero-three-directions">
+      <div class="cover-stage"><picture>
         <source srcset="img/hero-three-directions.webp" type="image/webp">
         <img src="img/hero-three-directions.jpg" width="1400" height="1394" alt="Three proof directions for Michael and Sheryl's wedding site: a painted bay with the couple, a photo-first version in a forest, and a type-only version with a floral strip.">
-      </picture>
+      </picture></div>
       <figcaption>Three directions for Michael and Sheryl's wedding. The painted one is live.</figcaption>
     </figure>
   </div></header>
@@ -313,7 +322,10 @@
           <div class="rejected">
             <span>Emboss and deboss</span><span>Bouselle as lead face</span><span>The Afters</span><span>Cut to Measure</span><span>Stitch lines</span><span>Ornate corners</span><span>Mismatched quote marks</span>
           </div>
-          <figure class="fig" data-asset="brand-boards" hidden><!-- img/brand-boards.jpg: Figma brand boards R3b to R6 --></figure>
+          <figure class="fig board" data-asset="brand-boards">
+            <img src="img/brand-boards.webp" width="1648" height="1580" loading="lazy" decoding="async" alt="Figma brand board, round 3b: the Spoken For letterhead in Bouselle and CS Amora, emboss and deboss tests, and the pen-and-ink marks: swash, double rule, postmark, nib and handwriting.">
+            <figcaption>Round 3b in Figma: the letterhead in two faces, the emboss and deboss tests that were dropped, and the pen-and-ink marks that stayed.</figcaption>
+          </figure>
         </div>
       </section>
 
@@ -368,9 +380,14 @@
             <li>Colours and dress code</li><li>Six taste pairs, then a playback</li><li>Photos (now or later)</li><li>Inspiration</li>
             <li>RSVP questions and children</li><li>Gifts</li><li>Travel and stay</li><li>Deadline and password</li>
           </ol>
+          <figure class="fig phones">
+            <img src="img/chat-steps.webp" width="1226" height="844" loading="lazy" decoding="async" alt="Three phone screens from the brief chat: the opening message that says it is an AI and Richard reads every answer, a type taste pair with the couple's names, and the question about anything they'd hate to see.">
+            <figcaption>Step 1, a taste pair and the playback, from the Figma flow.</figcaption>
+          </figure>
         </div>
 
-        <div style="margin-top:clamp(2.5rem,5vw,3.5rem)">
+        <div class="two" style="margin-top:clamp(2.5rem,5vw,3.5rem)">
+          <div>
           <h3>Design decisions that came from testing</h3>
           <ul class="clean small">
             <li><strong>Email second, not last,</strong> so an unfinished brief is still a lead and the other partner can pick it up.</li>
@@ -379,8 +396,15 @@
             <li><strong>The artwork question became two.</strong> A Greek harbour across the top reads as a wedding in Greece, even if that's only where they got engaged. So the main picture shows the venue or area, and personal things go into the small details.</li>
             <li><strong>It ends with "Here's what we heard",</strong> a summary styled as a letter that the couple confirms before I design anything.</li>
           </ul>
-          <figure class="fig" data-asset="chat-summary" hidden><!-- img/chat-summary.png: "Here's what we heard" summary on mobile --></figure>
+          </div>
+          <figure class="fig phone1" data-asset="chat-summary" style="margin:0">
+            <img src="img/chat-summary.webp" width="390" height="844" loading="lazy" decoding="async" alt="The Here's what we heard summary on a phone: date, venue, the day, guests, feel, colours, taste and photos, each with an Edit link, then That's us and Change something.">
+          </figure>
         </div>
+        <figure class="fig board">
+          <img src="img/taste-pairs.webp" width="1257" height="728" loading="lazy" decoding="async" alt="All six taste pairs from the Figma file: type, light or dark, imagery, density, personality and shape, each tile using the couple's names.">
+          <figcaption>The six taste pairs. Each one changes a single thing, so a tap means one thing.</figcaption>
+        </figure>
       </section>
 
       <!-- 05 ───────────────────────────────────────────── -->
@@ -395,13 +419,19 @@
           <div><span class="who me">Me</span><b>Review</b>I reject anything that looks generic, carry accents from the artwork through the page, and polish.</div>
           <div><span class="who me">Me</span><b>Send</b>Three proofs go to the couple with a short note from me.</div>
         </div>
+        <figure class="fig board">
+          <img src="img/studio-proofs.webp" width="1440" height="1039" loading="lazy" decoding="async" alt="The studio's review step for Michael and Sheryl: the brief on the left, then three proof cards (Andaman Gouache, Jungle Gate and Lantern Night) with checks for layout limits, button contrast and a voice note.">
+          <figcaption>"Open each one at both sizes. Nothing reaches them until you send." The studio's review step, designed in Figma.</figcaption>
+        </figure>
         <p class="note" style="margin-top:clamp(1.8rem,4vw,2.6rem)">I started by designing proofs in Figma. Editing them in the studio, closer to the real build, turned out to be quicker. So the studio became the main place I work, and Figma is for brand and new patterns.</p>
         <div class="proofs" hidden>
           <figure class="fig chosen" data-asset="proof-painted" hidden><!-- img/proof-a.jpg --><figcaption>Andaman Gouache. Chosen, then changed to lead with their photo.</figcaption></figure>
           <figure class="fig" data-asset="proof-photo" hidden><!-- img/proof-b.jpg --><figcaption>Their photo, big, with the artwork as accents.</figcaption></figure>
           <figure class="fig" data-asset="proof-type" hidden><!-- img/proof-c.jpg --><figcaption>Type-led, for couples who want no imagery at all.</figcaption></figure>
         </div>
-        <figure class="fig" data-asset="studio-screen" hidden><!-- img/studio.jpg --><figcaption>Small decorative accents (bullets, dividers) are taken from each design's artwork and carried through the page.</figcaption></figure>
+        <figure class="fig board" data-asset="studio-screen">
+          <img src="img/studio.webp" width="1440" height="1000" loading="lazy" decoding="async" alt="Editing one proof in the studio: the hero, phone hero and accent sheet of lanterns and flowers, a redo note, and the section list with swaps for each section.">
+          <figcaption>Small decorative accents (bullets, dividers) are taken from each design's artwork and carried through the page.</figcaption></figure>
       </section>
 
       <!-- 06 ───────────────────────────────────────────── -->
@@ -415,7 +445,10 @@
           <li><strong>Corrections are free and separate.</strong> Names, dates, times and wording never use up a round.</li>
           <li><strong>The refund stays open until you choose a proof.</strong> If none fits, I offer one fresh design first, and the refund is just as easy to pick.</li>
         </ul>
-        <figure class="fig" data-asset="client-area" hidden><!-- img/client-area.jpg: client area designs from Figma --></figure>
+        <figure class="fig phones" data-asset="client-area">
+          <img src="img/client-area.webp" width="1226" height="826" loading="lazy" decoding="async" alt="Three client area screens on a phone: choosing one of three designs, tapping a section to add a note in Round 1, and Richard's reply listing what he'll change.">
+          <figcaption>Choose a design, mark up Round 1 by section, then Richard's reply before anything changes.</figcaption>
+        </figure>
         <div class="three" style="margin-top:clamp(2rem,4vw,3rem)">
           <div class="card"><h3>Claim once, then it's yours</h3><p class="small">Guests enter the password from the invitation and their name. That ties their phone to their household and gives them a personal link they can recover by email.</p></div>
           <div class="card"><h3>RSVP by household</h3><p class="small">Meal choice and dietary notes per person, exported for the venue. Day and evening guests only see their own details.</p></div>
