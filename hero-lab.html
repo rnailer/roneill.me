@@ -183,7 +183,7 @@ function Hero({ v, shapes }){
 
 /* ── Shape library: click to choose which shapes the Draft hero cycles ── */
 const LIBRARY = [
-  { group:'site motifs', items:['orbit','starburst','sphere','compass'] },
+  { group:'site motifs', items:['orbit','starburst','sphere','compass','cube','network','spiral','poly'] },
   { group:'ui controls (moving parts)', items:['toggle','slider','checkbox','radio','button','dial','segments'] },
   { group:'ux / design', items:['cursor','pen','layers','component','device'] },
 ];
@@ -214,7 +214,7 @@ function ShapeLibrary({ shapes, setShapes }){
       {LIBRARY.map(g=>(
         <div key={g.group} style={{ marginBottom:'1.5rem' }}>
           <div className="cap" style={{ fontSize:11, color:'var(--text-faint)', margin:'0 0 0.6rem' }}>{g.group}</div>
-          <div className="shape-grid" style={{ display:'grid', gridTemplateColumns:'repeat(7, minmax(0,1fr))', gap:10 }}>
+          <div className="shape-grid" style={{ display:'grid', gridTemplateColumns:'repeat(8, minmax(0,1fr))', gap:10 }}>
             {g.items.map(n=> <ShapeTile key={n} name={n} on={shapes.includes(n)} onToggle={()=>toggle(n)} />)}
           </div>
         </div>

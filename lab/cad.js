@@ -10,6 +10,7 @@ export const SHAPES = {
   rings: 6, bars: 7, stairs: 8, target: 9, door: 10, stack: 11,
   cursor: 12, pen: 13, layers: 14, component: 15, toggle: 16, device: 17,
   slider: 18, checkbox: 19, radio: 20, button: 21, dial: 22, segments: 23,
+  cube: 24, network: 25, spiral: 26, poly: 27,
 };
 
 const VS = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }`;
@@ -174,7 +175,45 @@ float shapeUI(vec3 p, float i){
   return min(d, extrude(pill2(l, 0.09, 0.025), p.z - 0.06, 0.03));
 }
 
+float sdCap3(vec3 p, vec3 a, vec3 b, float r){ vec3 pa = p - a, ba = b - a; float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0); return length(pa - ba * h) - r; }
+
+// More site motifs, from assets/motifs: open cube, network, spiral, mesh-poly.
+float shapeMotif(vec3 p, float i){
+  if (i < 24.5) {                                  // open cube frame around a turned cube
+    float d = sdFrame(p, vec3(0.6), 0.03);
+    vec3 q = p; q.xz *= rot(0.785398); q.xy *= rot(0.615);
+    return min(d, sdBox(q, vec3(0.24)) - 0.01);
+  }
+  if (i < 25.5) {                                  // network: nodes and edges
+    vec3 A = vec3(0.0, 0.62, 0.1), B = vec3(-0.6, 0.12, 0.3), C = vec3(0.55, 0.22, -0.25);
+    vec3 D = vec3(-0.3, -0.5, -0.3), E = vec3(0.4, -0.45, 0.35), F = vec3(0.0, 0.0, 0.0);
+    float d = min(min(sdSphere(p - A, 0.09), sdSphere(p - B, 0.09)), min(sdSphere(p - C, 0.09), sdSphere(p - D, 0.09)));
+    d = min(d, min(sdSphere(p - E, 0.09), sdSphere(p - F, 0.14)));
+    float r = 0.018;
+    d = min(d, min(sdCap3(p, F, A, r), sdCap3(p, F, B, r))); d = min(d, min(sdCap3(p, F, C, r), sdCap3(p, F, D, r)));
+    d = min(d, min(sdCap3(p, F, E, r), sdCap3(p, A, C, r))); d = min(d, min(sdCap3(p, B, D, r), sdCap3(p, D, E, r)));
+    return min(d, sdCap3(p, A, B, r));
+  }
+  if (i < 26.5) {                                  // spiral: a coiled tube
+    float pitch = 0.3, a = atan(p.z, p.x);
+    float y = p.y - a / 6.2831853 * pitch;
+    y = mod(y + pitch * 0.5, pitch) - pitch * 0.5;
+    float R = 0.55 - p.y * 0.18;                   // tapers like the motif
+    float d = length(vec2(length(p.xz) - R, y)) - 0.045;
+    return max(d * 0.7, abs(p.y) - 0.7);
+  }
+  // mesh-poly: faceted icosahedron
+  vec3 q = abs(p);
+  const float G = 1.618034;
+  float d = dot(q, normalize(vec3(1.0)));
+  d = max(d, dot(q, normalize(vec3(0.0, 1.0 / G, G))));
+  d = max(d, dot(q, normalize(vec3(1.0 / G, G, 0.0))));
+  d = max(d, dot(q, normalize(vec3(G, 0.0, 1.0 / G))));
+  return d - 0.62;
+}
+
 float shape(vec3 p, float i){
+  if (i > 23.5) return shapeMotif(p, i);
   if (i > 17.5) return shapeUI(p, i);
   if (i > 11.5) return shapeUX(p, i);
   if (i < 0.5) return sdSphere(p, 0.78);
@@ -244,10 +283,10 @@ float shape(vec3 p, float i){
 
 float roundness(float i){
   // sphere, orbit, starburst, compass, rings, target, stack, toggle
-  if (i < 3.5 || abs(i - 6.0) < 0.5 || abs(i - 9.0) < 0.5 || abs(i - 11.0) < 0.5 || abs(i - 16.0) < 0.5) return 1.0;
+  if (i < 3.5 || abs(i - 6.0) < 0.5 || abs(i - 9.0) < 0.5 || abs(i - 11.0) < 0.5 || abs(i - 16.0) < 0.5 || abs(i - 26.0) < 0.5) return 1.0;
   return 0.0;
 }
-float sway(float i){ return step(11.5, i); }   // flat UI-ish shapes face the viewer
+float sway(float i){ return step(11.5, i) * step(i, 23.5); }   // flat UI-ish shapes face the viewer
 vec3 obj(vec3 p){
   float sw = mix(sway(uFrom), sway(uTo), uMix);
   p.xz *= rot(mix(uTime * uSpin, sin(uTime * 0.6) * 0.5, sw) + uMouse.x * 0.9);

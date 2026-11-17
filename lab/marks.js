@@ -56,7 +56,7 @@ function trace(L, text, maxLayers) {
   // Compress depths to consecutive layers, capped.
   const levels = [...new Set(paths.map(p => p.depth))].sort((a, b) => a - b);
   const n = Math.min(maxLayers, levels.length);
-  const layerOf = d => Math.min(n - 1, levels.indexOf(d));
+  const layerOf = d => Math.min(n - 1, levels.indexOf(d));      // with 2 layers: outer shapes back, all detail front
   const cx = (minX + maxX) / 2, cy = (minY + maxY) / 2, k = 2 / span;
   const layers = Array.from({ length: n }, () => []);
   for (const p of paths) { const out = layers[layerOf(p.depth)];
@@ -64,7 +64,7 @@ function trace(L, text, maxLayers) {
   return { layers, half: [(maxX - minX) * k / 2, (maxY - minY) * k / 2] };
 }
 
-export async function mount(canvas, { src, color = '--paper', layers = 4, spread = 0.32, onReady } = {}) {
+export async function mount(canvas, { src, color = '--paper', layers = 2, spread = 0.22, onReady } = {}) {
   if (!document.createElement('canvas').getContext('webgl2')) return null;
   const L = await load();
   const { THREE } = L;
