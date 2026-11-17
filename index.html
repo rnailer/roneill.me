@@ -24,6 +24,16 @@
     .work-item-preview{ display:block; margin-top:1.25rem }
     .work-cs{ display:none }
   }
+
+  /* fx: hero CAD mark + 3D work preview (fx/cad.js, fx/marks.js) */
+  .fx-mark canvas{ position:absolute; inset:9%; width:82%; height:82%; opacity:0; transition:opacity 700ms var(--ease-out) }
+  .fx-mark.is-live canvas{ opacity:1 }
+  .fx-mark .fx-fallback{ opacity:0.95; transition:opacity 500ms var(--ease-out) }
+  .fx-mark.is-live .fx-fallback{ opacity:0 }
+  .fx-card canvas{ position:absolute; inset:10% 4% 12%; width:92%; height:78%; z-index:2; opacity:0; transition:opacity 600ms var(--ease-out) }
+  .fx-card.is-live canvas{ opacity:1 }
+  .fx-card.is-live .fx-static{ opacity:0 }
+  .fx-card .fx-static{ transition:opacity 400ms var(--ease-out) }
 </style>
 
   <!-- ── Favicons + manifest (roneill.me) ─────────────────────── -->
@@ -68,23 +78,34 @@ const { Decode } = window.RonMotion;
 const RC = window.RON_CONTENT;
 const { useState } = React;
 
+/* Waits for an fx module (loaded as a plain ES module below) to announce itself. */
+function whenFx(name, fn){ if (window[name]) fn(window[name]); else addEventListener(name+':ready', ()=>fn(window[name]), { once:true }); }
+
+/* Hero mark: CAD line drawing that alternates site motifs and UI controls.
+   The rotating text ring stays; the orbit SVG shows until WebGL is up, and
+   stays if WebGL is missing or the context is lost. */
+const HERO_SHAPES = ['orbit','toggle','starburst','slider','spiral','radio','network','segments'];
 function OrbitMark(){
-  const symbols = ['orbit','sphere','starburst','compass'];
-  const [idx,setIdx] = useState(0);
-  React.useEffect(()=>{ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; const t=setInterval(()=>setIdx(v=>(v+1)%symbols.length), 4200); return ()=>clearInterval(t); }, []);
+  const ref = React.useRef(null);
+  const [live,setLive] = useState(false);
+  React.useEffect(()=>{
+    const canvas = ref.current; let api = null, dead = false;
+    const off = ()=>setLive(false);
+    canvas.addEventListener('herofallback', off);
+    whenFx('HeroCad', fx=>{ if (dead) return; try { api = fx.mount(canvas, { shapes:HERO_SHAPES, period:4.2, guides:true, onReady:()=>!dead && setLive(true) }); } catch(e){ console.warn('[hero]', e); } });
+    return ()=>{ dead = true; api && api.destroy(); canvas.removeEventListener('herofallback', off); };
+  }, []);
   const ring = "PRODUCT DESIGN · BUILDING WITH AI · DATA VISUALISATION · DESIGN SYSTEMS · RAPID PROTOTYPING · ";
   return (
-    <div className="ron-mark" style={{ position:'absolute', right:'3%', top:'40%', transform:'translateY(-50%)', width:'min(58vh,560px)', maxWidth:'46vw', aspectRatio:'1', zIndex:1 }}>
+    <div className={'ron-mark fx-mark' + (live ? ' is-live' : '')} aria-hidden="true" style={{ position:'absolute', right:'3%', top:'40%', transform:'translateY(-50%)', width:'min(58vh,560px)', maxWidth:'46vw', aspectRatio:'1', zIndex:1 }}>
       <svg viewBox="0 0 400 400" className="ron-spin" style={{ position:'absolute', inset:0, width:'100%', height:'100%' }}>
         <defs><path id="ringT" d="M44,200 a156,156 0 1,1 312,0 a156,156 0 1,1 -312,0" fill="none"/></defs>
         <text fontFamily="var(--font-display)" fontSize="12.5" fontWeight="700" fill="rgba(255,255,255,0.92)">
           <textPath href="#ringT" startOffset="0" textLength="968" lengthAdjust="spacing">{ring}</textPath>
         </text>
       </svg>
-      {symbols.map((s,i)=>(
-        <img key={s} src={`../../assets/motifs/${s}.svg`} alt="" aria-hidden="true" className="ron-cen"
-          style={{ width:'92%', height:'92%', filter:'invert(1)', opacity: i===idx?0.95:0, transition:'opacity 1300ms ease' }}/>
-      ))}
+      <img src="../../assets/motifs/orbit.svg" alt="" className="ron-cen fx-fallback" style={{ width:'92%', height:'92%', filter:'invert(1)' }}/>
+      <canvas ref={ref} role="presentation"/>
     </div>
   );
 }
@@ -147,11 +168,12 @@ function DeviceFrame({ shot }){
   );
 }
 
-function PreviewCard({ e }){
+function PreviewCard({ e, live3d, live }){
   return (
-    <div className="checker halftone" style={{ position:'relative', overflow:'hidden', aspectRatio:'4/5', border:`1px solid ${FR}`, display:'grid', placeItems:'center' }}>
+    <div className={'checker halftone' + (live3d ? ' fx-card' : '') + (live ? ' is-live' : '')} style={{ position:'relative', overflow:'hidden', aspectRatio:'4/5', border:`1px solid ${FR}`, display:'grid', placeItems:'center' }}>
       <span className="disp" style={{ position:'absolute', left:18, top:14, fontWeight:800, fontSize:'clamp(2.5rem,5vw,4rem)', lineHeight:0.8, letterSpacing:'-0.04em', color:'var(--orange)', zIndex:3 }}>{e.index}</span>
-      {e.shot ? <DeviceFrame shot={e.shot} /> : <img src={'/assets/motifs/'+(e.motif||'orbit')+'.svg'} alt="" style={{ width:'46%', filter:'invert(1)', opacity:0.85, position:'relative', zIndex:2 }} />}
+      <div className="fx-static" style={{ position:'absolute', inset:0, display:'grid', placeItems:'center' }}>{e.shot ? <DeviceFrame shot={e.shot} /> : <img src={'/assets/motifs/'+(e.motif||'orbit')+'.svg'} alt="" style={{ width:'46%', filter:'invert(1)', opacity:0.85, position:'relative', zIndex:2 }} />}</div>
+      {live3d}
       <Handles />
       <Corners c={FR2} inset={9} />
       <span className="cap" style={{ position:'absolute', left:18, bottom:16, fontSize:11, color:'var(--grey-400)', letterSpacing:'0.06em', zIndex:3 }}>{e.cover} // {e.href ? 'view case study →' : 'gated PDF'}</span>
@@ -159,10 +181,30 @@ function PreviewCard({ e }){
   );
 }
 
+/* Desktop rail: the project's own mark drawn as a 3D line render (fx/marks.js).
+   Three.js loads only once the rail is near the viewport. The static frame
+   stays underneath until the first render, and for any failure. */
 function ProjectPreview({ e }){
+  const ref = React.useRef(null), api = React.useRef(null), want = React.useRef(e.mark3d);
+  const [live,setLive] = useState(false);
+  want.current = e.mark3d;
+  React.useEffect(()=>{
+    const canvas = ref.current; let dead = false;
+    if (!canvas || matchMedia('(max-width: 512px)').matches) return;
+    const io = new IntersectionObserver(([en])=>{
+      if (!en.isIntersecting) return; io.disconnect();
+      whenFx('HeroMarks', fx=>{ if (dead || !want.current) return;
+        Promise.resolve(fx.mount(canvas, { src:want.current, onReady:()=>!dead && setLive(true) }))
+          .then(a=>{ api.current = a; if (dead) a && a.destroy(); }).catch(err=>{ console.warn('[preview]', err); setLive(false); });
+      });
+    }, { rootMargin:'200px' });
+    io.observe(canvas);
+    return ()=>{ dead = true; io.disconnect(); api.current && api.current.destroy(); };
+  }, []);
+  React.useEffect(()=>{ if (api.current && e.mark3d) api.current.show(e.mark3d); setLive(l => l && !!e.mark3d); }, [e.mark3d]);
   return (
     <a href={e.href || undefined} style={{ display:'block', textDecoration:'none' }}>
-      <PreviewCard e={e} />
+      <PreviewCard e={e} live={live} live3d={<canvas ref={ref} aria-hidden="true" />} />
     </a>
   );
 }
@@ -223,6 +265,11 @@ function App(){
   );
 }
 ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+<script type="module">
+  // Effects load as plain modules (not through Babel) and announce themselves.
+  import('./fx/cad.js').then(()=>dispatchEvent(new Event('HeroCad:ready')));
+  import('./fx/marks.js').then(()=>dispatchEvent(new Event('HeroMarks:ready')));
 </script>
 </body>
 </html>

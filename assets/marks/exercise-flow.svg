@@ -1,0 +1,43 @@
+<svg width="760" height="560" viewBox="0 0 760 560" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- Line-art mark of the Fidelity stock-option exercise flow ("cash or shares"),
+     for the 3D preview card. Copy is abstracted to bars so it traces cleanly. -->
+<g stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="16" y="14" width="728" height="532" rx="20"/>
+  <!-- header: checkbox + title, ticker pill -->
+  <rect x="49" y="44" width="13" height="13" rx="2"/>
+  <path d="M74 50.5H166"/>
+  <rect x="509" y="40" width="203" height="33" rx="16.5"/>
+  <path d="M533 56.5H624"/>
+  <path d="M647 62L655 50L663 62Z"/>
+  <path d="M670 56.5H690"/>
+  <!-- stepper -->
+  <path d="M162 112H366M393 112H596"/>
+  <circle cx="149" cy="112" r="12"/>
+  <circle cx="380" cy="112" r="12"/>
+  <circle cx="610" cy="112" r="12"/>
+  <path d="M114 138H186M345 138H414M590 138H630"/>
+  <path d="M48 167H712"/>
+  <!-- question -->
+  <path d="M48 204H276"/>
+  <path d="M48 232H448"/>
+  <path d="M48 265H434"/>
+  <!-- option: cash -->
+  <rect x="48" y="296" width="320" height="175" rx="14"/>
+  <rect x="76" y="324" width="44" height="30" rx="5"/>
+  <circle cx="98" cy="339" r="6.5"/>
+  <rect x="233" y="320" width="107" height="24" rx="12"/>
+  <path d="M248 332H325"/>
+  <path d="M76 384H124"/>
+  <path d="M76 414H272M76 436H288"/>
+  <!-- option: shares -->
+  <rect x="392" y="296" width="320" height="175" rx="14"/>
+  <rect x="420" y="326" width="26" height="26" rx="4"/>
+  <rect x="431" y="335" width="26" height="26" rx="4"/>
+  <path d="M420 384H484"/>
+  <path d="M420 414H634M420 436H612"/>
+  <!-- footer -->
+  <path d="M48 482H712"/>
+  <rect x="593" y="493" width="119" height="40" rx="20"/>
+  <path d="M621 513H684"/>
+</g>
+</svg>

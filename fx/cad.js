@@ -1,9 +1,9 @@
-// "Draft": raymarched SDF shapes drawn as CAD line work, no dependencies.
+// Hero mark: raymarched SDF shapes drawn as CAD line work, no dependencies.
 // One fullscreen triangle per canvas. Draws silhouette, crease and depth
 // edges solid, surface contour lines lighter, plus faint construction axes.
 // Reused for the hero (cycles the four site motifs) and for project preview
 // cards (call show(i) on hover).
-import { cssColor, reducedMotion, gatedLoop, easedPointer } from './dither-core.js';
+import { cssColor, reducedMotion, gatedLoop, easedPointer } from './core.js';
 
 export const SHAPES = {
   sphere: 0, orbit: 1, starburst: 2, compass: 3, tiles: 4, cassette: 5,

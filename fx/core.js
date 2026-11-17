@@ -1,20 +1,6 @@
-// Shared plumbing for the hero lab variants. Plain ES module, no Babel.
-// Handles: palette from CSS vars, low-res sizing, in-view + tab-visibility
-// gating, reduced motion, eased pointer.
-
-export const BAYER_GLSL = `
-float bayer2(vec2 a){ a = floor(a); return fract(dot(a, vec2(0.5, a.y * 0.75))); }
-float bayer4(vec2 a){ return bayer2(0.5 * a) * 0.25 + bayer2(a); }
-float bayer8(vec2 a){ return bayer4(0.5 * a) * 0.25 + bayer2(a); }
-// Three-tone riso print: espresso shadow dots, paper highlight dots,
-// everything in between left transparent so the orange field shows through.
-vec4 riso(float lum, vec2 fc, vec3 ink, vec3 hi){
-  float b = bayer4(fc);
-  if (lum > 0.58 + b * 0.38) return vec4(hi, 1.0);
-  if (lum < 0.08 + b * 0.42) return vec4(ink, 1.0);
-  return vec4(0.0);
-}
-`;
+// Shared plumbing for the fx/ effects. Plain ES modules, loaded outside Babel.
+// Palette from CSS vars, in-view + tab-visibility gating, reduced motion,
+// eased pointer.
 
 export function cssColor(name, fallback) {
   const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
@@ -59,13 +45,4 @@ export function easedPointer() {
     step(dt) { const k = 1 - Math.exp(-dt * 4); cur[0] += (target[0] - cur[0]) * k; cur[1] += (target[1] - cur[1]) * k; return cur; },
     destroy() { removeEventListener('pointermove', onMove); }
   };
-}
-
-// Internal resolution: one canvas pixel per dither cell. CSS upscales with
-// image-rendering: pixelated, so the dots stay crisp and fragment cost stays tiny.
-export function fitCanvas(canvas, cell) {
-  const w = Math.max(32, Math.round(canvas.clientWidth / cell));
-  const h = Math.max(32, Math.round(canvas.clientHeight / cell));
-  if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; return true; }
-  return false;
 }

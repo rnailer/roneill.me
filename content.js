@@ -22,7 +22,7 @@ window.RON_CONTENT = {
 
   work: [
     {
-      index: "01",
+      index: "01", mark3d: "assets/marks/guided-tracker.svg",
       client: "Fidelity",
       year: "2023",
       lead: true,
@@ -40,7 +40,7 @@ window.RON_CONTENT = {
       link: { label: "View case study", kind: "case", gated: false },
     },
     {
-      index: "02",
+      index: "02", mark3d: "assets/shots/vm-dashboard.svg",
       client: "Fidelity",
       year: "2026",
       lead: false,
@@ -58,7 +58,7 @@ window.RON_CONTENT = {
       link: { label: "View case study", kind: "case", gated: false },
     },
     {
-      index: "03",
+      index: "03", mark3d: "assets/marks/exercise-flow.svg",
       client: "Fidelity",
       year: "2025",
       lead: false,
@@ -76,7 +76,7 @@ window.RON_CONTENT = {
       link: { label: "View case study", kind: "case", gated: false },
     },
     {
-      index: "04",
+      index: "04", mark3d: "assets/marks/treble-games.svg",
       client: "Treble Games",
       year: "2026 to now",
       lead: false,
@@ -94,7 +94,7 @@ window.RON_CONTENT = {
       link: { label: "View case study", kind: "case", gated: false },
     },
     {
-      index: "04.1",
+      index: "04.1", mark3d: "assets/marks/sonarchy.svg",
       parent: "04",
       client: "Sonarchy",
       year: "2026 to now",
@@ -113,7 +113,7 @@ window.RON_CONTENT = {
       link: { label: "View case study", kind: "case", gated: false },
     },
     {
-      index: "04.2",
+      index: "04.2", mark3d: "assets/marks/three-letter-daily.svg",
       parent: "04",
       client: "3 Letter Daily",
       year: "2026",
@@ -132,7 +132,7 @@ window.RON_CONTENT = {
       link: { label: "View case study", kind: "case", gated: false },
     },
     {
-      index: "04.3",
+      index: "04.3", mark3d: "assets/marks/lonan.svg",
       parent: "04",
       client: "Lonán",
       year: "2026",
@@ -151,7 +151,7 @@ window.RON_CONTENT = {
       link: { label: "View case study", kind: "case", gated: false },
     },
     {
-      index: "04.4",
+      index: "04.4", mark3d: "assets/marks/exit0.svg",
       parent: "04",
       client: "Exit·0",
       year: "2026 to now",
@@ -170,7 +170,7 @@ window.RON_CONTENT = {
       link: { label: "View case study", kind: "case", gated: false },
     },
     {
-      index: "05",
+      index: "05", mark3d: "assets/marks/spoken-for.svg",
       client: "Spoken For",
       year: "2026 to now",
       lead: false,

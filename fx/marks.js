@@ -1,8 +1,8 @@
-// "Exploded mark": draws a project's own mark SVG as a 3D CAD drawing.
+// Work preview: draws a project's own mark SVG as a 3D CAD drawing.
 // Every path is traced as a line; paths are split into layers (document
 // order) that pull apart along Z like an exploded assembly, with dashed
 // leader lines at the corners. Three.js loads only when this mounts.
-import { cssColor, reducedMotion, gatedLoop, easedPointer } from './dither-core.js';
+import { cssColor, reducedMotion, gatedLoop, easedPointer } from './core.js';
 
 const V = '0.187.0';
 const CDN = `https://cdn.jsdelivr.net/npm/three@${V}`;
