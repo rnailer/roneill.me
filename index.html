@@ -181,32 +181,47 @@ function PreviewCard({ e, live3d, live }){
   );
 }
 
-/* Desktop rail: the project's own mark drawn as a 3D line render (fx/marks.js).
-   Three.js loads only once the rail is near the viewport. The static frame
-   stays underneath until the first render, and for any failure. */
-function ProjectPreview({ e }){
-  const ref = React.useRef(null), api = React.useRef(null), want = React.useRef(e.mark3d);
+/* Mounts the project's mark as a 3D line render (fx/marks.js) on `ref`'s
+   canvas once it is near the viewport. Three.js loads on first use. The
+   static frame stays underneath until the first render, and for any failure.
+   `mobile`: true mounts only on phones (shared renderer), false only above. */
+function useMark3d(ref, src, mobile){
+  const api = React.useRef(null), want = React.useRef(src);
   const [live,setLive] = useState(false);
-  want.current = e.mark3d;
+  want.current = src;
   React.useEffect(()=>{
     const canvas = ref.current; let dead = false;
-    if (!canvas || matchMedia('(max-width: 512px)').matches) return;
+    if (!canvas || !src || matchMedia('(max-width: 512px)').matches !== mobile) return;
     const io = new IntersectionObserver(([en])=>{
       if (!en.isIntersecting) return; io.disconnect();
       whenFx('HeroMarks', fx=>{ if (dead || !want.current) return;
-        Promise.resolve(fx.mount(canvas, { src:want.current, onReady:()=>!dead && setLive(true) }))
+        Promise.resolve(fx.mount(canvas, { src:want.current, share:mobile, onReady:()=>!dead && setLive(true) }))
           .then(a=>{ api.current = a; if (dead) a && a.destroy(); }).catch(err=>{ console.warn('[preview]', err); setLive(false); });
       });
     }, { rootMargin:'200px' });
     io.observe(canvas);
     return ()=>{ dead = true; io.disconnect(); api.current && api.current.destroy(); };
   }, []);
-  React.useEffect(()=>{ if (api.current && e.mark3d) api.current.show(e.mark3d); setLive(l => l && !!e.mark3d); }, [e.mark3d]);
+  React.useEffect(()=>{ if (api.current && src) api.current.show(src); }, [src]);
+  return live;
+}
+
+/* Desktop rail: one card that swaps mark as you hover the list. */
+function ProjectPreview({ e }){
+  const ref = React.useRef(null);
+  const live = useMark3d(ref, e.mark3d, false);
   return (
     <a href={e.href || undefined} style={{ display:'block', textDecoration:'none' }}>
       <PreviewCard e={e} live={live} live3d={<canvas ref={ref} aria-hidden="true" />} />
     </a>
   );
+}
+
+/* Phones: every project shows its own card under the description. */
+function MobilePreview({ e }){
+  const ref = React.useRef(null);
+  const live = useMark3d(ref, e.mark3d, true);
+  return <PreviewCard e={e} live={live} live3d={<canvas ref={ref} aria-hidden="true" />} />;
 }
 
 function Work(){
@@ -239,7 +254,7 @@ function Work(){
                 </div>
                 <h2 className="disp" style={{ fontWeight:700, fontSize: child ? 'clamp(1.3rem,2.9vw,2.4rem)' : 'clamp(1.6rem,3.6vw,3rem)', lineHeight:0.98, letterSpacing:'-0.035em', color:'var(--paper)', margin:0, textTransform:'lowercase', maxWidth:'18ch' }}>{accentLast(w.headline)}</h2>
                 <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginTop:16 }}>{w.tags.map(t=> <Tag key={t}>{t}</Tag>)}</div>
-                <div className="work-item-preview"><PreviewCard e={w} /></div>
+                <div className="work-item-preview"><MobilePreview e={w} /></div>
               </a>
             );
           })}

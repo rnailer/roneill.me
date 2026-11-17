@@ -64,13 +64,26 @@ function trace(L, text, maxLayers) {
   return { layers, half: [(maxX - minX) * k / 2, (maxY - minY) * k / 2] };
 }
 
-export async function mount(canvas, { src, color = '--paper', layers = 2, spread = 0.22, onReady } = {}) {
+// Mobile shows one card per project, so cards can share a single hidden
+// WebGL renderer and copy each frame into their own 2D canvas. That keeps a
+// long page to one GL context (iOS caps how many a page may hold).
+let sharedRenderer;
+function getSharedRenderer(THREE, dpr) {
+  if (!sharedRenderer) {
+    sharedRenderer = new THREE.WebGLRenderer({ canvas: document.createElement('canvas'), alpha: true, antialias: true, powerPreference: 'low-power', preserveDrawingBuffer: true });
+    sharedRenderer.setPixelRatio(dpr); sharedRenderer.setClearColor(0, 0);
+  }
+  return sharedRenderer;
+}
+
+export async function mount(canvas, { src, color = '--paper', layers = 2, spread = 0.22, share = false, onReady } = {}) {
   if (!document.createElement('canvas').getContext('webgl2')) return null;
   const L = await load();
   const { THREE } = L;
-  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'low-power' });
   const dpr = Math.min(devicePixelRatio || 1, 2);
-  renderer.setPixelRatio(dpr); renderer.setClearColor(0, 0);
+  const ctx2d = share ? canvas.getContext('2d') : null;
+  const renderer = share ? getSharedRenderer(THREE, dpr) : new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'low-power' });
+  if (!share) { renderer.setPixelRatio(dpr); renderer.setClearColor(0, 0); }
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 30);
   camera.position.set(0, 0, 5.6);
@@ -113,8 +126,15 @@ export async function mount(canvas, { src, color = '--paper', layers = 2, spread
   let first = true, lastW = 0, lastH = 0;
   const draw = (t, dt) => {
     const w = canvas.clientWidth, h = canvas.clientHeight;
+    if (share) {                                     // shared renderer: size it for this card every frame
+      const W = Math.round(w * dpr), H = Math.round(h * dpr);
+      if (canvas.width !== W || canvas.height !== H) { canvas.width = W; canvas.height = H; }
+      const sz = renderer.getSize(new THREE.Vector2());
+      if (sz.x !== w || sz.y !== h) renderer.setSize(w, h, false);
+    }
     if (w !== lastW || h !== lastH) { lastW = w; lastH = h;
-      renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+      if (!share) renderer.setSize(w, h, false);
+      camera.aspect = w / h; camera.updateProjectionMatrix();
       mats.forEach(m => m.resolution.set(w, h));
     }
     assembled = Math.min(1, assembled + dt / 1.1);
@@ -126,6 +146,7 @@ export async function mount(canvas, { src, color = '--paper', layers = 2, spread
     const m = ptr.step(dt);
     pivot.rotation.set(-0.42 + m[1] * 0.35, 0.55 + Math.sin(t * 0.4) * 0.18 + m[0] * 0.5, 0);
     renderer.render(scene, camera);
+    if (ctx2d) { ctx2d.clearRect(0, 0, canvas.width, canvas.height); ctx2d.drawImage(renderer.domElement, 0, 0, canvas.width, canvas.height); }
     if (first && parts.length) { first = false; onReady && onReady(); }
   };
 
@@ -135,7 +156,7 @@ export async function mount(canvas, { src, color = '--paper', layers = 2, spread
   if (still) { assembled = 1; draw(0, 1); } else stop = gatedLoop(canvas, draw);
   return {
     show: s => show(s).then(() => { if (still) { assembled = 1; draw(0, 1); } }),
-    destroy() { stop(); ptr.destroy(); clear(); mats.forEach(m => m.dispose()); renderer.dispose(); renderer.forceContextLoss(); },
+    destroy() { stop(); ptr.destroy(); clear(); mats.forEach(m => m.dispose()); if (!share) { renderer.dispose(); renderer.forceContextLoss(); } },
   };
 }
 
