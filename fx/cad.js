@@ -343,7 +343,8 @@ void main(){
     float ticks = (1.0 - min(tk.x, 1.0)) * step(g.y, 5.0) + (1.0 - min(tk.y, 1.0)) * step(g.x, 5.0);
     a = max(a, (1.0 - hit) * max(axes * 0.22, min(ticks, 1.0) * 0.3 * step(max(abs(uv.x), abs(uv.y)), 0.62)));
   }
-  gl_FragColor = vec4(uLine, a);
+  gl_FragColor = vec4(uLine * a, a);            // premultiplied: iOS Safari composites a
+                                                // non-premultiplied canvas as white
 }`;
 
 function compile(gl, type, src) {
@@ -378,7 +379,7 @@ function setup(gl) {
   const U = {}; ['uRes', 'uTime', 'uMouse', 'uFrom', 'uTo', 'uMix', 'uLine', 'uLW', 'uGuides', 'uSpin'].forEach(n => U[n] = gl.getUniformLocation(prog, n));
   return U;
 }
-const GL_OPTS = { alpha: true, premultipliedAlpha: false, antialias: false, powerPreference: 'low-power', preserveDrawingBuffer: true };
+const GL_OPTS = { alpha: true, premultipliedAlpha: true, antialias: false, powerPreference: 'low-power', preserveDrawingBuffer: true };
 let shared;
 function getShared() {
   if (shared !== undefined) return shared;
