@@ -19,27 +19,48 @@ const load = () => libs ??= Promise.all([
 const svgCache = new Map();
 const fetchSvg = src => { if (!svgCache.has(src)) svgCache.set(src, fetch(src).then(r => r.text())); return svgCache.get(src); };
 
-// SVG → array of layers, each a flat [x1,y1,x2,y2,...] segment list in
-// normalised units (fits a 2-unit box, centred, y up).
+// Masks, clip paths and defs are drawing helpers, not artwork: strip them
+// before tracing, or their rectangles show up as stray outlines.
+function clean(text) {
+  const doc = new DOMParser().parseFromString(text, 'image/svg+xml');
+  doc.querySelectorAll('mask, clipPath, defs, filter, symbol, title, desc, metadata').forEach(n => n.remove());
+  return new XMLSerializer().serializeToString(doc);
+}
+
+// SVG → layers of line segments in normalised units (fits a 2-unit box,
+// centred, y up). Depth comes from nesting, not file order: a path sits one
+// layer in front of every larger path whose bounds contain it. So a tile's
+// glyph floats above its tile, a word stays on one plane, and a frame sits
+// at the back.
 function trace(L, text, maxLayers) {
-  const data = new L.SVGLoader().parse(text);
-  const paths = data.paths.map(p => {
+  const data = new L.SVGLoader().parse(clean(text));
+  const paths = [];
+  for (const p of data.paths) {
     const segs = [];
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
     for (const sp of p.subPaths) {
-      const pts = sp.getPoints(5);                    // 5 points per curve segment
-      for (let i = 1; i < pts.length; i++) segs.push(pts[i - 1].x, pts[i - 1].y, pts[i].x, pts[i].y);
+      const pts = sp.getPoints(5);                      // 5 points per curve segment
+      for (let i = 0; i < pts.length; i++) {
+        const q = pts[i];
+        x0 = Math.min(x0, q.x); x1 = Math.max(x1, q.x); y0 = Math.min(y0, q.y); y1 = Math.max(y1, q.y);
+        if (i) segs.push(pts[i - 1].x, pts[i - 1].y, q.x, q.y);
+      }
     }
-    return segs;
-  }).filter(s => s.length);
-  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-  for (const s of paths) for (let i = 0; i < s.length; i += 2) {
-    minX = Math.min(minX, s[i]); maxX = Math.max(maxX, s[i]); minY = Math.min(minY, s[i + 1]); maxY = Math.max(maxY, s[i + 1]);
+    if (segs.length) paths.push({ segs, box: [x0, y0, x1, y1], area: (x1 - x0) * (y1 - y0) });
   }
-  const cx = (minX + maxX) / 2, cy = (minY + maxY) / 2, k = 2 / Math.max(maxX - minX, maxY - minY);
-  const n = Math.min(maxLayers, paths.length), per = Math.ceil(paths.length / n);
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const { box } of paths) { minX = Math.min(minX, box[0]); minY = Math.min(minY, box[1]); maxX = Math.max(maxX, box[2]); maxY = Math.max(maxY, box[3]); }
+  const span = Math.max(maxX - minX, maxY - minY), eps = span * 0.004;
+  const inside = (a, b) => a.area > b.area * 1.3 && a.box[0] <= b.box[0] + eps && a.box[1] <= b.box[1] + eps && a.box[2] >= b.box[2] - eps && a.box[3] >= b.box[3] - eps;
+  for (const p of paths) p.depth = paths.reduce((n, o) => n + (o !== p && inside(o, p) ? 1 : 0), 0);
+  // Compress depths to consecutive layers, capped.
+  const levels = [...new Set(paths.map(p => p.depth))].sort((a, b) => a - b);
+  const n = Math.min(maxLayers, levels.length);
+  const layerOf = d => Math.min(n - 1, levels.indexOf(d));
+  const cx = (minX + maxX) / 2, cy = (minY + maxY) / 2, k = 2 / span;
   const layers = Array.from({ length: n }, () => []);
-  paths.forEach((s, i) => { const out = layers[Math.min(n - 1, Math.floor(i / per))];
-    for (let j = 0; j < s.length; j += 2) out.push((s[j] - cx) * k, -(s[j + 1] - cy) * k); });
+  for (const p of paths) { const out = layers[layerOf(p.depth)];
+    for (let j = 0; j < p.segs.length; j += 2) out.push((p.segs[j] - cx) * k, -(p.segs[j + 1] - cy) * k); }
   return { layers, half: [(maxX - minX) * k / 2, (maxY - minY) * k / 2] };
 }
 

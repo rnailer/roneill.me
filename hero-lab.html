@@ -184,12 +184,13 @@ function Hero({ v, shapes }){
 /* ── Shape library: click to choose which shapes the Draft hero cycles ── */
 const LIBRARY = [
   { group:'site motifs', items:['orbit','starburst','sphere','compass'] },
-  { group:'ux / design', items:['cursor','pen','layers','component','toggle','device'] },
+  { group:'ui controls (moving parts)', items:['toggle','slider','checkbox','radio','button','dial','segments'] },
+  { group:'ux / design', items:['cursor','pen','layers','component','device'] },
 ];
 function ShapeTile({ name, on, onToggle }){
   const ref = useRef(null), api = useRef(null);
   useEffect(()=>{
-    const start = ()=>{ api.current = window.HeroCad.mount(ref.current, { autoplay:false, start:name, guides:false, spin:0.4, playing:false }); };
+    const start = ()=>{ api.current = window.HeroCad.mount(ref.current, { autoplay:false, start:name, guides:false, spin:0.4, playing:false, t0:1.6, share:true }); };
     if (window.HeroCad) start(); else addEventListener('HeroCad:ready', start, { once:true });
     return ()=>api.current && api.current.destroy();
   }, []);
@@ -213,7 +214,7 @@ function ShapeLibrary({ shapes, setShapes }){
       {LIBRARY.map(g=>(
         <div key={g.group} style={{ marginBottom:'1.5rem' }}>
           <div className="cap" style={{ fontSize:11, color:'var(--text-faint)', margin:'0 0 0.6rem' }}>{g.group}</div>
-          <div className="shape-grid" style={{ display:'grid', gridTemplateColumns:'repeat(6, minmax(0,1fr))', gap:10 }}>
+          <div className="shape-grid" style={{ display:'grid', gridTemplateColumns:'repeat(7, minmax(0,1fr))', gap:10 }}>
             {g.items.map(n=> <ShapeTile key={n} name={n} on={shapes.includes(n)} onToggle={()=>toggle(n)} />)}
           </div>
         </div>

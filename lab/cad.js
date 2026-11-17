@@ -9,6 +9,7 @@ export const SHAPES = {
   sphere: 0, orbit: 1, starburst: 2, compass: 3, tiles: 4, cassette: 5,
   rings: 6, bars: 7, stairs: 8, target: 9, door: 10, stack: 11,
   cursor: 12, pen: 13, layers: 14, component: 15, toggle: 16, device: 17,
+  slider: 18, checkbox: 19, radio: 20, button: 21, dial: 22, segments: 23,
 };
 
 const VS = `attribute vec2 p; void main(){ gl_Position = vec4(p, 0.0, 1.0); }`;
@@ -102,7 +103,79 @@ float shapeUX(vec3 p, float i){
   return d;
 }
 
+float sdCapsule2(vec2 p, vec2 a, vec2 b, float r){ vec2 pa = p - a, ba = b - a; float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0); return length(pa - ba * h) - r; }
+float pill2(vec2 p, float halfLen, float r){ return length(vec2(max(abs(p.x) - halfLen, 0.0), p.y)) - r; }
+// Smooth step through n stops: holds on each, then glides to the next.
+float stops(float t, float n){ float s = mod(t, n); return floor(s) + smoothstep(0.7, 1.0, fract(s)); }
+
+// UI controls with moving parts. All front-facing; they sway rather than spin.
+float shapeUI(vec3 p, float i){
+  float t = uTime;
+  if (i < 18.5) {                                  // slider: track, fill, knob, ticks
+    float k = sin(t * 0.9) * 0.62;
+    float d = extrude(pill2(p.xy, 0.72, 0.035), p.z, 0.035);
+    d = min(d, extrude(sdBox2(p.xy - vec2((k - 0.72) * 0.5, 0.0), vec2((k + 0.72) * 0.5, 0.055)) - 0.01, p.z, 0.06));
+    d = min(d, sdCylZ(p - vec3(k, 0.0, 0.02), 0.15, 0.1) - 0.02);
+    vec2 q = p.xy - vec2(0.0, -0.3); q.x = q.x - clamp(floor(q.x / 0.36 + 0.5), -2.0, 2.0) * 0.36;
+    return min(d, extrude(sdBox2(q, vec2(0.012, 0.05)), p.z, 0.02));
+  }
+  if (i < 19.5) {                                  // checkbox row: box, tick that pops in, label
+    float c = fract(t * 0.35);
+    float on = smoothstep(0.1, 0.22, c) - smoothstep(0.75, 0.87, c);
+    vec3 b = p - vec3(-0.42, 0.0, 0.0);
+    float d = sdRBox(b, vec3(0.26, 0.26, 0.07), 0.05);
+    d = max(d, -sdBox(b - vec3(0.0, 0.0, 0.07), vec3(0.19, 0.19, 0.04)));
+    vec2 q = (b.xy - vec2(0.0, 0.0)) / max(on, 0.001);
+    float tick = min(sdCapsule2(q, vec2(-0.12, 0.0), vec2(-0.03, -0.1), 0.035), sdCapsule2(q, vec2(-0.03, -0.1), vec2(0.15, 0.13), 0.035)) * max(on, 0.001);
+    d = min(d, extrude(tick, b.z - 0.08 * on, 0.04) + (1.0 - on) * 0.3);
+    d = min(d, extrude(pill2(p.xy - vec2(0.38, 0.08), 0.3, 0.035), p.z, 0.025));
+    return min(d, extrude(pill2(p.xy - vec2(0.26, -0.1), 0.18, 0.035), p.z, 0.025));
+  }
+  if (i < 20.5) {                                  // radio group: three rings, dot moves
+    float sel = stops(t * 0.7, 3.0);
+    float y = 0.42 - 0.42 * (sel > 2.0 ? 2.0 * (3.0 - sel) : sel);   // glide back to the top
+    vec3 r = p - vec3(-0.45, 0.0, 0.0); r.y = r.y - clamp(floor(r.y / 0.42 + 0.5), -1.0, 1.0) * 0.42;
+    float d = sdTorus(r.xzy, vec2(0.13, 0.03));
+    d = min(d, sdSphere(p - vec3(-0.45, y, 0.0), 0.075));
+    vec2 l = p.xy - vec2(0.2, 0.0); l.y = l.y - clamp(floor(l.y / 0.42 + 0.5), -1.0, 1.0) * 0.42;
+    return min(d, extrude(pill2(l, 0.3, 0.035), p.z, 0.025));
+  }
+  if (i < 21.5) {                                  // button + cursor that clicks it
+    float c = fract(t * 0.45);
+    float press = smoothstep(0.38, 0.46, c) - smoothstep(0.55, 0.68, c);
+    float hover = smoothstep(0.05, 0.35, c) - smoothstep(0.75, 0.95, c);
+    vec3 b = p - vec3(0.0, -0.12, -press * 0.05);
+    float d = sdRBox(b, vec3(0.66, 0.24, 0.1 - press * 0.04), 0.1);
+    d = min(d, extrude(pill2(b.xy, 0.26, 0.035), b.z - 0.1 + press * 0.04, 0.03));
+    vec3 a = p - vec3(0.28 + (1.0 - hover) * 0.35, 0.02 + (1.0 - hover) * 0.3, 0.2 - press * 0.08);
+    vec2 q = a.xy * 1.9;
+    float cur = sdTri(q, vec2(-0.32, 0.66), vec2(-0.32, -0.22), vec2(0.3, 0.1));
+    vec2 st = q - vec2(-0.02, -0.24); st *= rot(0.5);
+    cur = min(cur, sdBox2(st, vec2(0.075, 0.3))) / 1.9;
+    return min(d, extrude(cur, a.z, 0.04));
+  }
+  if (i < 22.5) {                                  // dial: knob turns, ticks around
+    float ang = sin(t * 0.8) * 2.2;
+    vec3 k = p; k.xy *= rot(ang);
+    float d = sdCylZ(p, 0.42, 0.12) - 0.02;
+    d = max(d, -sdCylZ(p - vec3(0.0, 0.0, 0.14), 0.34, 0.03));        // dished top
+    d = min(d, sdRBox(k - vec3(0.0, 0.22, 0.1), vec3(0.03, 0.1, 0.04), 0.02));
+    float a = atan(p.y, p.x), sec = 6.2831853 / 16.0;
+    float am = mod(a + sec * 0.5, sec) - sec * 0.5;
+    vec2 q = length(p.xy) * vec2(cos(am), sin(am)) - vec2(0.62, 0.0);
+    return min(d, extrude(sdBox2(q, vec2(0.05, 0.012)), p.z, 0.03));
+  }
+  // segmented control: outline track, sliding selection, three labels
+  float sel = stops(t * 0.6, 3.0);
+  float x = -0.5 + 0.5 * (sel > 2.0 ? 2.0 * (3.0 - sel) : sel);
+  float d = extrude(abs(pill2(p.xy, 0.62, 0.22)) - 0.025, p.z, 0.05);
+  d = min(d, sdRBox(p - vec3(x, 0.0, 0.0), vec3(0.27, 0.16, 0.07), 0.07));
+  vec2 l = p.xy; l.x = l.x - clamp(floor(l.x / 0.5 + 0.5), -1.0, 1.0) * 0.5;
+  return min(d, extrude(pill2(l, 0.09, 0.025), p.z - 0.06, 0.03));
+}
+
 float shape(vec3 p, float i){
+  if (i > 17.5) return shapeUI(p, i);
   if (i > 11.5) return shapeUX(p, i);
   if (i < 0.5) return sdSphere(p, 0.78);
   if (i < 1.5) {                                   // orbit
@@ -174,8 +247,10 @@ float roundness(float i){
   if (i < 3.5 || abs(i - 6.0) < 0.5 || abs(i - 9.0) < 0.5 || abs(i - 11.0) < 0.5 || abs(i - 16.0) < 0.5) return 1.0;
   return 0.0;
 }
+float sway(float i){ return step(11.5, i); }   // flat UI-ish shapes face the viewer
 vec3 obj(vec3 p){
-  p.xz *= rot(uTime * uSpin + uMouse.x * 0.9);
+  float sw = mix(sway(uFrom), sway(uTo), uMix);
+  p.xz *= rot(mix(uTime * uSpin, sin(uTime * 0.6) * 0.5, sw) + uMouse.x * 0.9);
   p.yz *= rot(0.32 + uMouse.y * 0.6);
   return p;
 }
@@ -249,11 +324,10 @@ const ease = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
  *  spin:     idle rotation speed (rad/s)
  * Returns { show(name), destroy() } or null without WebGL.
  */
-export function mount(canvas, {
-  shapes = ['sphere', 'orbit', 'starburst', 'compass'], autoplay = true, start, period = 4.2,
-  color = '--paper', guides = true, spin = 0.35, morph = 0.9, playing = true, onReady,
-} = {}) {
-  const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: false, antialias: false, powerPreference: 'low-power' });
+// One compiled program per GL context. Library tiles share a single hidden
+// context and copy each frame into their own 2D canvas, so a page full of
+// tiles never hits the browser's ~16 WebGL context limit.
+function setup(gl) {
   if (!gl || !gl.getExtension('OES_standard_derivatives')) return null;
   const prog = gl.createProgram();
   gl.attachShader(prog, compile(gl, gl.VERTEX_SHADER, VS));
@@ -263,12 +337,31 @@ export function mount(canvas, {
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
   const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
   const U = {}; ['uRes', 'uTime', 'uMouse', 'uFrom', 'uTo', 'uMix', 'uLine', 'uLW', 'uGuides', 'uSpin'].forEach(n => U[n] = gl.getUniformLocation(prog, n));
-  gl.uniform3fv(U.uLine, cssColor(color, '#ECEAE4'));
-  gl.uniform1f(U.uGuides, guides ? 1 : 0);
-  gl.uniform1f(U.uSpin, spin);
+  return U;
+}
+const GL_OPTS = { alpha: true, premultipliedAlpha: false, antialias: false, powerPreference: 'low-power', preserveDrawingBuffer: true };
+let shared;
+function getShared() {
+  if (shared !== undefined) return shared;
+  const c = document.createElement('canvas');
+  const gl = c.getContext('webgl', GL_OPTS);
+  const U = setup(gl);
+  return shared = U ? { c, gl, U } : null;
+}
 
+export function mount(canvas, {
+  shapes = ['sphere', 'orbit', 'starburst', 'compass'], autoplay = true, start, period = 4.2,
+  color = '--paper', guides = true, spin = 0.35, morph = 0.9, playing = true, t0 = 0, share = false, onReady,
+} = {}) {
+  let gl, U, glCanvas = canvas, ctx2d = null;
+  if (share) {
+    const sh = getShared(); if (!sh) return null;
+    ({ gl, U } = sh); glCanvas = sh.c; ctx2d = canvas.getContext('2d');
+  } else {
+    gl = canvas.getContext('webgl', GL_OPTS); U = setup(gl); if (!U) return null;
+  }
+  const line = cssColor(color, '#ECEAE4');
   const dpr = Math.min(devicePixelRatio || 1, 1.5);
-  gl.uniform1f(U.uLW, 1.25 * dpr);                   // ~1.25 CSS px lines at any DPR
   const ptr = easedPointer();
   const id = n => SHAPES[n] ?? 0;
   let from = id(start || shapes[0]), to = from, mixT = 1, mixStart = 0, cycle = 0, clock = 0, first = true;
@@ -287,6 +380,11 @@ export function mount(canvas, {
     clock = t;
     const w = Math.round(canvas.clientWidth * dpr), h = Math.round(canvas.clientHeight * dpr);
     if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+    if (glCanvas !== canvas && (glCanvas.width !== w || glCanvas.height !== h)) { glCanvas.width = w; glCanvas.height = h; }
+    gl.uniform3fv(U.uLine, line);
+    gl.uniform1f(U.uGuides, guides ? 1 : 0);
+    gl.uniform1f(U.uSpin, spin);
+    gl.uniform1f(U.uLW, 1.25 * dpr);                 // ~1.25 CSS px lines at any DPR
     if (autoplay && shapes.length > 1) {
       const c = Math.floor(t / period);
       if (c !== cycle) { cycle = c; show(shapes[c % shapes.length]); }
@@ -294,11 +392,12 @@ export function mount(canvas, {
     mixT = Math.min(1, (t - mixStart) / morph);
     gl.viewport(0, 0, w, h);
     gl.uniform2f(U.uRes, w, h);
-    gl.uniform1f(U.uTime, t);
+    gl.uniform1f(U.uTime, t + t0);
     const m = ptr.step(dt); gl.uniform2f(U.uMouse, m[0], m[1]);
     gl.uniform1f(U.uFrom, from); gl.uniform1f(U.uTo, to); gl.uniform1f(U.uMix, ease(mixT));
     gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
+    if (ctx2d) { ctx2d.clearRect(0, 0, w, h); ctx2d.drawImage(glCanvas, 0, 0); }
     if (first) { first = false; onReady && onReady(); }
   };
 
@@ -311,7 +410,7 @@ export function mount(canvas, {
   return {
     play(on) { playing = on; },
     show(name) { show(name); if (still) { mixT = 1; from = to; draw(1.2, 0); } },
-    destroy() { stop(); ptr.destroy(); canvas.removeEventListener('webglcontextlost', lost); gl.getExtension('WEBGL_lose_context')?.loseContext(); },
+    destroy() { stop(); ptr.destroy(); canvas.removeEventListener('webglcontextlost', lost); if (!ctx2d) gl.getExtension('WEBGL_lose_context')?.loseContext(); },
   };
 }
 
