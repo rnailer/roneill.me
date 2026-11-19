@@ -23,6 +23,19 @@
   .proto-frame iframe { width: 100%; height: 1060px; border: 0; display: block; }
   @media (max-width: 700px){ .proto-frame iframe { height: 860px; } }
 
+  .proto-note { display: none; }
+  @media (max-width: 700px){
+    .proto-frame { display: none; }
+    .proto-note { display: block; font-size: var(--fs-caption); color: var(--text-muted); line-height: 1.45; margin: 0 0 1.6rem; }
+  }
+  .hero-fig { margin-top: clamp(1.8rem,4vw,3rem); }
+  .hero-fig img + img { margin-top: 12px; }
+  .narrow-only { display: none !important; }
+  @media (max-width: 700px){ .narrow-only { display: block !important; } .wide-only { display: none !important; } }
+  .changes { list-style: none; padding: 0; margin: 1.6rem 0; max-width: 62ch; border-top: 1px solid var(--border); }
+  .changes li { padding: 0.9rem 0; border-bottom: 1px solid var(--border); color: var(--text-muted); line-height: 1.5; }
+  .changes li strong { color: var(--text); font-weight: 600; display: block; }
+
   /* in-chapter figures */
   .fig { margin: 1.8rem 0; }
   .fig img { display: block; width: 100%; height: auto; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-sunken); }
@@ -44,7 +57,7 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://roneill.me/case-studies/fidelity-finops/">
   <meta property="og:title" content="Fidelity · VM Utilisation Dashboard — Richard O'Neill">
-  <meta property="og:description" content="From FinOps chatbot to cost-action dashboard, designed, built, and pressure-tested with AI agents.">
+  <meta property="og:description" content="From FinOps chatbot to a VM utilisation dashboard going to release, plus the cost-action concept that comes next.">
   <meta property="og:image" content="https://roneill.me/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -53,7 +66,7 @@
   <meta property="og:site_name" content="roneill.me">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Fidelity · VM Utilisation Dashboard — Richard O'Neill">
-  <meta name="twitter:description" content="From FinOps chatbot to cost-action dashboard, designed, built, and pressure-tested with AI agents.">
+  <meta name="twitter:description" content="From FinOps chatbot to a VM utilisation dashboard going to release, plus the cost-action concept that comes next.">
   <meta name="twitter:image" content="https://roneill.me/og-image.png">
   <meta name="twitter:image:alt" content="Richard O'Neill — Product designer bridging design, code and AI.">
   <!-- Motion: shared reveal tokens + dormant IntersectionObserver driver -->
@@ -76,27 +89,24 @@
     <div class="kicker">Case study <b>[ 02 ]</b> · the full story</div>
     <div class="num-big">02</div>
     <h1 data-rise class="tw-pending">Turning VM utilisation data into <span class="o">clear next steps</span></h1>
-    <p class="summary">The AI/ML FinOps chatbot let engineering teams ask questions about their cloud estate, which machines were underused, where money was leaking, what looked anomalous. It worked, but only if you knew what to ask. I shaped the chatbot's front-end UX, then independently designed and built a <strong>VM Utilisation Dashboard</strong>, a visual layer inside the same product that surfaces what needs attention <em>before</em> anyone types a question.</p>
+    <p class="summary">The AI/ML FinOps chatbot let engineering teams ask questions about their cloud estate. It worked, but only if you knew what to ask. I shaped the chatbot's front-end UX, then designed a <strong>VM Utilisation Dashboard</strong> that surfaces what needs attention <em>before</em> anyone types a question. I prototyped it, rebuilt it in the design system, and handed it to engineering. It goes to release in December 2026. The cost-action concept that follows it is at the end of this page.</p>
     <dl class="meta">
       <div><dt>Company</dt><dd>Fidelity Investments</dd></div>
       <div><dt>Year</dt><dd>2026</dd></div>
+      <div><dt>Status</dt><dd>Releasing December 2026 · user testing to follow</dd></div>
       <div><dt>Type</dt><dd>AI product · Data viz · Internal tooling</dd></div>
-      <div><dt>Role</dt><dd>Product designer, chatbot UX + dashboard design &amp; prototype</dd></div>
+      <div><dt>Role</dt><dd>Product designer: chatbot UX, dashboard design, prototype, developer handoff</dd></div>
     </dl>
 
-    <section class="proto">
-      <div class="proto-head">
-        <span class="cap">Interactive prototype, try it live</span>
-        <a href="https://factor-feast-34821257.figma.site" target="_blank" rel="noopener">Open in new tab ↗</a>
-      </div>
-      <div class="proto-frame">
-        <iframe
-          src="https://factor-feast-34821257.figma.site"
-          title="VM Utilisation Dashboard, interactive prototype"
-          loading="lazy"
-          allowfullscreen></iframe>
-      </div>
-    </section>
+    <figure class="fig hero-fig">
+      <img class="wide-only" src="assets/img/release-application.png" width="2720" height="3636"
+        alt="The application page of the VM Utilisation Dashboard: a utilisation score, status counts, and VM cards grouped by environment, with a detail panel open for one VM">
+      <img class="narrow-only" src="assets/img/release-summary.png" width="1824" height="680"
+        alt="Utilisation score of 50 percent with counts of healthy, underutilised and severe VMs">
+      <img class="narrow-only" src="assets/img/release-cards.png" width="1154" height="1522"
+        alt="VM cards showing average and maximum CPU and memory with a traffic-light status">
+      <figcaption>The release design, redrawn with fictional data. Real screens stay private.</figcaption>
+    </figure>
   </div></header>
 
   <div class="wrap"><div class="doc">
@@ -107,9 +117,10 @@
         <li><a href="#c2"><span class="mono">02</span> Research</a></li>
         <li><a href="#c3"><span class="mono">03</span> The design</a></li>
         <li><a href="#c4"><span class="mono">04</span> Insight to action</a></li>
-        <li><a href="#c5"><span class="mono">05</span> Extending it</a></li>
-        <li><a href="#c6"><span class="mono">06</span> Testing it</a></li>
-        <li><a href="#c7"><span class="mono">07</span> Outcome</a></li>
+        <li><a href="#c5"><span class="mono">05</span> Into production</a></li>
+        <li><a href="#c6"><span class="mono">06</span> What comes next</a></li>
+        <li><a href="#c7"><span class="mono">07</span> Testing the concept</a></li>
+        <li><a href="#c8"><span class="mono">08</span> Where it stands</a></li>
       </ol>
     </nav></aside>
 
@@ -142,7 +153,7 @@
         <h2>A dashboard that answers one question first</h2>
         <div class="prose">
           <p>I designed the dashboard around a single question: <em>what needs attention, and what should I do next?</em> You enter an <strong>Application, Product, or Product Line ID</strong>; the dashboard resolves the right level of data and shows a colour-coded summary.</p>
-          <p>For an application, every VM appears as a card grouped by environment, <strong>DEV, QA, PROD</strong>, showing its name, average CPU, a traffic-light status, and a review flag where relevant.</p>
+          <p>For an application, every VM appears as a card grouped by environment, <strong>DEV, QA, PROD</strong>, showing its name, CPU usage, a traffic-light status, and a review flag where relevant.</p>
         </div>
         <figure class="fig">
           <img src="assets/img/vm-states.png" width="2624" height="680" loading="lazy"
@@ -172,11 +183,32 @@
       </section>
 
       <section class="chapter" id="c5">
-        <div class="chx"><span class="n">05</span><span class="l">Extending it</span><span class="r"></span></div>
+        <div class="chx"><span class="n">05</span><span class="l">Into production</span><span class="r"></span></div>
+        <h2>From prototype to a release build</h2>
+        <div class="prose">
+          <p>The prototype made the case. To get it built, I redrew the dashboard in the company design system and handed it over as an annotated spec. <strong>Eleven component types</strong> are marked on the page: six map straight to standard design-system components, and five are custom, each documented by the standard parts it is assembled from. Developers were assembling, not interpreting.</p>
+          <p>Review calls in September, October and November then changed the design in ways the prototype had not anticipated.</p>
+        </div>
+        <ul class="changes">
+          <li><strong>Memory joined CPU</strong>Each VM card now shows average and maximum for both, so a machine that is quiet on CPU but full on memory is not flagged for downsizing.</li>
+          <li><strong>A data range switch</strong>Three, six or twelve months, with each card stating how many days of data its score rests on.</li>
+          <li><strong>“Not scored” explains itself</strong>A new VM says how far along it is: “12 of 30 days collected. Scored at 30.”</li>
+          <li><strong>Scoring is explained in place</strong>A “How scoring works” explainer, plus a short definition on every status label.</li>
+          <li><strong>A detail panel that separates two kinds of help</strong>Actions for this VM sit apart from general guidance that applies to every VM.</li>
+          <li><strong>The edges got designed</strong>Applications with no VMs, and a reworked ticket form.</li>
+        </ul>
+        <div class="pull">
+          <span class="k">Status</span>
+          <p>The dashboard goes to release in December 2026. Testing with users on the released version comes next.</p>
+        </div>
+      </section>
+
+      <section class="chapter" id="c6">
+        <div class="chx"><span class="n">06</span><span class="l">What comes next</span><span class="r"></span></div>
         <h2>From utilisation to cost action</h2>
         <div class="prose">
-          <p>The utilisation view answered <em>what needs attention</em>. The obvious next question was <em>what it is worth to fix</em>.</p>
-          <p>I researched how FinOps tools like <strong>CloudZero, Kubecost, and Vantage</strong> turn cost data into engineer action, and extended the prototype with the patterns the space converges on: a ranked opportunities table where every row carries an estimated saving, an owner, and an action; a utilisation-versus-cost scatter for rightsizing calls; and commitment coverage tracked against target.</p>
+          <p>The release answers <em>what needs attention</em>. The obvious next question is <em>what it is worth to fix</em>. This part is a concept, not a commitment. I built it independently, beyond the brief.</p>
+          <p>I researched how FinOps tools like <strong>CloudZero, Kubecost, and Vantage</strong> turn cost data into engineer action, and extended the dashboard with the patterns the space converges on: a ranked opportunities table where every row carries an estimated saving, an owner, and an action; a utilisation-versus-cost scatter for rightsizing calls; and commitment coverage tracked against target.</p>
           <p>One rule governed all of it: <strong>every visualisation ends in an action with a dollar value</strong>, not a chart to admire.</p>
         </div>
         <figure class="fig">
@@ -187,13 +219,30 @@
           <img src="assets/img/rightsizing-scatter.png" width="3196" height="1438" loading="lazy"
             alt="Utilisation versus cost scatter with rightsizing drawer open">
         </figure>
+        <section class="proto">
+      <div class="proto-head">
+        <span class="cap">The concept, interactive</span>
+        <a href="https://factor-feast-34821257.figma.site" target="_blank" rel="noopener">Open in new tab ↗</a>
+      </div>
+      <div class="proto-frame">
+        <iframe
+          src="https://factor-feast-34821257.figma.site"
+          title="VM Utilisation Dashboard, interactive prototype"
+          loading="lazy"
+          allowfullscreen></iframe>
+      </div>
+          <p class="proto-note">The prototype is built for a desktop screen. The link above opens it full size.</p>
+        </section>
+        <div class="prose">
+          <p>I showed the concept to an internal stakeholder. Some parts landed. The ask was for more validation before committing to it, and feedback from the released dashboard is where that evidence will come from.</p>
+        </div>
       </section>
 
-      <section class="chapter" id="c6">
-        <div class="chx"><span class="n">06</span><span class="l">Testing it</span><span class="r"></span></div>
+      <section class="chapter" id="c7">
+        <div class="chx"><span class="n">07</span><span class="l">Testing the concept</span><span class="r"></span></div>
         <h2>Three AI personas, one hierarchy problem</h2>
         <div class="prose">
-          <p>Before polishing, I wanted evidence the hierarchy worked. A heuristic pass predicted a problem: the page led with a health score while savings figures sat scattered at different scroll depths. I pressure-tested the prediction with agentic AI evaluation, running three AI personas configured as platform engineers through a task: <strong>find the biggest saving and action it</strong>.</p>
+          <p>Before polishing the concept, I wanted evidence its hierarchy worked. A heuristic pass predicted a problem: the page led with a health score while savings figures sat scattered at different scroll depths. I pressure-tested the prediction with agentic AI evaluation, running three AI personas configured as platform engineers through a task: <strong>find the biggest saving and action it</strong>.</p>
           <p>All three completed it. All three also picked a different number as the biggest saving, and one hit action buttons that failed silently. <em>“That kind of dead button is how people stop trusting the page.”</em></p>
           <p>Three changes followed: the commitment recommendation became the top-ranked table row, the savings total moved into the page header above the health score, and every action was wired to one confirm-and-ticket pattern. The retest with fresh personas: <strong>3 of 3 completed in 6 to 8 steps, all named the same top opportunity, verdict clean</strong>.</p>
         </div>
@@ -206,19 +255,19 @@
         </div>
       </section>
 
-      <section class="chapter" id="c7">
-        <div class="chx"><span class="n">07</span><span class="l">Outcome</span><span class="r"></span></div>
+      <section class="chapter" id="c8">
+        <div class="chx"><span class="n">08</span><span class="l">Where it stands</span><span class="r"></span></div>
         <h2>Question-led to discovery-led to action-led</h2>
         <div class="prose">
-          <p>The chatbot asked users to arrive with the perfect prompt. The dashboard surfaces what needs attention first. The extension prices it and hands over the action.</p>
-          <p>The evaluation loop, heuristic pass, agent test, redesign, retest, is now part of how I would run the next iteration too. I built and tested the prototype independently from the brief; it is the interactive piece at the top of this page.</p>
+          <p>The chatbot asked users to arrive with the perfect prompt. The dashboard surfaces what needs attention first, and it is the part now going to users. The cost-action concept prices each problem and hands over the action. It is the next bet, not a result.</p>
+          <p>What I do not have yet is usage data. That arrives after release, and it decides which parts of the concept get built.</p>
         </div>
 
         <div class="statline">The dashboard at a glance</div>
         <div class="metrics">
           <div class="metric"><div class="v">4</div><div class="c">Levels of hierarchy, Product Line to Product to App to VM</div></div>
-          <div class="metric"><div class="v">2</div><div class="c">Evaluation rounds, before and after redesign</div></div>
-          <div class="metric"><div class="v">3 <span class="u">of</span> 3</div><div class="c">AI personas completed the task and named the same top saving after the redesign, up from three different answers</div></div>
+          <div class="metric"><div class="v">11</div><div class="c">Component types annotated for developer handoff, five of them custom</div></div>
+          <div class="metric"><div class="v">3 <span class="u">of</span> 3</div><div class="c">AI personas named the same top saving in the concept after its redesign, up from three different answers</div></div>
         </div>
       </section>
 
