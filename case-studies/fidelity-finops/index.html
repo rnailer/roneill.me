@@ -21,13 +21,8 @@
   .proto-frame { width: 100%; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-strong);
     background: var(--bg-sunken); box-shadow: 0 16px 44px rgba(0,0,0,.5); }
   .proto-frame iframe { width: 100%; height: 1060px; border: 0; display: block; }
-  @media (max-width: 700px){ .proto-frame iframe { height: 860px; } }
 
-  .proto-note { display: none; }
-  @media (max-width: 700px){
-    .proto-frame { display: none; }
-    .proto-note { display: block; font-size: var(--fs-caption); color: var(--text-muted); line-height: 1.45; margin: 0 0 1.6rem; }
-  }
+  @media (max-width: 700px){ .proto-frame iframe { height: 640px; } }
   .hero-fig { margin-top: clamp(1.8rem,4vw,3rem); }
   .fig img + img { margin-top: 12px; }
   .narrow-only { display: none !important; }
@@ -235,7 +230,6 @@
           loading="lazy"
           allowfullscreen></iframe>
       </div>
-          <p class="proto-note">The prototype is built for a desktop screen. The link above opens it full size.</p>
         </section>
         <div class="prose">
           <p>I showed the concept to an internal stakeholder. Some parts landed. The ask was for more validation before committing to it, and feedback from the released dashboard is where that evidence will come from.</p>
