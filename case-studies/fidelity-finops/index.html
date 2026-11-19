@@ -29,7 +29,7 @@
     .proto-note { display: block; font-size: var(--fs-caption); color: var(--text-muted); line-height: 1.45; margin: 0 0 1.6rem; }
   }
   .hero-fig { margin-top: clamp(1.8rem,4vw,3rem); }
-  .hero-fig img + img { margin-top: 12px; }
+  .fig img + img { margin-top: 12px; }
   .narrow-only { display: none !important; }
   @media (max-width: 700px){ .narrow-only { display: block !important; } .wide-only { display: none !important; } }
   .changes { list-style: none; padding: 0; margin: 1.6rem 0; max-width: 62ch; border-top: 1px solid var(--border); }
@@ -156,8 +156,9 @@
           <p>For an application, every VM appears as a card grouped by environment, <strong>DEV, QA, PROD</strong>, showing its name, CPU usage, a traffic-light status, and a review flag where relevant.</p>
         </div>
         <figure class="fig">
-          <img src="assets/img/vm-states.png" width="2624" height="680" loading="lazy"
+          <img class="wide-only" src="assets/img/vm-states.png" width="2624" height="680" loading="lazy"
             alt="Five VM card states: healthy, underutilised, severe, not scored, flagged">
+          <img class="narrow-only" src="assets/img/vm-states-m.png" width="1373" height="969" loading="lazy" alt="Five VM card states: healthy, underutilised, severe, not scored, flagged">
           <figcaption>The traffic-light model does the interpreting so the user doesn't have to.</figcaption>
         </figure>
         <div class="prose">
@@ -212,12 +213,15 @@
           <p>One rule governed all of it: <strong>every visualisation ends in an action with a dollar value</strong>, not a chart to admire.</p>
         </div>
         <figure class="fig">
-          <img src="assets/img/opportunities-table.png" width="2624" height="1850" loading="lazy"
+          <img class="wide-only" src="assets/img/opportunities-table.png" width="2624" height="1850" loading="lazy"
             alt="Ranked optimisation opportunities table with estimated savings and actions">
+          <img class="narrow-only" src="assets/img/opportunities-table-m.png" width="1303" height="836" loading="lazy" alt="The top four optimisation opportunities with estimated monthly savings, effort and action">
         </figure>
         <figure class="fig">
-          <img src="assets/img/rightsizing-scatter.png" width="3196" height="1438" loading="lazy"
+          <img class="wide-only" src="assets/img/rightsizing-scatter.png" width="3196" height="1438" loading="lazy"
             alt="Utilisation versus cost scatter with rightsizing drawer open">
+          <img class="narrow-only" src="assets/img/rightsizing-scatter-m1.png" width="1353" height="883" loading="lazy" alt="Scatter of monthly cost against CPU utilisation with rightsizing targets highlighted">
+          <img class="narrow-only" src="assets/img/rightsizing-scatter-m2.png" width="835" height="1130" loading="lazy" alt="Detail panel for one VM: current cost, recommended size, saving, and a resize action">
         </figure>
         <section class="proto">
       <div class="proto-head">
